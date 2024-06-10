@@ -1,94 +1,75 @@
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
+
+// should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  // root of your application.
+  // root of application
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     const String appTitle = 'layout demo';
     return MaterialApp(
-      title: appTitle,
-      theme: ThemeData(primarySwatch: Colors.lightGreen),
-      home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Language App'),
-          ),
-          body: const Center(
-            child: HomePage(),
-          )),
-    );
+        // sets the style for the entire project (colors font etc)
+        title: appTitle,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const _HomePageState());
   }
 }
 
-class HomePage extends StatefulWidget {
-  // homepage
-  const HomePage({super.key});
-  final String title = 'home';
+class _HomePageState extends StatelessWidget {
+  const _HomePageState({Key? key}) : super(key: key);
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  //functions for main page would go here
-  void module() {}
+  // final controller = PageController(
+  //   initialPage: 1,
+  // );
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            // all widgets on home page
-            SizedBox(
-                width: 400,
-                height: 50,
-                child: customButtonWidget(
-                    'Bar with guy, progress bar?')), // change the dimensions to be phone dim dependent (ratio)
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  SizedBox(
-                      width: 300,
-                      height: 50,
-                      child: customButtonWidget('search')),
-                  SizedBox(
-                      width: 100, height: 50, child: customButtonWidget('gear'))
-                ]),
-            Padding(
-                padding: const EdgeInsets.only(right: 300),
-                child: Text('Modules',
-                    style: new TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.bold))),
-            SizedBox(
-                width: 400, height: 100, child: customButtonWidget('General')),
+    const h5_spacer = SizedBox(height: 5);
+    const h15_spacer = SizedBox(height: 15);
+    const w10_spacer = SizedBox(width: 10);
 
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: customButtonWidget('pass')),
-                  SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: customButtonWidget('pass')),
-                  SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: customButtonWidget('pass')),
-                ]),
-          ],
-        ),
+    return Scaffold(
+      backgroundColor: Colors.white, // setting style for home page (bg color)
+      appBar: AppBar(
+        title: const Text('Home'), // remove if no title is to displayed
+      ),
+      body: Column(
+        children: <Widget>[
+          // all widgets on home page
+          SizedBox(
+              width: 400,
+              height: 30,
+              child: banner(
+                  'Bar with guy')), // change the dimensions to be phone dim dependent (ratio)
+
+          h5_spacer, // spacer
+
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            SizedBox(width: 340, height: 30, child: banner('search')),
+            w10_spacer,
+            SizedBox(width: 50, height: 30, child: banner('gear'))
+          ]),
+
+          const Padding(
+              padding: EdgeInsets.only(right: 300, top: 30),
+              child: Text('Modules',
+                  style:
+                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
+
+          SizedBox(width: 400, height: 100, child: banner('General')),
+
+          h15_spacer, // spacer
+
+          SizedBox(
+            child: moduleButtonWidget(context, 'send'),
+          )
+        ],
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed:
@@ -108,30 +89,143 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget customButtonWidget(text) {
+  Widget banner(text) {
     const colors = Colors.lightGreen;
-    return Stack(
-      children: [
-        // round box
-        Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(50 * 0.19, 0, 0, 0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: colors,
-                  borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(40.0),
-                    topRight: const Radius.circular(40.0),
-                    bottomRight: const Radius.circular(40.0),
-                    bottomLeft: const Radius.circular(40.0),
-                  )),
-              child: Center(
-                child: Text(
-                  text,
-                  textScaleFactor: 1.5,
-                ),
-              )),
+    return Container(
+      decoration: BoxDecoration(
+        color: colors,
+        borderRadius: BorderRadius.circular(15.0), // Set the radius here
+      ),
+      padding: EdgeInsets.only(left: 10.0),
+      // child: Center(
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.bold,
         ),
+      ),
+      // ),
+    );
+  }
+
+  Widget moduleButtonWidget(BuildContext context, text) {
+    final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+      minimumSize: const Size(110, 125),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(40)),
+      ),
+    );
+    return Stack(
+      children: <Widget>[
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+          // submodule 1
+          FilledButton.tonal(
+            style: raisedButtonStyle,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return _ModulePageState();
+              }));
+            }, // what happens when the button is pressed
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets\\direction_bird.png',
+                  height: 60,
+                  width: 60,
+                  fit: BoxFit.contain,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 25), // spacer
+
+          // submodule 2
+          FilledButton.tonal(
+            style: raisedButtonStyle,
+            onPressed: () {}, // what happens when the button is pressed
+            child: const Text('pass'),
+          ),
+
+          const SizedBox(width: 25), // spacer
+
+          //submode 3
+          FilledButton.tonal(
+            style: raisedButtonStyle,
+            onPressed: () {}, // what happens when the button is pressed
+            child: const Text('pass'),
+          ),
+        ]),
       ],
+    );
+  }
+}
+
+class _ModulePageState extends StatelessWidget {
+  //functions for main page would go here
+  void module() {}
+
+  // final controller = PageController(
+  //   initialPage: 1,
+  // );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white, // setting style for home page (bg color)
+      appBar: AppBar(
+        title: const Text('oingo'), // remove if no title is to displayed
+      ),
+      body: const Column(
+        children: <Widget>[
+          // all widgets on home page
+          SizedBox(
+              width: 400,
+              height: 50,
+              child: Text(
+                  'module')), // change the dimensions to be phone dim dependent (ratio)
+          SizedBox(height: 5), // spacer
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            SizedBox(width: 340, height: 50, child: Text('module')),
+            SizedBox(width: 60, height: 50, child: Text('module'))
+          ]),
+          Padding(
+              padding: const EdgeInsets.only(right: 300, top: 30),
+              child: Text('Modules',
+                  style:
+                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
+          SizedBox(width: 400, height: 100, child: Text('module')),
+
+          SizedBox(height: 15), // spacer
+          SizedBox(
+            child: Text('module'),
+          )
+        ],
+      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed:
+      //       module, // replace with the function for the specific module it leads to
+      //   tooltip: 'Increment',
+      //   child: Ink(
+      //     height: 100,
+      //     width: 100,
+      //     decoration: BoxDecoration(
+      //       image: DecorationImage(
+      //         image: AssetImage('assets\\weetabix.jpg'),
+      //         fit: BoxFit.cover,
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
