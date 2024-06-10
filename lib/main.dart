@@ -45,16 +45,16 @@ class _HomePageState extends StatelessWidget {
           h5_spacer,
           SizedBox(
               width: 400,
-              height: 30,
+              height: 40,
               child: banner(
-                  'Bar with guy')), // change the dimensions to be phone dim dependent (ratio)
+                  'bar with guy')), // change the dimensions to be phone dim dependent (ratio)
 
           h5_spacer, // spacer
 
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            SizedBox(width: 340, height: 30, child: banner('search')),
+            SizedBox(width: 360, height: 40, child: banner('search')),
             w10_spacer,
-            SizedBox(width: 50, height: 30, child: banner('gear'))
+            Text('gear')
           ]),
 
           const Padding(
@@ -104,14 +104,13 @@ class _HomePageState extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0), // Set the radius here
       ),
       padding: const EdgeInsets.only(left: 10.0),
-      // child: Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             text,
             style: const TextStyle(
-              fontSize: 15.0,
+              fontSize: 25.0,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -119,7 +118,7 @@ class _HomePageState extends StatelessWidget {
             Text(
               subtext,
               style: const TextStyle(
-                fontSize: 10.0,
+                fontSize: 15.0,
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -218,7 +217,7 @@ class _ModulePageState extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white, // setting style for home page (bg color)
       appBar: AppBar(
-        title: const Text('oingo'), // remove if no title is to displayed
+        title: const Text('Directions'), // remove if no title is to displayed
       ),
       body: const Column(
         children: <Widget>[
