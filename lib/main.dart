@@ -42,6 +42,7 @@ class _HomePageState extends StatelessWidget {
       body: Column(
         children: <Widget>[
           // all widgets on home page
+          h5_spacer,
           SizedBox(
               width: 400,
               height: 30,
@@ -62,12 +63,17 @@ class _HomePageState extends StatelessWidget {
                   style:
                       TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
 
-          SizedBox(width: 400, height: 100, child: banner('General')),
+          SizedBox(
+              width: 400,
+              height: 100,
+              child: banner('General',
+                  subtext:
+                      'Learn the basics like how to give and take directions')),
 
           h15_spacer, // spacer
 
           SizedBox(
-            child: moduleButtonWidget(context, 'send'),
+            child: moduleButtonWidget(context, 'Directions'),
           )
         ],
       ),
@@ -89,23 +95,36 @@ class _HomePageState extends StatelessWidget {
     );
   }
 
-  Widget banner(text) {
+  Widget banner(text, {subtext = ''}) {
     const colors = Colors.lightGreen;
+
     return Container(
       decoration: BoxDecoration(
         color: colors,
         borderRadius: BorderRadius.circular(15.0), // Set the radius here
       ),
-      padding: EdgeInsets.only(left: 10.0),
+      padding: const EdgeInsets.only(left: 10.0),
       // child: Center(
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 15.0,
-          fontWeight: FontWeight.bold,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            text,
+            style: const TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          if (subtext.trim().isNotEmpty)
+            Text(
+              subtext,
+              style: const TextStyle(
+                fontSize: 10.0,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+        ],
       ),
-      // ),
     );
   }
 
@@ -115,6 +134,9 @@ class _HomePageState extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(40)),
       ),
+    );
+    const TextStyle tStyle = TextStyle(
+      fontWeight: FontWeight.bold,
     );
     return Stack(
       children: <Widget>[
@@ -131,19 +153,13 @@ class _HomePageState extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'assets\\direction_bird.png',
+                  'assets\\directions_icon.png',
                   height: 60,
                   width: 60,
                   fit: BoxFit.contain,
                 ),
                 SizedBox(height: 10),
-                Text(
-                  text,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Text(text, style: tStyle),
               ],
             ),
           ),
@@ -153,16 +169,39 @@ class _HomePageState extends StatelessWidget {
           FilledButton.tonal(
             style: raisedButtonStyle,
             onPressed: () {}, // what happens when the button is pressed
-            child: const Text('pass'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets\\greetings_icon.png',
+                  height: 60,
+                  width: 60,
+                  fit: BoxFit.contain,
+                ),
+                SizedBox(height: 10),
+                Text('Greetings', style: tStyle),
+              ],
+            ),
           ),
-
           const SizedBox(width: 25), // spacer
 
           //submode 3
           FilledButton.tonal(
             style: raisedButtonStyle,
             onPressed: () {}, // what happens when the button is pressed
-            child: const Text('pass'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets\\greetings_icon.png',
+                  height: 60,
+                  width: 60,
+                  fit: BoxFit.contain,
+                ),
+                SizedBox(height: 10),
+                Text('pass', style: tStyle),
+              ],
+            ),
           ),
         ]),
       ],
@@ -173,10 +212,6 @@ class _HomePageState extends StatelessWidget {
 class _ModulePageState extends StatelessWidget {
   //functions for main page would go here
   void module() {}
-
-  // final controller = PageController(
-  //   initialPage: 1,
-  // );
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +234,7 @@ class _ModulePageState extends StatelessWidget {
             SizedBox(width: 60, height: 50, child: Text('module'))
           ]),
           Padding(
-              padding: const EdgeInsets.only(right: 300, top: 30),
+              padding: EdgeInsets.only(right: 300, top: 30),
               child: Text('Modules',
                   style:
                       TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
