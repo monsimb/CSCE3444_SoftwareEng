@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
@@ -16,13 +17,14 @@ class MyApp extends StatelessWidget {
         title: appTitle,
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          // elevatedButtonTheme:
         ),
         home: const _HomePageState());
   }
 }
 
 class _HomePageState extends StatelessWidget {
-  const _HomePageState({Key? key}) : super(key: key);
+  const _HomePageState({super.key});
 
   // final controller = PageController(
   //   initialPage: 1,
@@ -77,21 +79,6 @@ class _HomePageState extends StatelessWidget {
           )
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed:
-      //       module, // replace with the function for the specific module it leads to
-      //   tooltip: 'Increment',
-      //   child: Ink(
-      //     height: 100,
-      //     width: 100,
-      //     decoration: BoxDecoration(
-      //       image: DecorationImage(
-      //         image: AssetImage('assets\\weetabix.jpg'),
-      //         fit: BoxFit.cover,
-      //       ),
-      //     ),
-      //   ),
-      // ),
     );
   }
 
@@ -128,7 +115,7 @@ class _HomePageState extends StatelessWidget {
   }
 
   Widget moduleButtonWidget(BuildContext context, text) {
-    final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+    final ButtonStyle btnStyle = ElevatedButton.styleFrom(
       minimumSize: const Size(110, 125),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(40)),
@@ -142,7 +129,7 @@ class _HomePageState extends StatelessWidget {
         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           // submodule 1
           FilledButton.tonal(
-            style: raisedButtonStyle,
+            style: btnStyle,
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return _ModulePageState();
@@ -166,7 +153,7 @@ class _HomePageState extends StatelessWidget {
 
           // submodule 2
           FilledButton.tonal(
-            style: raisedButtonStyle,
+            style: btnStyle,
             onPressed: () {}, // what happens when the button is pressed
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -186,13 +173,13 @@ class _HomePageState extends StatelessWidget {
 
           //submode 3
           FilledButton.tonal(
-            style: raisedButtonStyle,
+            style: btnStyle,
             onPressed: () {}, // what happens when the button is pressed
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'assets\\greetings_icon.png',
+                  'assets\\osvaldo_icon.png',
                   height: 60,
                   width: 60,
                   fit: BoxFit.contain,
@@ -219,47 +206,135 @@ class _ModulePageState extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Directions'), // remove if no title is to displayed
       ),
-      body: const Column(
+      body: Column(
         children: <Widget>[
           // all widgets on home page
-          SizedBox(
+          const SizedBox(
               width: 400,
               height: 50,
               child: Text(
                   'module')), // change the dimensions to be phone dim dependent (ratio)
-          SizedBox(height: 5), // spacer
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            SizedBox(width: 340, height: 50, child: Text('module')),
-            SizedBox(width: 60, height: 50, child: Text('module'))
-          ]),
-          Padding(
+          const SizedBox(height: 5), // spacer
+          const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(width: 340, height: 50, child: Text('module')),
+                SizedBox(width: 60, height: 50, child: Text('module'))
+              ]),
+          const Padding(
               padding: EdgeInsets.only(right: 300, top: 30),
               child: Text('Modules',
                   style:
                       TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
-          SizedBox(width: 400, height: 100, child: Text('module')),
+          const SizedBox(width: 400, height: 100, child: Text('module')),
 
-          SizedBox(height: 15), // spacer
-          SizedBox(
-            child: Text('module'),
-          )
+          const SizedBox(height: 15), // spacer
+
+          lsrButtons(context, 1)
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed:
-      //       module, // replace with the function for the specific module it leads to
-      //   tooltip: 'Increment',
-      //   child: Ink(
-      //     height: 100,
-      //     width: 100,
-      //     decoration: BoxDecoration(
-      //       image: DecorationImage(
-      //         image: AssetImage('assets\\weetabix.jpg'),
-      //         fit: BoxFit.cover,
-      //       ),
-      //     ),
-      //   ),
-      // ),
     );
+  }
+
+  Widget lsrButtons(BuildContext context, int id) {
+    const spacer = SizedBox(height: 10);
+    final ButtonStyle btnStyle = ElevatedButton.styleFrom(
+      minimumSize: const Size(250, 60),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(40)),
+      ),
+    );
+    const TextStyle tStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+    );
+
+    return Stack(children: <Widget>[
+      Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        spacer,
+        // LISTENING BUTTON
+        FilledButton.tonal(
+            style: btnStyle,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return _ListeningState();
+              }));
+            },
+            child: const Text(
+              'Listening',
+              style: tStyle,
+            )),
+        spacer,
+        // SPEAKING BUTTON
+        FilledButton.tonal(
+            style: btnStyle,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return _ListeningState();
+              }));
+            },
+            child: const Text(
+              'Speaking',
+              style: tStyle,
+            )),
+        spacer,
+        // READING BUTTON
+        FilledButton.tonal(
+            style: btnStyle,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return _ReadingState();
+              }));
+            },
+            child: const Text(
+              'Reading',
+              style: tStyle,
+            )),
+      ])
+    ]);
+  }
+}
+
+class _ListeningState extends StatelessWidget {
+  final player = AudioPlayer();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+              'Listening! - *submodule*'), // remove if no title is to displayed
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FilledButton(
+                onPressed: () {
+                  player.play(AssetSource('audio/Page16-Ask-for-Help.mp3'));
+                },
+                child: const Text('Listen'))
+          ],
+        ));
+  }
+}
+
+class _ReadingState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+              'Reading! - *submodule*'), // remove if no title is to displayed
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets\\osvaldo.png',
+              height: 200,
+              width: 200,
+            ),
+          ],
+        ));
   }
 }
