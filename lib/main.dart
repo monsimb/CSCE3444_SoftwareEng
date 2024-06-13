@@ -11,60 +11,116 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String appTitle = 'layout demo';
+    const String appTitle = 'Language learning app';
     return MaterialApp(
         // sets the style for the entire project (colors font etc)
         title: appTitle,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.brown,
           // elevatedButtonTheme:
         ),
-        home: const _HomePageState());
+        home: const HomePage());
   }
 }
 
-class _HomePageState extends StatelessWidget {
-  const _HomePageState({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
-  // final controller = PageController(
-  //   initialPage: 1,
-  // );
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late PageController _pageViewController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageViewController = PageController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageViewController.dispose();
+  }
+
+  /*  ^^ DONT MESS WITH THE ABOVE! ^^  */
 
   @override
   Widget build(BuildContext context) {
-    const h5_spacer = SizedBox(height: 5);
-    const h15_spacer = SizedBox(height: 15);
-    const w10_spacer = SizedBox(width: 10);
-
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Home'), // remove if no title is to displayed
-      ),
-      body: Column(
-        children: <Widget>[
-          // all widgets on home page
-          h5_spacer,
-          SizedBox(
-              width: 400,
-              height: 40,
-              child: banner(
-                  'bar with guy')), // change the dimensions to be phone dim dependent (ratio)
+        backgroundColor: Colors.white, // setting style for home page (bg color)
+        appBar: AppBar(
+          title: const Text('Home'), // remove if no title is to displayed
+        ),
+        body: Stack(alignment: Alignment.center, children: [
+          Column(
+              key: GlobalKey(),
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 200, child: staticHomePage())
+              ]),
+          Expanded(
+            child: PageView(
+              // sets "swippeable widgets"
+              controller: _pageViewController,
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(top: 150.0),
+                    height: 500,
+                    child: homePage1()),
+                Container(
+                    margin: const EdgeInsets.only(top: 150.0),
+                    height: 500,
+                    child: homePage2()),
+                Container(
+                    margin: const EdgeInsets.only(top: 150.0),
+                    height: 500,
+                    child: homePage3()),
+              ],
+            ),
+          ),
 
-          h5_spacer, // spacer
+          /// will controll the PageView
+          GestureDetector(onPanUpdate: (details) {
+            // Swiping in right direction.
+            if (details.delta.dx > 0) {
+              _pageViewController.nextPage(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeIn);
+            }
 
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            SizedBox(width: 360, height: 40, child: banner('search')),
-            w10_spacer,
-            Text('gear')
-          ]),
+            // Swiping in left direction.
+            if (details.delta.dx < 0) {
+              _pageViewController.previousPage(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInOut);
+            }
+          })
+        ]));
+  }
 
+  Widget staticHomePage() {
+    return Scaffold(
+        body: Column(
+            // crossAxisAlignment: CrossAxisAdlignment.center,
+            children: <Widget>[
+          SizedBox(width: 400, height: 40, child: banner('search')),
           const Padding(
               padding: EdgeInsets.only(right: 300, top: 30),
               child: Text('Modules',
                   style:
-                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
+                      TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold))),
+        ]));
+  }
 
+  Widget homePage1() {
+    const h30_spacer = SizedBox(height: 30);
+
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          // all widgets on home page
           SizedBox(
               width: 400,
               height: 100,
@@ -72,18 +128,48 @@ class _HomePageState extends StatelessWidget {
                   subtext:
                       'Learn the basics like how to give and take directions')),
 
-          h15_spacer, // spacer
+          h30_spacer, // spacer
 
           SizedBox(
-            child: moduleButtonWidget(context, 'Directions'),
+            child:
+                moduleButtonWidget(context, 'Directions', 'Greetings', 'pass'),
           )
         ],
       ),
     );
   }
 
+  Widget homePage2() {
+    return Scaffold(
+      body: Row(children: <Widget>[
+        // all widgets on home page
+        SizedBox(
+          width: 10,
+        ),
+        SizedBox(
+            width: 400,
+            height: 100,
+            child: banner('Food',
+                subtext: 'Learn the basics like how to order food!')),
+      ]),
+    );
+  }
+
+  Widget homePage3() {
+    return Scaffold(
+      body: Column(children: <Widget>[
+        // all widgets on home page
+        SizedBox(
+            width: 400,
+            height: 100,
+            child:
+                banner('Food', subtext: 'Learn sentences related to styling!')),
+      ]),
+    );
+  }
+
   Widget banner(text, {subtext = ''}) {
-    const colors = Colors.lightGreen;
+    const colors = Color.fromARGB(255, 179, 230, 121);
 
     return Container(
       decoration: BoxDecoration(
@@ -114,14 +200,25 @@ class _HomePageState extends StatelessWidget {
     );
   }
 
-  Widget moduleButtonWidget(BuildContext context, text) {
+  Widget moduleButtonWidget(BuildContext context, submod1, submod2, submod3) {
+    // style for all buttons. (current holding size and shape)
     final ButtonStyle btnStyle = ElevatedButton.styleFrom(
       minimumSize: const Size(110, 125),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(40)),
       ),
     );
-    const TextStyle tStyle = TextStyle(
+
+    // colours for first, second, and third
+    final ButtonStyle fStyle = ElevatedButton.styleFrom(
+        backgroundColor: const Color.fromARGB(255, 153, 219, 197));
+    final ButtonStyle sStyle = ElevatedButton.styleFrom(
+        backgroundColor: const Color.fromARGB(255, 116, 217, 172));
+    final ButtonStyle tStyle = ElevatedButton.styleFrom(
+        backgroundColor: const Color.fromARGB(255, 89, 241, 195));
+
+    // text style, (bold, font, color, etc)
+    const TextStyle texStyle = TextStyle(
       fontWeight: FontWeight.bold,
     );
     return Stack(
@@ -129,7 +226,7 @@ class _HomePageState extends StatelessWidget {
         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           // submodule 1
           FilledButton.tonal(
-            style: btnStyle,
+            style: (btnStyle.merge(fStyle)),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return _ModulePageState();
@@ -145,7 +242,7 @@ class _HomePageState extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
                 SizedBox(height: 10),
-                Text(text, style: tStyle),
+                Text(submod1, style: texStyle),
               ],
             ),
           ),
@@ -153,7 +250,7 @@ class _HomePageState extends StatelessWidget {
 
           // submodule 2
           FilledButton.tonal(
-            style: btnStyle,
+            style: (btnStyle.merge(sStyle)),
             onPressed: () {}, // what happens when the button is pressed
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +262,7 @@ class _HomePageState extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
                 SizedBox(height: 10),
-                Text('Greetings', style: tStyle),
+                Text(submod2, style: texStyle),
               ],
             ),
           ),
@@ -173,7 +270,7 @@ class _HomePageState extends StatelessWidget {
 
           //submode 3
           FilledButton.tonal(
-            style: btnStyle,
+            style: (btnStyle.merge(tStyle)),
             onPressed: () {}, // what happens when the button is pressed
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -185,7 +282,7 @@ class _HomePageState extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
                 SizedBox(height: 10),
-                Text('pass', style: tStyle),
+                Text(submod3, style: texStyle),
               ],
             ),
           ),
