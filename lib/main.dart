@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore, constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -67,7 +69,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 Container(
                     margin: const EdgeInsets.only(top: 150.0),
-                    height: 500,
+                    height: 400,
                     child: homePage1()),
                 Container(
                     margin: const EdgeInsets.only(top: 150.0),
@@ -77,6 +79,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     margin: const EdgeInsets.only(top: 150.0),
                     height: 500,
                     child: homePage3()),
+                Container(
+                    margin: const EdgeInsets.only(top: 150.0),
+                    height: 500,
+                    child: homePage4()),
               ],
             ),
           ),
@@ -103,9 +109,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget staticHomePage() {
     return Scaffold(
         body: Column(
-            // crossAxisAlignment: CrossAxisAdlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-          SizedBox(width: 400, height: 40, child: banner('search')),
+          SizedBox(width: 300, height: 80, child: banner('Search')),
           const Padding(
               padding: EdgeInsets.only(right: 300, top: 30),
               child: Text('Modules',
@@ -115,10 +121,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget homePage1() {
-    const h30_spacer = SizedBox(height: 30);
+    const h30_spacer = SizedBox(height: 20);
 
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           // all widgets on home page
           SizedBox(
@@ -126,50 +133,199 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               height: 100,
               child: banner('General',
                   subtext:
-                      'Learn the basics like how to give and take directions')),
+                      'Learn the basics like how to give and take directions!')),
 
           h30_spacer, // spacer
 
           SizedBox(
             child:
-                moduleButtonWidget(context, 'Directions', 'Greetings', 'pass'),
-          )
+                moduleButtonWidget(context, 'Directions', 'Greetings', 'Pass'),
+          ),
+
+         const Padding(
+          padding: EdgeInsets.only(top: 40),
+          child: Text(
+            'Reinforce Phrases',
+            style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+          
+          h30_spacer, //spacer
+          
+          SizedBox(
+            width: 400,
+            height: 100,
+            child: banner('Word/Phrases',
+              subtext:
+                  'Definition')
+          ),
         ],
       ),
     );
   }
 
-  Widget homePage2() {
+Widget homePage2() {
+    const h30_spacer = SizedBox(height: 20);
+
     return Scaffold(
-      body: Row(children: <Widget>[
-        // all widgets on home page
-        SizedBox(
-          width: 10,
-        ),
-        SizedBox(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          // all widgets on home page
+          SizedBox(
+              width: 400,
+              height: 100,
+              child: banner('Food',
+                  subtext:
+                      'Learn the basics like how to order food!', backgroundColor: Colors.orange, textColor: Colors.white)),
+
+          h30_spacer, // spacer
+          
+          
+          SizedBox(
+            child:
+                moduleButtonWidget(context, 'Ingredients', 'Cooking Tools', 'Taking Orders',
+          )),
+        
+         const Padding(
+          padding: EdgeInsets.only(top: 40),
+          child: Text(
+            'Reinforce Phrases',
+            style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+          
+          h30_spacer, //spacer
+          
+          SizedBox(
             width: 400,
             height: 100,
-            child: banner('Food',
-                subtext: 'Learn the basics like how to order food!')),
-      ]),
+            child: banner('Word/Phrases',
+              subtext:
+                  'Definition')
+          ),
+        ],
+      ),
     );
   }
 
   Widget homePage3() {
+    const h30_spacer = SizedBox(height: 20);
+
     return Scaffold(
-      body: Column(children: <Widget>[
-        // all widgets on home page
-        SizedBox(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          // all widgets on home page
+          SizedBox(
+              width: 400,
+              height: 100,
+              child: banner('Beauty',
+                  subtext:
+                      'Learn sentences related to styling!')),
+
+          h30_spacer, // spacer
+          
+          
+          SizedBox(
+            child:
+                moduleButtonWidget(context, 'Hair Care', 'Nail Care', 'Spa',
+          )),
+        
+         const Padding(
+          padding: EdgeInsets.only(top: 40),
+          child: Text(
+            'Reinforce Phrases',
+            style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+          
+          h30_spacer, //spacer
+          
+          SizedBox(
             width: 400,
             height: 100,
-            child:
-                banner('Food', subtext: 'Learn sentences related to styling!')),
-      ]),
+            child: banner('Word/Phrases',
+              subtext:
+                  'Definition')
+          ),
+        ],
+      ),
     );
   }
 
-  Widget banner(text, {subtext = ''}) {
-    const colors = Color.fromARGB(255, 179, 230, 121);
+  Widget homePage4() {
+    const h30_spacer = SizedBox(height: 20);
+
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          // all widgets on home page
+          SizedBox(
+              width: 400,
+              height: 100,
+              child: banner('Travel',
+                  subtext:
+                      'Learn sentences related to travel!')),
+
+          h30_spacer, // spacer
+          
+          
+          SizedBox(
+            child:
+                moduleButtonWidget(context, 'Rentals', 'Airport', 'Hotels',
+          )),
+        
+         const Padding(
+          padding: EdgeInsets.only(top: 40),
+          child: Text(
+            'Reinforce Phrases',
+            style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+          
+          h30_spacer, //spacer
+          
+          SizedBox(
+            width: 400,
+            height: 100,
+            child: banner('Word/Phrases',
+              subtext:
+                  'Definition')
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget banner(String text, {String subtext = '', Color backgroundColor = const Color(0xFFB0F9D4), Color textColor = Colors.black}) {
+  return Container(
+    decoration: BoxDecoration(
+      color: backgroundColor,
+      borderRadius: BorderRadius.circular(15.0),
+    ),
+    padding: const EdgeInsets.all(16.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          text,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textColor),
+        ),
+        if (subtext.isNotEmpty)
+          Text(
+            subtext,
+            style: TextStyle(fontSize: 16, color: textColor),
+          ),
+      ],
+    ),
+  );
+}
+
+/*
+  Widget banner(text, {subtext = ''}){
+    const colors = Color(0xFFB0F9D4);
 
     return Container(
       decoration: BoxDecoration(
@@ -180,7 +336,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+   /*       Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
+          )),
+  */        Text(
             text,
             style: const TextStyle(
               fontSize: 25.0,
@@ -199,7 +367,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
     );
   }
-
+*/
   Widget moduleButtonWidget(BuildContext context, submod1, submod2, submod3) {
     // style for all buttons. (current holding size and shape)
     final ButtonStyle btnStyle = ElevatedButton.styleFrom(
@@ -219,8 +387,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     // text style, (bold, font, color, etc)
     const TextStyle texStyle = TextStyle(
+      fontSize: 10,
       fontWeight: FontWeight.bold,
     );
+    
     return Stack(
       children: <Widget>[
         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
