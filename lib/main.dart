@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/widgets.dart';
 
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
@@ -19,9 +18,9 @@ class MyApp extends StatelessWidget {
         // sets the style for the entire project (colors font etc)
         title: appTitle,
         theme: ThemeData(
-          primarySwatch: Colors.brown,
-          // elevatedButtonTheme:
-        ),
+            // primarySwatch: Colors.brown,
+            // elevatedButtonTheme:
+            ),
         home: const HomePage());
   }
 }
@@ -112,9 +111,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-          SizedBox(width: 395, height: 70, child: banner('Search', backgroundColor: Color.fromARGB(255, 230, 230, 230))),
+          SizedBox(
+              width: 395,
+              height: 70,
+              child: banner('Search',
+                  backgroundColor: Color.fromARGB(255, 230, 230, 230))),
           const Padding(
-              padding: EdgeInsets.only(left: 8, right:300, top: 30),
+              padding: EdgeInsets.only(left: 8, right: 300, top: 30),
               child: Text('Modules',
                   style:
                       TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold))),
@@ -132,46 +135,51 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 400,
               height: 114,
-              child: banner('General', backgroundColor:Color.fromARGB(255, 175, 244, 198),
+              child: banner('General',
+                  backgroundColor: Color.fromARGB(255, 175, 244, 198),
                   subtext:
                       'Learn common phrases for greetings, directions, and more!')),
 
           h30_spacer, // spacer
 
           SizedBox(
-            child:
-                moduleButtonWidget(context, 'Directions', 'Greetings', 'Pass', 'assets\\directions_icon.png','assets\\greetings_icon.png','assets\\osvaldo_icon.png',
-                  color1: Color.fromARGB(255, 175, 244, 198), 
-                  color2: Color.fromARGB(255, 135, 212, 161),
-                  color3: Color.fromARGB(255, 95, 170, 120)),
+            child: moduleButtonWidget(
+                context,
+                'Directions',
+                'Greetings',
+                'Pass',
+                'assets\\directions_icon.png',
+                'assets\\greetings_icon.png',
+                'assets\\osvaldo_icon.png',
+                color1: Color.fromARGB(255, 175, 244, 198),
+                color2: Color.fromARGB(255, 135, 212, 161),
+                color3: Color.fromARGB(255, 95, 170, 120)),
           ),
 
-         const Padding(
-          padding: EdgeInsets.only(left: 8, top: 40),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Reinforce Phrases',
-              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-              )),
-          
+          const Padding(
+            padding: EdgeInsets.only(left: 8, top: 40),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Reinforce Phrases',
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                )),
           ),
-          
-          SizedBox(height:10),    //smaller spacer
-          
+
+          SizedBox(height: 10), //smaller spacer
+
           SizedBox(
-            width: 400,
-            height: 100,
-            child: banner('Word/Phrases', backgroundColor:Color.fromARGB(255, 175, 244, 198),
-              subtext:
-                  'Definition')
-          ),
+              width: 400,
+              height: 100,
+              child: banner('Word/Phrases',
+                  backgroundColor: Color.fromARGB(255, 175, 244, 198),
+                  subtext: 'Definition')),
         ],
       ),
     );
   }
 
-Widget homePage2() {
+  Widget homePage2() {
     const h30_spacer = SizedBox(height: 20);
 
     return Scaffold(
@@ -182,40 +190,43 @@ Widget homePage2() {
           SizedBox(
               width: 400,
               height: 114,
-              child: banner('Food', backgroundColor:Color.fromARGB(255, 252, 209, 156),
-                  subtext:
-                      'Learn the basics for working with food!')),
+              child: banner('Food',
+                  backgroundColor: Color.fromARGB(255, 252, 209, 156),
+                  subtext: 'Learn the basics for working with food!')),
 
           h30_spacer, // spacer
-          
-          
+
           SizedBox(
-            child:
-                moduleButtonWidget(context, 'Ingredients', 'Cooking Tools', 'Taking Orders', 'assets\\directions_icon.png','assets\\greetings_icon.png','assets\\osvaldo_icon.png',
+              child: moduleButtonWidget(
+                  context,
+                  'Ingredients',
+                  'Cooking Tools',
+                  'Taking Orders',
+                  'assets\\directions_icon.png',
+                  'assets\\greetings_icon.png',
+                  'assets\\osvaldo_icon.png',
                   color1: Color.fromARGB(255, 252, 209, 156),
                   color2: Color.fromARGB(255, 237, 183, 133),
                   color3: Color.fromARGB(255, 206, 153, 104))),
-        
-         const Padding(
-          padding: EdgeInsets.only(left: 8, top: 40),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Reinforce Phrases',
-              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-              )),
-          
+
+          const Padding(
+            padding: EdgeInsets.only(left: 8, top: 40),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Reinforce Phrases',
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                )),
           ),
-          
-          SizedBox(height:10),    //smaller spacer
-          
+
+          SizedBox(height: 10), //smaller spacer
+
           SizedBox(
-            width: 400,
-            height: 100,
-            child: banner('Word/Phrases', backgroundColor:Color.fromARGB(255, 252, 209, 156),
-              subtext:
-                  'Definition')
-          ),
+              width: 400,
+              height: 100,
+              child: banner('Word/Phrases',
+                  backgroundColor: Color.fromARGB(255, 252, 209, 156),
+                  subtext: 'Definition')),
         ],
       ),
     );
@@ -232,40 +243,43 @@ Widget homePage2() {
           SizedBox(
               width: 400,
               height: 114,
-              child: banner('Beauty', backgroundColor: Color.fromARGB(255, 210, 244, 248),
-                  subtext:
-                      'Learn sentences related to styling!')),
+              child: banner('Beauty',
+                  backgroundColor: Color.fromARGB(255, 210, 244, 248),
+                  subtext: 'Learn sentences related to styling!')),
 
           h30_spacer, // spacer
-          
-          
+
           SizedBox(
-            child:
-                moduleButtonWidget(context, 'Hair Care', 'Nail Care', 'Spa', 'assets\\directions_icon.png','assets\\greetings_icon.png','assets\\osvaldo_icon.png',
+              child: moduleButtonWidget(
+                  context,
+                  'Hair Care',
+                  'Nail Care',
+                  'Spa',
+                  'assets\\directions_icon.png',
+                  'assets\\greetings_icon.png',
+                  'assets\\osvaldo_icon.png',
                   color1: Color.fromARGB(255, 210, 244, 248),
                   color2: Color.fromARGB(255, 186, 231, 236),
                   color3: Color.fromARGB(255, 167, 214, 220))),
-        
-         const Padding(
-          padding: EdgeInsets.only(left: 8, top: 40),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Reinforce Phrases',
-              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-              )),
-          
+
+          const Padding(
+            padding: EdgeInsets.only(left: 8, top: 40),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Reinforce Phrases',
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                )),
           ),
-          
-          SizedBox(height:10),    //smaller spacer
-          
+
+          SizedBox(height: 10), //smaller spacer
+
           SizedBox(
-            width: 400,
-            height: 100,
-            child: banner('Word/Phrases',  backgroundColor: Color.fromARGB(255, 210, 244, 248),
-              subtext:
-                  'Definition')
-          ),
+              width: 400,
+              height: 100,
+              child: banner('Word/Phrases',
+                  backgroundColor: Color.fromARGB(255, 210, 244, 248),
+                  subtext: 'Definition')),
         ],
       ),
     );
@@ -282,72 +296,81 @@ Widget homePage2() {
           SizedBox(
               width: 400,
               height: 114,
-              child: banner('Travel',  backgroundColor: Color.fromARGB(255, 252, 250, 207),
-                  subtext:
-                      'Learn sentences related to travel!')),
+              child: banner('Travel',
+                  backgroundColor: Color.fromARGB(255, 252, 250, 207),
+                  subtext: 'Learn sentences related to travel!')),
 
           h30_spacer, // spacer
-          
-          
+
           SizedBox(
-            child:
-                moduleButtonWidget(context, 'Rentals', 'Airport', 'Hotels', 'assets\\directions_icon.png','assets\\greetings_icon.png','assets\\osvaldo_icon.png',
+              child: moduleButtonWidget(
+                  context,
+                  'Rentals',
+                  'Airport',
+                  'Hotels',
+                  'assets\\directions_icon.png',
+                  'assets\\greetings_icon.png',
+                  'assets\\osvaldo_icon.png',
                   color1: Color.fromARGB(255, 252, 250, 207),
                   color2: Color.fromARGB(255, 245, 242, 170),
                   color3: Color.fromARGB(255, 236, 232, 144))),
-        
-         const Padding(
-          padding: EdgeInsets.only(left: 8, top: 40),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Reinforce Phrases',
-              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-              )),
-          
+
+          const Padding(
+            padding: EdgeInsets.only(left: 8, top: 40),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Reinforce Phrases',
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                )),
           ),
-          
-          SizedBox(height:10),    //smaller spacer
-          
+
+          SizedBox(height: 10), //smaller spacer
+
           SizedBox(
-            width: 400,
-            height: 100,
-            child: banner('Word/Phrases',  backgroundColor: Color.fromARGB(255, 252, 250, 207),
-              subtext:
-                  'Definition')
-          ),
+              width: 400,
+              height: 100,
+              child: banner('Word/Phrases',
+                  backgroundColor: Color.fromARGB(255, 252, 250, 207),
+                  subtext: 'Definition')),
         ],
       ),
     );
   }
 
-  Widget banner(String text, {required Color backgroundColor, String subtext = '', Color textColor = Colors.black}) {
-  return Container(
-    decoration: BoxDecoration(
-      color: backgroundColor,
-      borderRadius: BorderRadius.circular(15.0),
-    ),
-    padding: const EdgeInsets.all(16.0),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textColor),
-        )),
-        if (subtext.isNotEmpty)
-          Align( 
-            alignment: Alignment.centerLeft,
-            child: Text(
-              subtext,
-              style: TextStyle(fontSize: 16, color: textColor),
-          )),
-      ],
-    ),
-  );
-}
+  Widget banner(String text,
+      {required Color backgroundColor,
+      String subtext = '',
+      Color textColor = Colors.black}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                text,
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: textColor),
+              )),
+          if (subtext.isNotEmpty)
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  subtext,
+                  style: TextStyle(fontSize: 16, color: textColor),
+                )),
+        ],
+      ),
+    );
+  }
 
 /*
   Widget banner(text, {subtext = ''}){
@@ -394,7 +417,9 @@ Widget homePage2() {
     );
   }
 */
-  Widget moduleButtonWidget(BuildContext context, submod1, submod2, submod3, image1, image2, image3, {required Color color1, required Color color2, required Color color3}) {
+  Widget moduleButtonWidget(
+      BuildContext context, submod1, submod2, submod3, image1, image2, image3,
+      {required Color color1, required Color color2, required Color color3}) {
     // style for all buttons. (current holding size and shape)
     final ButtonStyle btnStyle = ElevatedButton.styleFrom(
       minimumSize: const Size(110, 125),
@@ -404,19 +429,19 @@ Widget homePage2() {
     );
 
     // colours for first, second, and third
-    final ButtonStyle fStyle = ElevatedButton.styleFrom(
-        backgroundColor: color1);
-    final ButtonStyle sStyle = ElevatedButton.styleFrom(
-        backgroundColor: color2);
-    final ButtonStyle tStyle = ElevatedButton.styleFrom(
-        backgroundColor: color3);
+    final ButtonStyle fStyle =
+        ElevatedButton.styleFrom(backgroundColor: color1);
+    final ButtonStyle sStyle =
+        ElevatedButton.styleFrom(backgroundColor: color2);
+    final ButtonStyle tStyle =
+        ElevatedButton.styleFrom(backgroundColor: color3);
 
     // text style, (bold, font, color, etc)
     const TextStyle texStyle = TextStyle(
       fontSize: 10,
       fontWeight: FontWeight.bold,
     );
-    
+
     return Stack(
       children: <Widget>[
         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
