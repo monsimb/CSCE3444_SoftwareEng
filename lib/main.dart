@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               child: banner('Search',
                   backgroundColor: Color.fromARGB(255, 230, 230, 230))),
           const Padding(
-              padding: EdgeInsets.only(left: 8, right: 300, top: 30),
+              padding: EdgeInsets.only(left: 15, right: 290, top: 30),
               child: Text('Modules',
                   style:
                       TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold))),
@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         children: <Widget>[
           // all widgets on home page
           SizedBox(
-              width: 400,
+              width: 390,
               height: 114,
               child: banner('General',
                   backgroundColor: Color.fromARGB(255, 175, 244, 198),
@@ -156,8 +156,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 color3: Color.fromARGB(255, 95, 170, 120)),
           ),
 
+          h30_spacer,   // spacer
+
           const Padding(
-            padding: EdgeInsets.only(left: 8, top: 40),
+            padding: EdgeInsets.only(left: 15, top: 40),
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -169,8 +171,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(height: 10), //smaller spacer
 
           SizedBox(
-              width: 400,
-              height: 100,
+              width: 380,
+              height: 250,
               child: banner('Word/Phrases',
                   backgroundColor: Color.fromARGB(255, 175, 244, 198),
                   subtext: 'Definition')),
@@ -188,7 +190,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         children: <Widget>[
           // all widgets on home page
           SizedBox(
-              width: 400,
+              width: 390,
               height: 114,
               child: banner('Food',
                   backgroundColor: Color.fromARGB(255, 252, 209, 156),
@@ -209,6 +211,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   color2: Color.fromARGB(255, 237, 183, 133),
                   color3: Color.fromARGB(255, 206, 153, 104))),
 
+          h30_spacer,   // spacer
+
           const Padding(
             padding: EdgeInsets.only(left: 8, top: 40),
             child: Align(
@@ -222,8 +226,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(height: 10), //smaller spacer
 
           SizedBox(
-              width: 400,
-              height: 100,
+              width: 380,
+              height: 250,
               child: banner('Word/Phrases',
                   backgroundColor: Color.fromARGB(255, 252, 209, 156),
                   subtext: 'Definition')),
@@ -241,7 +245,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         children: <Widget>[
           // all widgets on home page
           SizedBox(
-              width: 400,
+              width: 390,
               height: 114,
               child: banner('Beauty',
                   backgroundColor: Color.fromARGB(255, 210, 244, 248),
@@ -262,6 +266,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   color2: Color.fromARGB(255, 186, 231, 236),
                   color3: Color.fromARGB(255, 167, 214, 220))),
 
+          h30_spacer,   // spacer
+
           const Padding(
             padding: EdgeInsets.only(left: 8, top: 40),
             child: Align(
@@ -275,8 +281,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(height: 10), //smaller spacer
 
           SizedBox(
-              width: 400,
-              height: 100,
+              width: 380,
+              height: 250,
               child: banner('Word/Phrases',
                   backgroundColor: Color.fromARGB(255, 210, 244, 248),
                   subtext: 'Definition')),
@@ -294,7 +300,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         children: <Widget>[
           // all widgets on home page
           SizedBox(
-              width: 400,
+              width: 390,
               height: 114,
               child: banner('Travel',
                   backgroundColor: Color.fromARGB(255, 252, 250, 207),
@@ -315,6 +321,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   color2: Color.fromARGB(255, 245, 242, 170),
                   color3: Color.fromARGB(255, 236, 232, 144))),
 
+          h30_spacer,   // spacer
+
           const Padding(
             padding: EdgeInsets.only(left: 8, top: 40),
             child: Align(
@@ -328,8 +336,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(height: 10), //smaller spacer
 
           SizedBox(
-              width: 400,
-              height: 100,
+              width: 380,
+              height: 250,
               child: banner('Word/Phrases',
                   backgroundColor: Color.fromARGB(255, 252, 250, 207),
                   subtext: 'Definition')),
