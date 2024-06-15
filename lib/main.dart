@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
           SizedBox(
             child:
-                moduleButtonWidget(context, 'Directions', 'Greetings', 'Pass', 
+                moduleButtonWidget(context, 'Directions', 'Greetings', 'Pass', 'assets\\directions_icon.png','assets\\greetings_icon.png','assets\\osvaldo_icon.png',
                   color1: Color.fromARGB(255, 175, 244, 198), 
                   color2: Color.fromARGB(255, 135, 212, 161),
                   color3: Color.fromARGB(255, 95, 170, 120)),
@@ -191,7 +191,7 @@ Widget homePage2() {
           
           SizedBox(
             child:
-                moduleButtonWidget(context, 'Ingredients', 'Cooking Tools', 'Taking Orders',
+                moduleButtonWidget(context, 'Ingredients', 'Cooking Tools', 'Taking Orders', 'assets\\directions_icon.png','assets\\greetings_icon.png','assets\\osvaldo_icon.png',
                   color1: Color.fromARGB(255, 252, 209, 156),
                   color2: Color.fromARGB(255, 237, 183, 133),
                   color3: Color.fromARGB(255, 206, 153, 104))),
@@ -241,7 +241,7 @@ Widget homePage2() {
           
           SizedBox(
             child:
-                moduleButtonWidget(context, 'Hair Care', 'Nail Care', 'Spa',
+                moduleButtonWidget(context, 'Hair Care', 'Nail Care', 'Spa', 'assets\\directions_icon.png','assets\\greetings_icon.png','assets\\osvaldo_icon.png',
                   color1: Color.fromARGB(255, 210, 244, 248),
                   color2: Color.fromARGB(255, 186, 231, 236),
                   color3: Color.fromARGB(255, 167, 214, 220))),
@@ -291,7 +291,7 @@ Widget homePage2() {
           
           SizedBox(
             child:
-                moduleButtonWidget(context, 'Rentals', 'Airport', 'Hotels',
+                moduleButtonWidget(context, 'Rentals', 'Airport', 'Hotels', 'assets\\directions_icon.png','assets\\greetings_icon.png','assets\\osvaldo_icon.png',
                   color1: Color.fromARGB(255, 252, 250, 207),
                   color2: Color.fromARGB(255, 245, 242, 170),
                   color3: Color.fromARGB(255, 236, 232, 144))),
@@ -394,7 +394,7 @@ Widget homePage2() {
     );
   }
 */
-  Widget moduleButtonWidget(BuildContext context, submod1, submod2, submod3, {required Color color1, required Color color2, required Color color3}) {
+  Widget moduleButtonWidget(BuildContext context, submod1, submod2, submod3, image1, image2, image3, {required Color color1, required Color color2, required Color color3}) {
     // style for all buttons. (current holding size and shape)
     final ButtonStyle btnStyle = ElevatedButton.styleFrom(
       minimumSize: const Size(110, 125),
@@ -432,7 +432,7 @@ Widget homePage2() {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'assets\\directions_icon.png',
+                  image1,
                   height: 60,
                   width: 60,
                   fit: BoxFit.contain,
@@ -452,7 +452,7 @@ Widget homePage2() {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'assets\\greetings_icon.png',
+                  image2,
                   height: 60,
                   width: 60,
                   fit: BoxFit.contain,
@@ -472,7 +472,7 @@ Widget homePage2() {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'assets\\osvaldo_icon.png',
+                  image3,
                   height: 60,
                   width: 60,
                   fit: BoxFit.contain,
