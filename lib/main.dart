@@ -447,7 +447,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           // submodule 2
           FilledButton.tonal(
             style: (btnStyle.merge(sStyle)),
-            onPressed: () {}, // what happens when the button is pressed
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return _ModulePageState();
+              }));
+            }, // what happens when the button is pressed
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -467,7 +471,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           //submode 3
           FilledButton.tonal(
             style: (btnStyle.merge(tStyle)),
-            onPressed: () {}, // what happens when the button is pressed
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return _ModulePageState();
+              }));
+            }, // what happens when the button is pressed
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
