@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'fifthpage.dart';
 
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
@@ -580,7 +581,7 @@ class _ModulePageState extends StatelessWidget {
           style: btnStyle,
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return _ListeningState();
+              return _SpeakingState();
             }));
           },
           child: Align(
@@ -606,7 +607,7 @@ class _ModulePageState extends StatelessWidget {
             'Reading',
             style: tStyle,
           ))),
-          // TODO: add progress button
+        // TODO: add progress button
       ])
     ]);
   }
@@ -762,6 +763,92 @@ class _ReadingState extends StatelessWidget {
           ],
         )
       );
+  }
+}
+
+class _SpeakingState extends StatelessWidget {
+  @override
+  @override
+  Widget build(BuildContext context) {
+    const spacer = SizedBox(height: 35);
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+              'Listening! - *submodule*'), // remove if no title is to displayed
+        ),
+        body: Column(   // TODO: add icon
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 230, 230, 230),
+                borderRadius: BorderRadius.circular(35.0)),
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.center,
+              width: 380,
+              height: 100,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Sample Sentence!',
+                  hintStyle: TextStyle(fontStyle: FontStyle.italic),
+                  contentPadding: EdgeInsets.only(left: 10)
+                )
+              )
+            ),
+
+            spacer,
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding( 
+                  padding: EdgeInsets.only(right: 20), 
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 95, 170, 120),
+                      borderRadius: BorderRadius.circular(35.0)),
+                    padding: const EdgeInsets.all(16.0),
+                    alignment: Alignment.center,
+                    width: 140,
+                    height: 140,
+                  )
+                ),
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 175, 244, 198),
+                        borderRadius: BorderRadius.circular(35.0),),
+                      width: 200,
+                      height: 50,
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        'Recorded Statement:',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14),)
+                    ),
+                    SizedBox(height: 15), 
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 175, 244, 198),
+                        borderRadius: BorderRadius.circular(35.0),),
+                      width: 200,
+                      height: 50,
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        'Feedback:',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14),)
+                    ),
+              ])
+              ]),
+            spacer,
+          ],
+        ));
   }
 }
 // TODO: Add Speaking State
