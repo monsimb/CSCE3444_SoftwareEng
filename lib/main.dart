@@ -348,9 +348,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget homePage5() {
-    return FifthPage(); // practice module page, made from scratch
-  }
 /*
   Widget banner(text, {subtext = ''}){
     const colors = Color(0xFFB0F9D4);
