@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
 void main() => runApp(const MyApp());
@@ -348,7 +349,55 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
     );
   }
-  
+
+  Widget homePage5() {
+    return FifthPage(); // practice module page, made from scratch
+  }
+/*
+  Widget banner(text, {subtext = ''}){
+    const colors = Color(0xFFB0F9D4);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: colors,
+        borderRadius: BorderRadius.circular(15.0), // Set the radius here
+      ),
+      padding: const EdgeInsets.only(left: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+   /*       Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
+          )),
+  */        Text(
+            text,
+            style: const TextStyle(
+              fontSize: 25.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          if (subtext.trim().isNotEmpty)
+            Text(
+              subtext,
+              style: const TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+*/
   Widget moduleButtonWidget(
       BuildContext context, submod1, submod2, submod3, image1, image2, image3,
       {required Color color1, required Color color2, required Color color3}) {
@@ -534,7 +583,7 @@ class _ModulePageState extends StatelessWidget {
           style: btnStyle,
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return _ListeningState();
+              return _SpeakingState();
             }));
           },
           child: Align(
@@ -560,28 +609,7 @@ class _ModulePageState extends StatelessWidget {
             'Reading',
             style: tStyle,
           ))),
-          // PROGRESS BUTTON
-          SizedBox(height: 25),
-          SizedBox(
-            width:390,
-            height: 150,
-          
-          child: FilledButton.tonal(
-            style: btnStyle,
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-
-              return _ProgressState();
-            }));
-          },
-          child: Align(
-            alignment: Alignment.centerLeft,
-            widthFactor: 3.25,
-            child: const Text(
-            'Progress',
-            style: tStyle,
-          )))),
-        
+          // TODO: add progress button
       ])
     ]);
   }
@@ -739,8 +767,6 @@ class _ReadingState extends StatelessWidget {
       );
   }
 }
-
-
 // TODO: Add Speaking State
 // TODO: Add Progress State
 
