@@ -766,11 +766,11 @@ class _ProgressState extends StatelessWidget {
                   lvl1(context, 1),
                   SizedBox(height: 15),
                   quiz1(context, 2),
-                  SizedBox(height: 70),
+                  SizedBox(height: 60),
                   lvl2(context,2),
                   SizedBox(height: 15),
                   quiz2(context, 2),
-                  SizedBox(height: 70),
+                  SizedBox(height: 60),
                   lvl3(context,3),
                   SizedBox(height: 15),
                   quiz3(context, 2),
@@ -780,7 +780,7 @@ class _ProgressState extends StatelessWidget {
   Widget lvl1(BuildContext context, int id) {
   //const spacer = SizedBox(height: 25);
   return Container(
-    height: 75,
+    height: 90,
     width: 375,
     padding: EdgeInsets.symmetric(vertical:10, horizontal:25),
     decoration: BoxDecoration(
@@ -800,7 +800,7 @@ class _ProgressState extends StatelessWidget {
   Widget lvl2(BuildContext context, int id) {
   //const spacer = SizedBox(height: 25);
   return Container(
-    height: 75,
+    height: 90,
     width: 375,
     padding: EdgeInsets.symmetric(vertical:10, horizontal:25),
     decoration: BoxDecoration(
@@ -819,7 +819,7 @@ class _ProgressState extends StatelessWidget {
      Widget lvl3(BuildContext context, int id) {
   //const spacer = SizedBox(height: 25);
   return Container(
-    height: 75,
+    height: 90,
     width: 375,
     padding: EdgeInsets.symmetric(vertical:10, horizontal:25),
     decoration: BoxDecoration(
