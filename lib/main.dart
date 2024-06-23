@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore, constant_identifier_names
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -346,55 +348,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
     );
   }
-
-  Widget homePage5() {
-    return FifthPage(); // practice module page, made from scratch
-  }
-/*
-  Widget banner(text, {subtext = ''}){
-    const colors = Color(0xFFB0F9D4);
-
-    return Container(
-      decoration: BoxDecoration(
-        color: colors,
-        borderRadius: BorderRadius.circular(15.0), // Set the radius here
-      ),
-      padding: const EdgeInsets.only(left: 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-   /*       Flexible(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-          )),
-  */        Text(
-            text,
-            style: const TextStyle(
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          if (subtext.trim().isNotEmpty)
-            Text(
-              subtext,
-              style: const TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-*/
+  
   Widget moduleButtonWidget(
       BuildContext context, submod1, submod2, submod3, image1, image2, image3,
       {required Color color1, required Color color2, required Color color3}) {
@@ -606,7 +560,28 @@ class _ModulePageState extends StatelessWidget {
             'Reading',
             style: tStyle,
           ))),
-          // TODO: add progress button
+          // PROGRESS BUTTON
+          SizedBox(height: 25),
+          SizedBox(
+            width:390,
+            height: 150,
+          
+          child: FilledButton.tonal(
+            style: btnStyle,
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+
+              return _ProgressState();
+            }));
+          },
+          child: Align(
+            alignment: Alignment.centerLeft,
+            widthFactor: 3.25,
+            child: const Text(
+            'Progress',
+            style: tStyle,
+          )))),
+        
       ])
     ]);
   }
@@ -764,6 +739,181 @@ class _ReadingState extends StatelessWidget {
       );
   }
 }
+
+
 // TODO: Add Speaking State
 // TODO: Add Progress State
+
+class _ProgressState extends StatelessWidget {
+  @override
+ 
+  Widget build(BuildContext context) {
+    const spacer = SizedBox(height: 35);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+            'Progress! - *submodule*'), // remove if no title is to displayed
+      ),
+      body: Column(
+          children: <Widget> [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding( 
+                padding: EdgeInsets.only(left: 20, top: 10),
+                child: Text('Progress',
+                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),),),
+                  spacer,
+                  lvl1(context, 1),
+                  SizedBox(height: 15),
+                  quiz1(context, 2),
+                  SizedBox(height: 70),
+                  lvl2(context,2),
+                  SizedBox(height: 15),
+                  quiz2(context, 2),
+                  SizedBox(height: 70),
+                  lvl3(context,3),
+                  SizedBox(height: 15),
+                  quiz3(context, 2),
+                  
+          ],),);
+  }
+  Widget lvl1(BuildContext context, int id) {
+  //const spacer = SizedBox(height: 25);
+  return Container(
+    height: 75,
+    width: 375,
+    padding: EdgeInsets.symmetric(vertical:10, horizontal:25),
+    decoration: BoxDecoration(
+      color:Color.fromARGB(255, 175, 244, 198),
+      borderRadius: BorderRadius.all(Radius.circular(40)),
+      ),
+      child: Row(
+        
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            'Level 1' ,
+            style: TextStyle(fontSize: 25, color: Colors.black),
+            textAlign: TextAlign.left,
+        ),],),);}
+          
+  Widget lvl2(BuildContext context, int id) {
+  //const spacer = SizedBox(height: 25);
+  return Container(
+    height: 75,
+    width: 375,
+    padding: EdgeInsets.symmetric(vertical:10, horizontal:25),
+    decoration: BoxDecoration(
+      color:Color.fromARGB(255, 175, 244, 198),
+      borderRadius: BorderRadius.all(Radius.circular(40)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            'Level 2' ,
+            style: TextStyle(fontSize: 25, color: Colors.black),
+            textAlign: TextAlign.left,
+        ),],),);}
+
+     Widget lvl3(BuildContext context, int id) {
+  //const spacer = SizedBox(height: 25);
+  return Container(
+    height: 75,
+    width: 375,
+    padding: EdgeInsets.symmetric(vertical:10, horizontal:25),
+    decoration: BoxDecoration(
+      color:Color.fromARGB(255, 175, 244, 198),
+      borderRadius: BorderRadius.all(Radius.circular(40)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            'Level 3' ,
+            style: TextStyle(fontSize: 25, color: Colors.black),
+            textAlign: TextAlign.left,
+        ),],),);}
+   Widget quiz1(BuildContext context, int id) {
+  //const spacer = SizedBox(height: 25);
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      SizedBox(width:18),
+      Container(
+        height: 70,
+        width: 200,
+        padding: EdgeInsets.symmetric(vertical: 17, horizontal: 25),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 125, 197, 149),
+          borderRadius: BorderRadius.all(Radius.circular(40)),
+        ),
+        child: Text(
+          'Quiz 1',
+          style: TextStyle(fontSize: 25, color: Colors.black),
+          textAlign: TextAlign.left,
+        ),
+      ),
+    ],
+  );
+}
+          
+  Widget quiz2(BuildContext context, int id) {
+  //const spacer = SizedBox(height: 25);
+  //bool ischecked = false;
+
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      /*Checkbox(
+        value: ischecked,
+        onChanged: (bool? value) {
+          //
+          ischecked = value ?? false;
+        },
+      ),*/
+      SizedBox(width: 194),
+      Container(
+        height: 70,
+        width: 200,
+        padding: EdgeInsets.symmetric(vertical: 17, horizontal: 25),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 125, 197, 149),
+          borderRadius: BorderRadius.all(Radius.circular(40)),
+        ),
+        child: Text(
+          'Quiz 2',
+          style: TextStyle(fontSize: 25, color: Colors.black),
+          textAlign: TextAlign.right,
+        ),
+      ),
+    ],
+  );
+}
+
+     Widget quiz3(BuildContext context, int id) {
+  //const spacer = SizedBox(height: 25);
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      SizedBox(width:18),
+      Container(
+        height: 70,
+        width:200,
+        padding: EdgeInsets.symmetric(vertical: 17, horizontal: 25),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 125, 197, 149),
+          borderRadius: BorderRadius.all(Radius.circular(40)),
+        ),
+        child: Text(
+          'Quiz 3',
+          style: TextStyle(fontSize: 25, color: Colors.black),
+          textAlign: TextAlign.left,
+        ),
+      ),
+    ],
+  );
+}
+}
+
 // TODO: Add Quiz State
