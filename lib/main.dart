@@ -1,7 +1,18 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore, constant_identifier_names
 
+import 'dart:collection';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
+//Node structure containing reiforce vocabulary
+class ReinforceVocab {
+  String english;
+  String spanish;
+
+  ReinforceVocab(this.english, this.spanish);
+}
 
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
@@ -33,11 +44,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PageController _pageViewController;
+  Queue<ReinforceVocab> reinforceQueue = Queue<ReinforceVocab>();
+
 
   @override
   void initState() {
     super.initState();
     _pageViewController = PageController();
+
+    
+    //Queue creation - Currently all words in SampleReinforce
+      getNextData(reinforceQueue);
   }
 
   @override
@@ -47,6 +64,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   /*  ^^ DONT MESS WITH THE ABOVE! ^^  */
+
+  //Read SampleReinforce.txt into the queue
+  Future<void> getNextData(Queue<ReinforceVocab> reinforceQueue) async {
+    String response = await rootBundle.loadString('assets/SampleReinforce');
+    List<String> lines = response.split('\n');
+    for (String line in lines) {
+      List<String> parts = line.split('.');
+      print(line);
+      if (parts.length == 2) {
+        reinforceQueue.add(ReinforceVocab(parts[0].trim(), parts[1].trim()));
+      }
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,13 +200,29 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
 
           SizedBox(height: 10), //smaller spacer
+          
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0), // Change the border radius here
+              ),
+            ),
+            onPressed: () {
+              // Your onPressed code here
+              if (reinforceQueue.isNotEmpty) {
+                reinforceQueue.removeFirst();
+                setState(() {});
 
-          SizedBox(
-              width: 380,
-              height: 250,
-              child: banner('Word/Phrases',
+              }
+            },
+                child: reinforceQueue.isNotEmpty
+                ? banner(reinforceQueue.first.english,
                   backgroundColor: Color.fromARGB(255, 175, 244, 198),
-                  subtext: 'Definition')),
+                  subtext: reinforceQueue.first.spanish)
+                : banner('No new words yet!',
+                backgroundColor: Color.fromARGB(255, 175, 244, 198),
+                subtext: 'Good job!'),
+                )
         ],
       ),
     );
@@ -228,9 +275,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 380,
               height: 250,
-              child: banner('Word/Phrases',
+              child: reinforceQueue.isNotEmpty
+                ? banner(reinforceQueue.first.english,
                   backgroundColor: Color.fromARGB(255, 252, 209, 156),
-                  subtext: 'Definition')),
+                  subtext: reinforceQueue.first.spanish)
+                : banner('No new words yet!', backgroundColor: Color.fromARGB(255, 252, 209, 156),
+                )
+          )
         ],
       ),
     );
@@ -283,9 +334,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 380,
               height: 250,
-              child: banner('Word/Phrases',
+              child: banner('Comming soon',
                   backgroundColor: Color.fromARGB(255, 210, 244, 248),
-                  subtext: 'Definition')),
+                  subtext: 'Comming soon')),
         ],
       ),
     );
@@ -338,9 +389,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 380,
               height: 250,
-              child: banner('Word/Phrases',
+              child: banner('Comming soon',
                   backgroundColor: Color.fromARGB(255, 252, 250, 207),
-                  subtext: 'Definition')),
+                  subtext: 'Comming soon')),
         ],
       ),
     );
