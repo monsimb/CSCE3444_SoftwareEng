@@ -699,12 +699,6 @@ class _ModulePageState extends StatelessWidget {
     ]);
   }
 }
-class ReinforceVocab {
-  String english;
-  String spanish;
-
-  ReinforceVocab(this.english, this.spanish);
-}
 Widget banner(String text,
     {required Color backgroundColor,
     String subtext = '',
