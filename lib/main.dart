@@ -50,6 +50,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   /*  ^^ DONT MESS WITH THE ABOVE! ^^  */
 
+  String reinforceDisplayText = 'Empty';
+
+  //Read SampleReinforce.txt into the queue
+  Future<void> getNextData(Queue<ReinforceVocab> reinforceQueue) async {
+    String response = await rootBundle.loadString('assets/SampleReinforce');
+    List<String> lines = response.split('\n');
+    for (String line in lines) {
+      List<String> parts = line.split('.');
+      if (parts.length == 2) {
+        reinforceQueue.add(ReinforceVocab(parts[0].trim(), parts[1].trim()));
+      }
+    }
+    reinforceDisplayText = reinforceQueue.first.english;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -604,12 +620,36 @@ class _ModulePageState extends StatelessWidget {
                   'Reading',
                   style: tStyle,
                 ))),
-        // TODO: add progress button
+              spacer, 
+        // PROGRESS BUTTON
+        FilledButton.tonal(
+          style : FilledButton.styleFrom(
+          minimumSize: const Size(0, 175),
+          backgroundColor: Color.fromARGB(255, 135, 212, 161),
+          shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(40),),),),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return _ProgressState ();
+              }));
+            },
+            child: Align(
+                alignment: Alignment.centerLeft,
+                widthFactor: 3.4,
+                child: const Text(
+                  'Progress',
+                  style: tStyle,
+                ))),
       ])
     ]);
   }
 }
+class ReinforceVocab {
+  String english;
+  String spanish;
 
+  ReinforceVocab(this.english, this.spanish);
+}
 Widget banner(String text,
     {required Color backgroundColor,
     String subtext = '',
