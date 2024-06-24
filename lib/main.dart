@@ -205,45 +205,45 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(height: 10), //smaller spacer
           
           ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    minimumSize: const Size(390, 114),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(18.0),
-    ),
-    backgroundColor: Color.fromARGB(255, 175, 244, 198),
-  ),
-  onPressed: () {
-    // Your onPressed code here
-    if (reinforceQueue.isNotEmpty) {
-      /*
-      reinforceQueue.removeFirst();
-      */
-      //Change text to display on flashcard
-      if(reinforceDisplayText == reinforceQueue.first.english) {
-        reinforceDisplayText = reinforceQueue.first.spanish;
-      } else {
-        reinforceQueue.removeFirst();
-        reinforceDisplayText = reinforceQueue.first.english;
-      }
-      setState(() {});
-    }
-  },
-  child: reinforceQueue.isNotEmpty
-      ? Text(
-          reinforceDisplayText,
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.black,
-          ),
-        )
-      : Text(
-          'No new words yet!',
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.black,
-          ),
-        ),
-)
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(390, 114),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              ),
+              backgroundColor: Color.fromARGB(255, 175, 244, 198),
+            ),
+            onPressed: () {
+              // Your onPressed code here
+              if (reinforceQueue.isNotEmpty) {
+                /*
+                reinforceQueue.removeFirst();
+                */
+                //Change text to display on flashcard
+                if(reinforceDisplayText == reinforceQueue.first.english) {
+                  reinforceDisplayText = reinforceQueue.first.spanish;
+                } else {
+                  reinforceQueue.removeFirst();
+                  reinforceDisplayText = reinforceQueue.first.english;
+                }
+                setState(() {});
+              }
+            },
+            child: reinforceQueue.isNotEmpty
+                ? Text(
+                    reinforceDisplayText,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                  )
+                : Text(
+                    'No new words yet!',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                  ),
+          )
 
         ],
       ),
@@ -294,15 +294,45 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
           SizedBox(height: 10), //smaller spacer
 
-          SizedBox(
-              width: 380,
-              height: 250,
-              child: reinforceQueue.isNotEmpty
-                ? banner(reinforceQueue.first.english,
-                  backgroundColor: Color.fromARGB(255, 252, 209, 156),
-                  subtext: reinforceQueue.first.spanish)
-                : banner('No new words yet!', backgroundColor: Color.fromARGB(255, 252, 209, 156),
-                )
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(390, 114),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              ),
+              backgroundColor: Color.fromARGB(255, 252, 209, 156),
+            ),
+            onPressed: () {
+              // Your onPressed code here
+              if (reinforceQueue.isNotEmpty) {
+                /*
+                reinforceQueue.removeFirst();
+                */
+                //Change text to display on flashcard
+                if(reinforceDisplayText == reinforceQueue.first.english) {
+                  reinforceDisplayText = reinforceQueue.first.spanish;
+                } else {
+                  reinforceQueue.removeFirst();
+                  reinforceDisplayText = reinforceQueue.first.english;
+                }
+                setState(() {});
+              }
+            },
+            child: reinforceQueue.isNotEmpty
+                ? Text(
+                    reinforceDisplayText,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                  )
+                : Text(
+                    'No new words yet!',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                  ),
           )
         ],
       ),
@@ -353,12 +383,46 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
           SizedBox(height: 10), //smaller spacer
 
-          SizedBox(
-              width: 380,
-              height: 250,
-              child: banner('Coming soon',
-                  backgroundColor: Color.fromARGB(255, 210, 244, 248),
-                  subtext: 'Coming soon')),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(390, 114),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              ),
+              backgroundColor: Color.fromARGB(255, 210, 244, 248),
+            ),
+            onPressed: () {
+              // Your onPressed code here
+              if (reinforceQueue.isNotEmpty) {
+                /*
+                reinforceQueue.removeFirst();
+                */
+                //Change text to display on flashcard
+                if(reinforceDisplayText == reinforceQueue.first.english) {
+                  reinforceDisplayText = reinforceQueue.first.spanish;
+                } else {
+                  reinforceQueue.removeFirst();
+                  reinforceDisplayText = reinforceQueue.first.english;
+                }
+                setState(() {});
+              }
+            },
+            child: reinforceQueue.isNotEmpty
+                ? Text(
+                    reinforceDisplayText,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                  )
+                : Text(
+                    'No new words yet!',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                  ),
+          ),
         ],
       ),
     );
@@ -408,12 +472,45 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
           SizedBox(height: 10), //smaller spacer
 
-          SizedBox(
-              width: 380,
-              height: 250,
-              child: banner('Coming soon',
-                  backgroundColor: Color.fromARGB(255, 252, 250, 207),
-                  subtext: 'Coming soon')),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(390, 114),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              ),
+                  backgroundColor: Color.fromARGB(255, 252, 250, 207),             ),
+            onPressed: () {
+              // Your onPressed code here
+              if (reinforceQueue.isNotEmpty) {
+                /*
+                reinforceQueue.removeFirst();
+                */
+                //Change text to display on flashcard
+                if(reinforceDisplayText == reinforceQueue.first.english) {
+                  reinforceDisplayText = reinforceQueue.first.spanish;
+                } else {
+                  reinforceQueue.removeFirst();
+                  reinforceDisplayText = reinforceQueue.first.english;
+                }
+                setState(() {});
+              }
+            },
+            child: reinforceQueue.isNotEmpty
+                ? Text(
+                    reinforceDisplayText,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                  )
+                : Text(
+                    'No new words yet!',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                  ),
+          ),
         ],
       ),
     );
@@ -698,12 +795,6 @@ class _ModulePageState extends StatelessWidget {
       ])
     ]);
   }
-}
-class ReinforceVocab {
-  String english;
-  String spanish;
-
-  ReinforceVocab(this.english, this.spanish);
 }
 Widget banner(String text,
     {required Color backgroundColor,
