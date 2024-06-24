@@ -179,12 +179,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
             child: moduleButtonWidget(
                 context,
-                'Directions',
+                'Common',
                 'Greetings',
-                'Pass',
-                'assets\\directions_icon.png',
-                'assets\\greetings_icon.png',
+                'Directions',
                 'assets\\osvaldo_icon.png',
+                'assets\\greetings_icon.png',
+                'assets\\directions_icon.png',
                 color1: Color.fromARGB(255, 175, 244, 198),
                 color2: Color.fromARGB(255, 135, 212, 161),
                 color3: Color.fromARGB(255, 95, 170, 120)),
