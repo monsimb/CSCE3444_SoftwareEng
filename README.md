@@ -1,16 +1,5 @@
-# CSCE3444_SoftwareEng
+# Os-valdo
 Repository for language app group project for UNT's summer 2024 Software Engineering Course.
-
-
-# Setting up environment for emulation:
-- From Android Studio, create a new Virtual Device from the Virtual Device Manager.
-- Emulating deviced used for testing is Pixel 7 API 34 (UpsideDowncake)
-  
-# Running:
-In the command promt, open the project file location. Use 'flutter run'
-# language_project
-
-A new Flutter project.
 
 ## Getting Started
 
@@ -24,3 +13,10 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Setting up environment for emulation:
+- From Android Studio, create a new Virtual Device from the Virtual Device Manager.
+- Emulating deviced used for testing is Pixel 7 API 34 (UpsideDowncake)
+  
+## Running:
+In the command promt, open the project file location. Use 'flutter run'
