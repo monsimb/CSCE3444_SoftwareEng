@@ -356,9 +356,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 380,
               height: 250,
-              child: banner('Comming soon',
+              child: banner('Coming soon',
                   backgroundColor: Color.fromARGB(255, 210, 244, 248),
-                  subtext: 'Comming soon')),
+                  subtext: 'Coming soon')),
         ],
       ),
     );
@@ -411,9 +411,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 380,
               height: 250,
-              child: banner('Comming soon',
+              child: banner('Coming soon',
                   backgroundColor: Color.fromARGB(255, 252, 250, 207),
-                  subtext: 'Comming soon')),
+                  subtext: 'Coming soon')),
         ],
       ),
     );
@@ -755,7 +755,7 @@ class _ListeningState extends StatelessWidget {
                   child: FilledButton(
                     style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
                     onPressed: () {
-                      player.play(AssetSource('audio/Page16-Ask-for-Help.mp3'));
+                      player.play(AssetSource('audio/haveaniceday.mp3'));
                     },
                     child: const Text(
                       'Listen',
