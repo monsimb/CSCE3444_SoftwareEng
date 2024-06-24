@@ -65,17 +65,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   /*  ^^ DONT MESS WITH THE ABOVE! ^^  */
 
+  String reinforceDisplayText = 'Empty';
+
   //Read SampleReinforce.txt into the queue
   Future<void> getNextData(Queue<ReinforceVocab> reinforceQueue) async {
     String response = await rootBundle.loadString('assets/SampleReinforce');
     List<String> lines = response.split('\n');
     for (String line in lines) {
       List<String> parts = line.split('.');
-      print(line);
       if (parts.length == 2) {
         reinforceQueue.add(ReinforceVocab(parts[0].trim(), parts[1].trim()));
       }
     }
+    reinforceDisplayText = reinforceQueue.first.english;
     setState(() {});
   }
 
@@ -202,27 +204,46 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(height: 10), //smaller spacer
           
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0), // Change the border radius here
-              ),
-            ),
-            onPressed: () {
-              // Your onPressed code here
-              if (reinforceQueue.isNotEmpty) {
-                reinforceQueue.removeFirst();
-                setState(() {});
+  style: ElevatedButton.styleFrom(
+    minimumSize: const Size(390, 114),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(18.0),
+    ),
+    backgroundColor: Color.fromARGB(255, 175, 244, 198),
+  ),
+  onPressed: () {
+    // Your onPressed code here
+    if (reinforceQueue.isNotEmpty) {
+      /*
+      reinforceQueue.removeFirst();
+      */
+      //Change text to display on flashcard
+      if(reinforceDisplayText == reinforceQueue.first.english) {
+        reinforceDisplayText = reinforceQueue.first.spanish;
+      } else {
+        reinforceQueue.removeFirst();
+        reinforceDisplayText = reinforceQueue.first.english;
+      }
+      setState(() {});
+    }
+  },
+  child: reinforceQueue.isNotEmpty
+      ? Text(
+          reinforceDisplayText,
+          style: TextStyle(
+            fontSize: 24,
+            color: Colors.black,
+          ),
+        )
+      : Text(
+          'No new words yet!',
+          style: TextStyle(
+            fontSize: 24,
+            color: Colors.black,
+          ),
+        ),
+)
 
-              }
-            },
-                child: reinforceQueue.isNotEmpty
-                ? banner(reinforceQueue.first.english,
-                  backgroundColor: Color.fromARGB(255, 175, 244, 198),
-                  subtext: reinforceQueue.first.spanish)
-                : banner('No new words yet!',
-                backgroundColor: Color.fromARGB(255, 175, 244, 198),
-                subtext: 'Good job!'),
-                )
         ],
       ),
     );
