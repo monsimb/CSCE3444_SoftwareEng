@@ -653,78 +653,116 @@ class _ListeningState extends StatelessWidget {
           title: const Text(
               'Listening! - *submodule*'), // remove if no title is to displayed
         ),
-        body: Column(
-          // TODO: add icon
-          mainAxisAlignment: MainAxisAlignment.center,
+        body: Column( 
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20, top: 10),
+                child: Text('Listening',
+                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            spacer,
+
+            Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets\\listening.png.png',
+                height: 250,
+                width: 250,
+              ),
+            ),
             Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.only(right: 40),
-                      child: FilledButton(
-                          style: FilledButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 175, 244, 198)),
-                          onPressed: () {
-                            player.play(
-                                AssetSource('audio/Page16-Ask-for-Help.mp3'));
-                          },
-                          child: const Text('Listen',
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 18)))),
-                  Padding(
-                      padding: EdgeInsets.only(),
-                      child: FilledButton(
-                          style: FilledButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 175, 244, 198)),
-                          onPressed: () {
-                            player.play(
-                                AssetSource('audio/Page16-Ask-for-Help.mp3'));
-                          },
-                          child: const Text('0.5x Listen',
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 18))))
-                ]),
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding( 
+                  padding: EdgeInsets.only(right: 40),
+                  child: FilledButton(
+                    style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
+                    onPressed: () {
+                      player.play(AssetSource('audio/Page16-Ask-for-Help.mp3'));
+                    },
+                    child: const Text(
+                      'Listen',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18))
+                  )
+                ),
+                Padding( 
+                  padding: EdgeInsets.only(),
+                  child: FilledButton(
+                    style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
+                    onPressed: () {
+                      player.play(AssetSource('audio/Page16-Ask-for-Help.mp3'));
+                    },
+                    child: const Text(
+                      '0.5x Listen',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18))
+                  )
+                )
+              ]),
             spacer,
             Container(
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 230, 230, 230),
-                    borderRadius: BorderRadius.circular(35.0)),
-                padding: const EdgeInsets.all(16.0),
-                alignment: Alignment.center,
-                width: 380,
-                height: 100,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Type what you hear!',
-                      hintStyle: TextStyle(fontStyle: FontStyle.italic),
-                      contentPadding: EdgeInsets.only(left: 10)),
-                  // validator: (value) {
-                  //   if(value != 'test') {
-                  //     return 'Sorry, that is incorrect.';
-                  //   }
-                  // }
-                )),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 230, 230, 230),
+                borderRadius: BorderRadius.circular(35.0)),
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.center,
+              width: 380,
+              height: 100,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Type what you hear!',
+                  hintStyle: TextStyle(fontStyle: FontStyle.italic),
+                  contentPadding: EdgeInsets.only(left: 10)),
+                // validator: (value) {
+                //   if(value != 'test') {
+                //     return 'Sorry, that is incorrect.';
+                //   }
+                // }
+              )
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 10, right: 280),
               child: ElevatedButton(
-                  onPressed: () {
+                onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Getting feedback')),
                     );
                   },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 135, 212, 161)),
-                  child: const Text('Submit',
-                      style: TextStyle(color: Colors.black))),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:Color.fromARGB(255, 135, 212, 161)),
+                child: const Text('Submit', style: TextStyle(color: Colors.black))
+              ),
             ),
+            
+            Container(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 175, 244, 198),
+                borderRadius: BorderRadius.circular(35.0),
+              ),
+              width: 200,
+              height: 50,
+              child: const Text(
+                'Feedback:',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+            )
           ],
         ));
-    // TODO: add feedback
+        
+        // TODO: add feedback
   }
 }
 
@@ -733,55 +771,184 @@ class _ReadingState extends StatelessWidget {
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-              'Reading! - *submodule*'), // remove if no title is to displayed
-        ),
-        body: Column(
+      appBar: AppBar(
+        title: const Text(
+            'Reading! - *submodule*'), // remove if no title is to displayed
+      ),
+      body: Column(
           children: [
             Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                    padding: EdgeInsets.only(left: 20, top: 10),
-                    child: Text('Reading',
-                        style: TextStyle(
-                            fontSize: 30.0, fontWeight: FontWeight.bold)))),
+              alignment: Alignment.topLeft,
+              child: Padding( 
+                padding: EdgeInsets.only(left: 20, top: 10),
+                child: Text('Reading',
+                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)))),
             spacer,
-            Align(
+            Align( 
+              alignment: Alignment.center, 
+              child: Image.asset(
+                'assets\\osvaldo.png',
+                height: 250,
+                width: 250,
+              )),
+
+            spacer,
+
+            Container(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 230, 230, 230),
+                borderRadius: BorderRadius.circular(35.0)),
+                padding: const EdgeInsets.all(16.0),
                 alignment: Alignment.center,
-                child: Image.asset(
-                  'assets\\osvaldo.png',
-                  height: 250,
-                  width: 250,
-                )),
+                width: 380,
+                height: 100,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Statement/Passage display.',
+                    hintStyle: TextStyle(fontStyle: FontStyle.italic),
+                    contentPadding: EdgeInsets.only(left: 10),
+                  ),
+                ),
+              
+            ),
+            spacer,
+
+            Positioned(
+              bottom: 20,
+              child: Container(
+                width: 380,
+                height: 200,
+                padding: const EdgeInsets.all(16.0),
+                alignment: Alignment.topLeft,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 175, 244, 198),
+                  borderRadius: BorderRadius.circular(35.0),
+                ),
+                child: Text(
+                  'Question Prompt',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  //textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+            
           ],
-        ));
+        )
+      );
   }
 }
 
 class _SpeakingState extends StatelessWidget {
+  @override
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-              'Reading! - *submodule*'), // remove if no title is to displayed
+              'Speaking! - *submodule*'), // remove if no title is to displayed
         ),
-        body: Column(children: [
-          Align(
+        body: Column(   
+          //mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                  padding: EdgeInsets.only(left: 20, top: 10),
-                  child: Text('Reading',
-                      style: TextStyle(
-                          fontSize: 30.0, fontWeight: FontWeight.bold)))),
-        ]));
+                padding: EdgeInsets.only(left: 20, top: 10),
+                child: Text('Speaking',
+                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+
+            spacer,
+
+            Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets\\speaking.png',
+                height: 250,
+                width: 250,
+              ),
+            ),
+
+            Container(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 230, 230, 230),
+                borderRadius: BorderRadius.circular(35.0)),
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.center,
+              width: 380,
+              height: 100,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Sample Sentence!',
+                  hintStyle: TextStyle(fontStyle: FontStyle.italic),
+                  contentPadding: EdgeInsets.only(left: 10)
+                )
+              )
+            ),
+
+            spacer,
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding( 
+                  padding: EdgeInsets.only(right: 20), 
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 95, 170, 120),
+                      borderRadius: BorderRadius.circular(35.0)),
+                    padding: const EdgeInsets.all(16.0),
+                    alignment: Alignment.center,
+                    width: 140,
+                    height: 140,
+                  )
+                ),
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 175, 244, 198),
+                        borderRadius: BorderRadius.circular(35.0),),
+                      width: 200,
+                      height: 50,
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        'Recorded Statement:',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14),
+                          ),
+                    ),
+                    SizedBox(height: 15), 
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 175, 244, 198),
+                        borderRadius: BorderRadius.circular(35.0),),
+                      width: 200,
+                      height: 50,
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        'Feedback:',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14),)
+                    ),
+              ])
+              ]),
+            spacer,
+          ],
+        ));
   }
 }
-
 // TODO: Add Speaking State
 // TODO: Add Progress State
+// TODO: Add Quiz State
 
 class _ProgressState extends StatelessWidget {
   @override
