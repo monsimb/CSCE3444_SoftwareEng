@@ -66,7 +66,9 @@ flutter:
     - assets\greetings_icon.png
 
     - assets\osvaldo.png
-
+    - assets\speaking.png
+    - assets\listening.png.png
+    
     - assets\audio\Page16-Ask-for-Help.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
