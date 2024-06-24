@@ -1,9 +1,19 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore, constant_identifier_names
 
+import 'dart:collection';
+import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
+//Node structure containing reiforce vocabulary
+class ReinforceVocab {
+  String english;
+  String spanish;
+
+  ReinforceVocab(this.english, this.spanish);
+}
 
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
@@ -35,11 +45,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PageController _pageViewController;
+  Queue<ReinforceVocab> reinforceQueue = Queue<ReinforceVocab>();
+
 
   @override
   void initState() {
     super.initState();
     _pageViewController = PageController();
+
+    
+    //Queue creation - Currently all words in SampleReinforce
+      getNextData(reinforceQueue);
   }
 
   @override
@@ -163,12 +179,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
             child: moduleButtonWidget(
                 context,
-                'Directions',
+                'Common',
                 'Greetings',
-                'Pass',
-                'assets\\directions_icon.png',
-                'assets\\greetings_icon.png',
+                'Directions',
                 'assets\\osvaldo_icon.png',
+                'assets\\greetings_icon.png',
+                'assets\\directions_icon.png',
                 color1: Color.fromARGB(255, 175, 244, 198),
                 color2: Color.fromARGB(255, 135, 212, 161),
                 color3: Color.fromARGB(255, 95, 170, 120)),
@@ -187,13 +203,48 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
 
           SizedBox(height: 10), //smaller spacer
+          
+          ElevatedButton(
+  style: ElevatedButton.styleFrom(
+    minimumSize: const Size(390, 114),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(18.0),
+    ),
+    backgroundColor: Color.fromARGB(255, 175, 244, 198),
+  ),
+  onPressed: () {
+    // Your onPressed code here
+    if (reinforceQueue.isNotEmpty) {
+      /*
+      reinforceQueue.removeFirst();
+      */
+      //Change text to display on flashcard
+      if(reinforceDisplayText == reinforceQueue.first.english) {
+        reinforceDisplayText = reinforceQueue.first.spanish;
+      } else {
+        reinforceQueue.removeFirst();
+        reinforceDisplayText = reinforceQueue.first.english;
+      }
+      setState(() {});
+    }
+  },
+  child: reinforceQueue.isNotEmpty
+      ? Text(
+          reinforceDisplayText,
+          style: TextStyle(
+            fontSize: 24,
+            color: Colors.black,
+          ),
+        )
+      : Text(
+          'No new words yet!',
+          style: TextStyle(
+            fontSize: 24,
+            color: Colors.black,
+          ),
+        ),
+)
 
-          SizedBox(
-              width: 380,
-              height: 250,
-              child: banner('Word/Phrases',
-                  backgroundColor: Color.fromARGB(255, 175, 244, 198),
-                  subtext: 'Definition')),
         ],
       ),
     );
@@ -246,9 +297,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 380,
               height: 250,
-              child: banner('Word/Phrases',
+              child: reinforceQueue.isNotEmpty
+                ? banner(reinforceQueue.first.english,
                   backgroundColor: Color.fromARGB(255, 252, 209, 156),
-                  subtext: 'Definition')),
+                  subtext: reinforceQueue.first.spanish)
+                : banner('No new words yet!', backgroundColor: Color.fromARGB(255, 252, 209, 156),
+                )
+          )
         ],
       ),
     );
@@ -301,9 +356,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 380,
               height: 250,
-              child: banner('Word/Phrases',
+              child: banner('Coming soon',
                   backgroundColor: Color.fromARGB(255, 210, 244, 248),
-                  subtext: 'Definition')),
+                  subtext: 'Coming soon')),
         ],
       ),
     );
@@ -356,9 +411,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 380,
               height: 250,
-              child: banner('Word/Phrases',
+              child: banner('Coming soon',
                   backgroundColor: Color.fromARGB(255, 252, 250, 207),
-                  subtext: 'Definition')),
+                  subtext: 'Coming soon')),
         ],
       ),
     );
@@ -724,7 +779,7 @@ class _ListeningState extends StatelessWidget {
                   child: FilledButton(
                     style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
                     onPressed: () {
-                      player.play(AssetSource('audio/Page16-Ask-for-Help.mp3'));
+                      player.play(AssetSource('audio/haveaniceday.mp3'));
                     },
                     child: const Text(
                       'Listen',

@@ -70,6 +70,10 @@ flutter:
     - assets\listening.png.png
     
     - assets\audio\Page16-Ask-for-Help.mp3
+    - assets\audio\haveaniceday.mp3
+
+    - assets\SampleReinforce
+    - assets\Words&Phrases
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
