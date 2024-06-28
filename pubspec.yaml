@@ -68,6 +68,7 @@ flutter:
     - assets\osvaldo.png
     - assets\speaking.png
     - assets\listening.png.png
+    - assets\microphone.png
     
     - assets\audio\Page16-Ask-for-Help.mp3
     - assets\audio\haveaniceday.mp3
