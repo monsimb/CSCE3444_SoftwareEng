@@ -1093,7 +1093,11 @@ class _SpeakingState extends StatelessWidget {
                     alignment: Alignment.center,
                     width: 140,
                     height: 140,
-                  )
+                    child: Image.asset(
+                      'assets\\microphone.png',
+                      height: 140,
+                      width: 140,
+                  ),
                 ),
                 Column(
                   children: [
