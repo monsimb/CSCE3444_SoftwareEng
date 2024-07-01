@@ -1,18 +1,19 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore, constant_identifier_names
 
-import 'dart:collection';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flip_card/flip_card.dart';
 
-//Node structure containing reiforce vocabulary
+//Node structure containing reinforce vocabulary
 class ReinforceVocab {
   String english;
   String spanish;
 
   ReinforceVocab(this.english, this.spanish);
 }
+
 
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
@@ -26,12 +27,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const String appTitle = 'Language learning app';
     return MaterialApp(
-        // sets the style for the entire project (colors font etc)
+      // sets the style for the entire project (colors font etc)
         title: appTitle,
         theme: ThemeData(
-            // primarySwatch: Colors.brown,
-            // elevatedButtonTheme:
-            ),
+          // primarySwatch: Colors.brown,
+          // elevatedButtonTheme:
+        ),
         home: const HomePage());
   }
 }
@@ -44,7 +45,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PageController _pageViewController;
-  Queue<ReinforceVocab> reinforceQueue = Queue<ReinforceVocab>();
+  List<ReinforceVocab> reinforceList = [];
 
 
   @override
@@ -52,9 +53,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
     _pageViewController = PageController();
 
-    
-    //Queue creation - Currently all words in SampleReinforce
-      getNextData(reinforceQueue);
+
+    //List creation - Currently all words in SampleReinforce
+    getNextData(reinforceList);
   }
 
   @override
@@ -65,19 +66,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   /*  ^^ DONT MESS WITH THE ABOVE! ^^  */
 
-  String reinforceDisplayText = 'Empty';
-
-  //Read SampleReinforce.txt into the queue
-  Future<void> getNextData(Queue<ReinforceVocab> reinforceQueue) async {
+  //Read SampleReinforce.txt into the list
+  List<String> reinforceDisplayText = ['Empty', 'Empty', 'Empty', 'Empty', 'Empty'];
+  Future<void> getNextData(List<ReinforceVocab> reinforceList) async {
     String response = await rootBundle.loadString('assets/SampleReinforce');
     List<String> lines = response.split('\n');
     for (String line in lines) {
       List<String> parts = line.split('.');
       if (parts.length == 2) {
-        reinforceQueue.add(ReinforceVocab(parts[0].trim(), parts[1].trim()));
+        reinforceList.add(ReinforceVocab(parts[0].trim(), parts[1].trim()));
       }
     }
-    reinforceDisplayText = reinforceQueue.first.english;
+    reinforceDisplayText[0] = reinforceList[0].english;
+    reinforceDisplayText[1] = reinforceList[1].english;
+    reinforceDisplayText[2] = reinforceList[2].english;
+    reinforceDisplayText[3] = reinforceList[3].english;
+    reinforceDisplayText[4] = reinforceList[4].english;
     setState(() {});
   }
 
@@ -102,7 +106,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 Container(
                     margin: const EdgeInsets.only(top: 150.0),
-                    height: 400,
+                    height: 500,
                     child: homePage1()),
                 Container(
                     margin: const EdgeInsets.only(top: 150.0),
@@ -120,6 +124,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
           ),
 
+
           /// will controll the PageView
           GestureDetector(onPanUpdate: (details) {
             // Swiping in right direction.
@@ -135,7 +140,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInOut);
             }
-          })
+          }),
+          Container(
+            margin: const EdgeInsets.only(top: 145.0),
+          child: const Padding(
+            padding: EdgeInsets.only(left: 8, top: 40),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Reinforce Phrases',
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                )),
+          ),
+    ),
+    Container(
+    margin: const EdgeInsets.only(top: 460.0),
+            child: SizedBox(
+              width: 390,
+              height: 200,
+              child: _ReinforcePhrasesPageView(Color.fromARGB(255, 175, 244, 198)),
+            ),
+          )
         ]));
   }
 
@@ -144,17 +169,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230, 230))),
-          const Padding(
-              padding: EdgeInsets.only(left: 15, right: 290, top: 30),
-              child: Text('Modules',
-                  style:
-                      TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold))),
-        ]));
+              SizedBox(
+                  width: 395,
+                  height: 70,
+                  child: banner('Search',
+                      backgroundColor: Color.fromARGB(255, 230, 230, 230))),
+              const Padding(
+                  padding: EdgeInsets.only(left: 15, right: 290, top: 30),
+                  child: Text('Modules',
+                      style:
+                      TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold)))
+            ]
+        )
+    );
   }
 
   Widget homePage1() {
@@ -171,7 +198,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               child: banner('General',
                   backgroundColor: Color.fromARGB(255, 175, 244, 198),
                   subtext:
-                      'Learn common phrases for greetings, directions, and more!')),
+                  'Learn common phrases for greetings, directions, and more!')),
 
           h30_spacer, // spacer
 
@@ -188,66 +215,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 color2: Color.fromARGB(255, 135, 212, 161),
                 color3: Color.fromARGB(255, 95, 170, 120)),
           ),
-
-          h30_spacer,   // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 15, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-          
-          ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    minimumSize: const Size(390, 114),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(18.0),
-    ),
-    backgroundColor: Color.fromARGB(255, 175, 244, 198),
-  ),
-  onPressed: () {
-    // Your onPressed code here
-    if (reinforceQueue.isNotEmpty) {
-      /*
-      reinforceQueue.removeFirst();
-      */
-      //Change text to display on flashcard
-      if(reinforceDisplayText == reinforceQueue.first.english) {
-        reinforceDisplayText = reinforceQueue.first.spanish;
-      } else {
-        reinforceQueue.removeFirst();
-        reinforceDisplayText = reinforceQueue.first.english;
-      }
-      setState(() {});
-    }
-  },
-  child: reinforceQueue.isNotEmpty
-      ? Text(
-          reinforceDisplayText,
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.black,
-          ),
-        )
-      : Text(
-          'No new words yet!',
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.black,
-          ),
-        ),
-)
-
         ],
       ),
     );
   }
+
+
+
+
 
   Widget homePage2() {
     const h30_spacer = SizedBox(height: 20);
@@ -278,31 +253,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   color1: Color.fromARGB(255, 252, 209, 156),
                   color2: Color.fromARGB(255, 237, 183, 133),
                   color3: Color.fromARGB(255, 206, 153, 104))),
-
-          h30_spacer,   // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 8, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-
-          SizedBox(
-              width: 380,
-              height: 250,
-              child: reinforceQueue.isNotEmpty
-                ? banner(reinforceQueue.first.english,
-                  backgroundColor: Color.fromARGB(255, 252, 209, 156),
-                  subtext: reinforceQueue.first.spanish)
-                : banner('No new words yet!', backgroundColor: Color.fromARGB(255, 252, 209, 156),
-                )
-          )
         ],
       ),
     );
@@ -337,27 +287,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   color1: Color.fromARGB(255, 210, 244, 248),
                   color2: Color.fromARGB(255, 186, 231, 236),
                   color3: Color.fromARGB(255, 167, 214, 220))),
-
-          h30_spacer,   // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 8, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-
-          SizedBox(
-              width: 380,
-              height: 250,
-              child: banner('Comming soon',
-                  backgroundColor: Color.fromARGB(255, 210, 244, 248),
-                  subtext: 'Comming soon')),
         ],
       ),
     );
@@ -393,26 +322,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   color2: Color.fromARGB(255, 245, 242, 170),
                   color3: Color.fromARGB(255, 236, 232, 144))),
 
-          h30_spacer,   // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 8, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-
-          SizedBox(
-              width: 380,
-              height: 250,
-              child: banner('Comming soon',
-                  backgroundColor: Color.fromARGB(255, 252, 250, 207),
-                  subtext: 'Comming soon')),
         ],
       ),
     );
@@ -420,8 +329,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   Widget banner(String text,
       {required Color backgroundColor,
-      String subtext = '',
-      Color textColor = Colors.black}) {
+        String subtext = '',
+        Color textColor = Colors.black}) {
     return Container(
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -497,6 +406,80 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 */
+
+
+  Widget _ReinforcePhrasesPageView(Color containerColor) {
+    return Expanded(
+      child: PageView.builder(
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return Center(
+            child: FlipCard(
+              direction: FlipDirection.VERTICAL,
+              front: Container(
+                width: 340,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    left: BorderSide(
+                      color: Color.fromARGB(255, 230, 230, 230),
+                      width: 3,
+                    ),
+                    bottom: BorderSide(
+                    color: Color.fromARGB(255, 230, 230, 230),
+                    width: 6,
+                    )
+                  ),
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    reinforceList[index].english,
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              back: Container(
+                width: 340,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                      left: BorderSide(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        width: 3,
+                      ),
+                      bottom: BorderSide(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        width: 6,
+                      )
+                  ),
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    reinforceList[index].spanish,
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+
   Widget moduleButtonWidget(
       BuildContext context, submod1, submod2, submod3, image1, image2, image3,
       {required Color color1, required Color color2, required Color color3}) {
@@ -510,11 +493,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     // colours for first, second, and third
     final ButtonStyle fStyle =
-        ElevatedButton.styleFrom(backgroundColor: color1);
+    ElevatedButton.styleFrom(backgroundColor: color1);
     final ButtonStyle sStyle =
-        ElevatedButton.styleFrom(backgroundColor: color2);
+    ElevatedButton.styleFrom(backgroundColor: color2);
     final ButtonStyle tStyle =
-        ElevatedButton.styleFrom(backgroundColor: color3);
+    ElevatedButton.styleFrom(backgroundColor: color3);
 
     // text style, (bold, font, color, etc)
     const TextStyle texStyle = TextStyle(
@@ -623,7 +606,7 @@ class _ModulePageState extends StatelessWidget {
               padding: EdgeInsets.only(right: 300, top: 30),
               child: Text('Modules',
                   style:
-                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
+                  TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
           const SizedBox(width: 400, height: 100, child: Text('module')),
 
           const SizedBox(height: 15), // spacer

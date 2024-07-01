@@ -30,12 +30,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  logger: 2.3.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   # added for project (MS)
   audioplayers: ^1.0.1
+  flip_card: ^0.7.0
 
 dev_dependencies:
   flutter_test:
@@ -65,8 +67,12 @@ flutter:
     - assets\greetings_icon.png
 
     - assets\osvaldo.png
-
+    - assets\speaking.png
+    - assets\listening.png.png
+    - assets\microphone.png
+    
     - assets\audio\Page16-Ask-for-Help.mp3
+    - assets\audio\haveaniceday.mp3
 
     - assets\SampleReinforce
     - assets\Words&Phrases
