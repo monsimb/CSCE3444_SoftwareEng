@@ -723,7 +723,7 @@ class _ModulePageState extends StatelessWidget {
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
 
-          lsrButtons(context, 1, Color.fromARGB(255, 155, 255, 176))
+          lsrButtons(context, 1, Color.fromARGB(255, 175, 244, 198))
         ],
       )),
     );
@@ -1376,8 +1376,7 @@ class GreetingsModulePageState extends StatelessWidget {
               width: 395,
               height: 70,
               child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
+                  backgroundColor: Color.fromARGB(255, 230, 230, 230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
           // const Row(
           //     mainAxisAlignment: MainAxisAlignment.center,
@@ -1394,7 +1393,7 @@ class GreetingsModulePageState extends StatelessWidget {
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
 
-          lsrButtons(context, 1, Color.fromARGB(255, 155, 255, 176))
+          lsrButtons(context, 1, Color.fromARGB(255, 135, 212, 161))
         ],
       )),
     );
@@ -1437,7 +1436,7 @@ class DirectionsModulePageState extends StatelessWidget {
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
 
-          lsrButtons(context, 1, Color.fromARGB(255, 155, 255, 176))
+          lsrButtons(context, 1, Color.fromARGB(255, 95, 170, 120))
         ],
       )),
     );
@@ -1482,7 +1481,7 @@ class IngredientsModulePageState extends StatelessWidget {
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
 
-          lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
+          lsrButtons(context, 1, Color.fromARGB(255, 252, 209, 156))
         ],
       )),
     );
@@ -1569,7 +1568,7 @@ class OrdersModulePageState extends StatelessWidget {
           // const SizedBox(width: 400, height: 100, child: Text('module')),
 
         
-          lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
+          lsrButtons(context, 1, Color.fromARGB(255, 206, 153, 104))
         ],
       )),
     );
@@ -1656,7 +1655,7 @@ class NailCareModulePageState extends StatelessWidget {
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
 
-          lsrButtons(context, 1, Color.fromARGB(255, 210, 244, 248)),
+          lsrButtons(context, 1, Color.fromARGB(255, 186, 231, 236)),
           
         ],
       )),
@@ -1700,7 +1699,7 @@ class SpaModulePageState extends StatelessWidget {
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
 
-          lsrButtons(context, 1, Color.fromARGB(255, 210, 244, 248)),
+          lsrButtons(context, 1, Color.fromARGB(255, 167, 214, 220)),
           //lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
         ],
       )),
@@ -1789,7 +1788,7 @@ class AirportModulePageState extends StatelessWidget {
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
 
-          lsrButtons(context, 1, Color.fromARGB(255, 252, 250, 207)),
+          lsrButtons(context, 1, Color.fromARGB(255, 245, 242, 170)),
           
           //lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
         ],
@@ -1834,7 +1833,7 @@ class HotelsModulePageState extends StatelessWidget {
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
 
-          lsrButtons(context, 1, Color.fromARGB(255, 252, 250, 207)),
+          lsrButtons(context, 1, Color.fromARGB(255, 236, 232, 144)),
           
           //lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
         ],
