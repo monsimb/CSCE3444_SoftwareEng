@@ -692,6 +692,7 @@ class _ModulePageState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white, // setting style for home page (bg color)
       appBar: AppBar(
@@ -817,10 +818,7 @@ class _ModulePageState extends StatelessWidget {
     ]);
   }
 }
-Widget banner(String text,
-    {required Color backgroundColor,
-    String subtext = '',
-    Color textColor = Colors.black}) {
+Widget banner(String text, {required Color backgroundColor, String subtext = '', Color textColor = Colors.black}) {
   return Container(
     decoration: BoxDecoration(
       color: backgroundColor,
@@ -851,11 +849,26 @@ Widget banner(String text,
 
 class _ListeningState extends StatelessWidget {
   final player = AudioPlayer();
-
+  final List<List<String>> common = [["I","Yo","F","F","F"], 
+    ["You","Tú/Usted","F","F","F"], 
+    ["He/She","Él/Ella","F","F","F"], 
+    ["We","Nosotros","F","F","F"], 
+    ["They","Ustedes","F","F","F"], 
+    ["Please","Por favor","F","F","F"], 
+    ["Thank you","Gracias","F","F","F"], 
+    ["You’re welcome","De nada","F","F","F"], 
+    ["Excuse me","Perdon","F","F","F"], 
+    ["Sorry","Disculpa","F","F","F"]];
+  
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController control = TextEditingController();
+  _ListeningState({Key? key}) : super(key: key);
+ 
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
               'Listening! - *submodule*'), // remove if no title is to displayed
@@ -872,8 +885,6 @@ class _ListeningState extends StatelessWidget {
                 ),
               ),
             ),
-            spacer,
-
             Align(
               alignment: Alignment.center,
               child: Image.asset(
@@ -891,6 +902,7 @@ class _ListeningState extends StatelessWidget {
                   child: FilledButton(
                     style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
                     onPressed: () {
+                      player.setPlaybackRate(1);
                       player.play(AssetSource('audio/haveaniceday.mp3'));
                     },
                     child: const Text(
@@ -905,7 +917,8 @@ class _ListeningState extends StatelessWidget {
                   child: FilledButton(
                     style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
                     onPressed: () {
-                      player.play(AssetSource('audio/Page16-Ask-for-Help.mp3'));
+                      player.setPlaybackRate(0.5);
+                      player.play(AssetSource('audio/haveaniceday.mp3'));
                     },
                     child: const Text(
                       '0.5x Listen',
@@ -916,65 +929,118 @@ class _ListeningState extends StatelessWidget {
                 )
               ]),
             spacer,
-            Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 230, 230, 230),
-                borderRadius: BorderRadius.circular(35.0)),
-              padding: const EdgeInsets.all(16.0),
-              alignment: Alignment.center,
-              width: 380,
-              height: 100,
-              child: TextFormField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Type what you hear!',
-                  hintStyle: TextStyle(fontStyle: FontStyle.italic),
-                  contentPadding: EdgeInsets.only(left: 10)),
-                // validator: (value) {
-                //   if(value != 'test') {
-                //     return 'Sorry, that is incorrect.';
-                //   }
-                // }
-              )
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, right: 280),
-              child: ElevatedButton(
-                onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Getting feedback')),
-                    );
-                  },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:Color.fromARGB(255, 135, 212, 161)),
-                child: const Text('Submit', style: TextStyle(color: Colors.black))
-              ),
-            ),
-            
-            spacer,
 
-            Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 175, 244, 198),
-                borderRadius: BorderRadius.circular(35.0),
-              ),
-              width: 200,
-              height: 50,
-              child: const Text(
-                'Feedback:',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  
-                ),
-              ),
-            )
+            form(_formKey, control, context)
           ],
         ));
         
         // TODO: add feedback
   }
+}
+
+Widget form(GlobalKey<FormState> _formKey, TextEditingController control, BuildContext context) {
+  // Widget feedback(bool incorrect) {
+  //   if(incorrect) {
+  //     return Container(
+  //       decoration: BoxDecoration(
+  //         color: Color.fromARGB(255, 175, 244, 198),
+  //         borderRadius: BorderRadius.circular(35.0),
+  //       ),
+  //       width: 370,
+  //       height: 150,
+  //       alignment: Alignment.centerLeft,
+  //       padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+  //       child: const Text(
+  //         'Feedback!',
+  //         textAlign: TextAlign.left,
+  //         style: TextStyle(
+  //           color: Colors.black,
+  //           fontSize: 16,
+  //           fontWeight: FontWeight.w500
+  //         ),
+  //       ),
+  //     );
+  //   }
+  //   else {
+  //     return Container(
+  //       decoration: BoxDecoration(
+  //         color: Color.fromARGB(255, 175, 244, 198),
+  //         borderRadius: BorderRadius.circular(35.0),
+  //       ),
+  //       width: 370,
+  //       height: 150,
+  //       alignment: Alignment.centerLeft,
+  //       padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+  //       child: const Text(
+  //         "You're correct!",
+  //         textAlign: TextAlign.left,
+  //         style: TextStyle(
+  //           color: Colors.black,
+  //           fontSize: 16,
+  //           fontWeight: FontWeight.w500
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
+
+  // bool incorrect = false;
+
+  return Form(
+    key: _formKey,
+    child: Column ( 
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 230, 230, 230),
+            borderRadius: BorderRadius.circular(35.0)),
+          padding: const EdgeInsets.all(16.0),
+          alignment: Alignment.center,
+          width: 380,
+          height: 100,
+
+          child: TextFormField(
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Type what you hear!',
+              hintStyle: TextStyle(fontStyle: FontStyle.italic),
+              contentPadding: EdgeInsets.only(left: 10)),
+            controller: control,
+            validator: (value) {
+              if (value != 'test') {    // TODO: figure out how to not need the 'incorrect'
+                bool incorrect=true;
+                return 'incorrect';
+              }
+              return null;
+            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+          )
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10, right: 280),
+          child: ElevatedButton(
+            onPressed: () {     // TODO: see if we can get a feedback container to display text based on validation
+              if(_formKey.currentState!.validate()) {    
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("You're correct!")),
+                );
+              }
+              else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Sorry, the right answer is test.")),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor:Color.fromARGB(255, 135, 212, 161)),
+            child: const Text('Submit', style: TextStyle(color: Colors.black))
+          ),
+        ),
+        
+        // feedback(incorrect)
+      ]
+    ),
+  );
 }
 
 class _ReadingState extends StatelessWidget {
