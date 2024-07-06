@@ -867,78 +867,79 @@ class _ListeningState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text(
-              'Listening! - *submodule*'), // remove if no title is to displayed
-        ),
-        body: Column( 
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: EdgeInsets.only(left: 20, top: 10),
-                child: Text('Listening',
-                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'assets\\listening.png.png',
-                height: 250,
-                width: 250,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding( 
-                  padding: EdgeInsets.only(right: 40),
-                  child: FilledButton(
-                    style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
-                    onPressed: () {
-                      player.setPlaybackRate(1);
-                      player.play(AssetSource('audio/haveaniceday.mp3'));
-                    },
-                    child: const Text(
-                      'Listen',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18))
-                  )
-                ),
-                Padding( 
-                  padding: EdgeInsets.only(),
-                  child: FilledButton(
-                    style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
-                    onPressed: () {
-                      player.setPlaybackRate(0.5);
-                      player.play(AssetSource('audio/haveaniceday.mp3'));
-                    },
-                    child: const Text(
-                      '0.5x Listen',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18))
-                  )
-                )
-              ]),
-            spacer,
 
-            form(_formKey, control, context)
-          ],
-        ));
-        
-        // TODO: add feedback
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: const Text(
+            'Listening! - *submodule*'), // remove if no title is to displayed
+      ),
+      body: Column( 
+        //mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, top: 10),
+              child: Text('Listening',
+                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Image.asset(
+              'assets\\listening.png.png',
+              height: 250,
+              width: 250,
+            ),
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding( 
+                padding: EdgeInsets.only(right: 40),
+                child: FilledButton(
+                  style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
+                  onPressed: () {
+                    player.setPlaybackRate(1);
+                    player.play(AssetSource('audio/haveaniceday.mp3'));
+                  },
+                  child: const Text(
+                    'Listen',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18))
+                )
+              ),
+              Padding( 
+                padding: EdgeInsets.only(),
+                child: FilledButton(
+                  style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
+                  onPressed: () {
+                    player.setPlaybackRate(0.5);
+                    player.play(AssetSource('audio/haveaniceday.mp3'));
+                  },
+                  child: const Text(
+                    '0.5x Listen',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18))
+                )
+              )
+            ]),
+          spacer,
+          
+          listeningCheck(_formKey, control, common, context)
+        ],
+      )
+    );
   }
 }
 
-Widget form(GlobalKey<FormState> _formKey, TextEditingController control, BuildContext context) {
+Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController control, List<List<String>> words, BuildContext context) {
   // Widget feedback(bool incorrect) {
   //   if(incorrect) {
   //     return Container(
@@ -1007,8 +1008,8 @@ Widget form(GlobalKey<FormState> _formKey, TextEditingController control, BuildC
               contentPadding: EdgeInsets.only(left: 10)),
             controller: control,
             validator: (value) {
-              if (value != 'test') {    // TODO: figure out how to not need the 'incorrect'
-                bool incorrect=true;
+              if (value != words[0][0]) {    // TODO: figure out how to not need the 'incorrect'
+                //bool incorrect=true;
                 return 'incorrect';
               }
               return null;
@@ -1020,14 +1021,16 @@ Widget form(GlobalKey<FormState> _formKey, TextEditingController control, BuildC
           padding: const EdgeInsets.only(top: 10, right: 280),
           child: ElevatedButton(
             onPressed: () {     // TODO: see if we can get a feedback container to display text based on validation
-              if(_formKey.currentState!.validate()) {    
+              if(_formKey.currentState!.validate()) {
+                words[0][2] = "T";      // set listening check to true
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("You're correct!")),
                 );
               }
               else {
+                String word = words[0][0];
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Sorry, the right answer is test.")),
+                  SnackBar(content: Text("Sorry, the right answer is $word.")),
                 );
               }
             },
