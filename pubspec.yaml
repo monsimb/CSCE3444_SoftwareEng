@@ -38,6 +38,7 @@ dependencies:
   # added for project (MS)
   audioplayers: ^1.0.1
   flip_card: ^0.7.0
+  path_provider: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -70,9 +71,18 @@ flutter:
     - assets\speaking.png
     - assets\listening.png.png
     - assets\microphone.png
-    
+
+    - assets\audio\hru.mp3
     - assets\audio\Page16-Ask-for-Help.mp3
     - assets\audio\haveaniceday.mp3
+    - assets\audio\hello.mp3
+    - assets\audio\gm.mp3
+    - assets\audio\ga.mp3
+    - assets\audio\gn.mp3
+    - assets\audio\myname.mp3
+    - assets\audio\urname.mp3
+    - assets\audio\igualmente.mp3
+    - assets\audio\imgood,u.mp3
 
     - assets\SampleReinforce
     - assets\Words&Phrases
