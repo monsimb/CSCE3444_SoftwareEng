@@ -1,62 +1,53 @@
-{General}
-[Greetings]
-Hello.Hola.
-Good morning.Buenos días.
-Good afternoon.Buenas tardes.
-Good night.Buenas noches.
-My name is ___.Me llamo ___.
-What is your name?.¿Qué está tu nombre?
-Nice to meet you. Mucho gusto.
-How are you?.¿Cómo estás?.
-Have nice day.Tengas un buen día.
-I’m good, and you?. Estoy bien,¿y tú?
+Hello.Hola.F.F.F.hello
+Good morning.Buenos días.F.F.F.gm
+Good afternoon.Buenas tardes.F.F.F.ga
+Good night.Buenas noches.F.F.F.gn
+My name is ___.Me llamo ___.F.F.F.myname
+What is your name?.¿Qué está tu nombre?.F.F.F.urname
+Nice to meet you. Mucho gusto.F.F.F.igualmente
+How are you?.¿Cómo estás?.F.F.F.hru
+Have nice day.Tengas un buen día.F.F.F.haveaniceday
+I’m good, and you?. Estoy bien,¿y tú?.F.F.F.imgood,u
 
-[Directions]
-To go.Ir.
-Here.Aquí.
-There.Allá.
-Go straight.Ir recto.
-Turn right.Gira a la derecha.
-Turn left. Gira a la izquierda.
-Turn around. Gira de vuelta
-Look for a sign that says __. Busca un letrero que diga __.
-Where is _? ¿Dónde está _?
-Where is the bathroom?.¿Dónde está el baño?
+To go.Ir.F.F.F.togo
+Here.Aquí.F.F.F.here
+There.Allá.F.F.F.there
+Go straight.Ir recto.F.F.F.straight
+Turn right.Gira a la derecha.F.F.F.right
+Turn left. Gira a la izquierda.F.F.F.left
+Turn around. Gira de vuelta.F.F.F.around
+Look for a sign that says __. Busca un letrero que diga __.F.F.F.sign
+Where is _? ¿Dónde está _?.F.F.F.donde
+Where is the bathroom?.¿Dónde está el baño?.F.F.F.bathroom
 
+I.Yo.F.F.F.I
+You.Tú/Usted.F.F.F.u
+He.Él.F.F.F.he
+She.Ella.F.F.F.she
+We.Nosotros.F.F.F.we
+They.Ustedes.F.F.F.they
+Please.Por favor.F.F.F.pls
+Thank you.Gracias.F.F.F.ty
+You’re welcome.De nada.F.F.F.yw
+Excuse me.Perdon.F.F.F.exuse me
+Sorry.Disculpa.F.F.F.sry
 
-[Common Words and Phrases]
-I.Yo.
-You.Tú/Usted.
-He/She.Él/Ella.
-We.Nosotros.
-They.Ustedes.
-Please.Por favor.
-Thank you.Gracias.
-You’re welcome.De nada.
-Excuse me.Perdon.
-Sorry.Disculpa.
+Salt.Sal.F.F.F.
+Pepper.Pimienta.F.F.F.
+Sugar.Azúcar.F.F.F.
+Water.Agua.F.F.F.
 
-{Food Service}
-[Ingredients]
-Salt.Sal.
-Pepper.Pimienta.
-Sugar.Azúcar.
-Water.Agua.
+Fork.Tendedor.F.F.F.
+Spoon.Cuchara.F.F.F.
+Knife.Cuchillo.F.F.F.
+Straw.Popote.F.F.F.
 
-[Cooking Tools]
-Fork.Tendedor.
-Spoon.Cuchara
-Knife.Cuchillo
-Straw.Popote.
+Server.Mesero/Mesera.F.F.F.
+Menu.Menú.F.F.F.
+Food.Comida.F.F.F.
+To eat.Comer.F.F.F.
+Drink.Bebida.F.F.F.
+To drink.Drink.F.F.F.
 
-[Taking Orders]
-Server. Mesero/Mesera.
-Menu.Menú.
-Food.Comida.
-To eat.Comer.
-Drink. Bebida
-To drink.Drink.
-
-[Practice]
-Hello, my name is ___ and I will be your server today. Hola, me llamo ___ y voy a hacer su mesero hoy.
-Careful, the plate is hot.Cuidado, el plato hace calor.
+Hello, my name is ___ and I will be your server today. Hola, me llamo ___ y voy a hacer su mesero hoy.F.F.F.
+Careful, the plate is hot.Cuidado, el plato hace calor.F.F.F.

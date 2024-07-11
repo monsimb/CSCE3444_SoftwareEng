@@ -8,21 +8,50 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/widgets.dart';
 import 'widget.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:flip_card/flip_card.dart';
 
-//Node structure containing reiforce vocabulary
+//Node structure containing reinforce vocabulary
 class ReinforceVocab {
   String english;
   String spanish;
+  String audio;
 
-  ReinforceVocab(this.english, this.spanish);
+  ReinforceVocab(this.english, this.spanish, this.audio);
 }
+
+//Used to generated reinforce cards
+int num_of_reinforce_cards = 0;
+List<ReinforceVocab> reinforceList = [];
 
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Get the directory
+  final directory = await getApplicationDocumentsDirectory();
+
+  // Define the file path in the app's directory
+  final filePath = '${directory.path}/SampleReinforce.txt';
+  final file = File(filePath);
+
+  // Check if the file already exists to avoid overwriting
+  if (!await file.exists()) {
+    // Read the file from assets
+    final byteData = await rootBundle.load('assets/SampleReinforce');
+
+    // Write the byte data to the new file
+    await file.writeAsBytes(byteData.buffer.asUint8List());
+  }
+
+  // Run the app
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  // root of application
+  // Root of application
   const MyApp({super.key});
 
   @override
@@ -49,15 +78,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PageController _pageViewController;
-  Queue<ReinforceVocab> reinforceQueue = Queue<ReinforceVocab>();
   @override
   void initState() {
     super.initState();
     _pageViewController = PageController();
 
     
-    //Queue creation - Currently all words in SampleReinforce
-      getNextData(reinforceQueue);
+    //List creation - Currently all words in SampleReinforce
+      getNextData(reinforceList);
   }
 
   @override
@@ -69,19 +97,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   /*  ^^ DONT MESS WITH THE ABOVE! ^^  */
 
-  String reinforceDisplayText = 'Empty';
+  //Read SampleReinforce.txt into the list
+  Future<void> getNextData(List<ReinforceVocab> reinforceList) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/SampleReinforce.txt';
+    final file = File(filePath);
+    String response = await file.readAsString();
 
-  //Read SampleReinforce.txt into the queue
-  Future<void> getNextData(Queue<ReinforceVocab> reinforceQueue) async {
-    String response = await rootBundle.loadString('assets/SampleReinforce');
     List<String> lines = response.split('\n');
     for (String line in lines) {
       List<String> parts = line.split('.');
-      if (parts.length == 2) {
-        reinforceQueue.add(ReinforceVocab(parts[0].trim(), parts[1].trim()));
+      if (parts.length == 3) {
+        reinforceList.add(ReinforceVocab(parts[0].trim(), parts[1].trim(),parts[2].trim()));
       }
     }
-    reinforceDisplayText = reinforceQueue.first.english;
+    //Bounds checking, no more than five cards
+    while(num_of_reinforce_cards < reinforceList.length && num_of_reinforce_cards < 5) {
+      num_of_reinforce_cards++;
+    }
     setState(() {});
   }
 
@@ -106,7 +139,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 Container(
                     margin: const EdgeInsets.only(top: 150.0),
-                    height: 400,
+                    height: 500,
                     child: homePage1()),
                 Container(
                     margin: const EdgeInsets.only(top: 150.0),
@@ -139,7 +172,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInOut);
             }
-          })
+          }),
+        Container(
+            margin: const EdgeInsets.only(top: 145.0),
+          child: const Padding(
+            padding: EdgeInsets.only(left: 8, top: 40),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Reinforce Phrases',
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                )),
+          ),
+    ),
+    Container(
+    margin: const EdgeInsets.only(top: 460.0),
+            child: SizedBox(
+              width: 390,
+              height: 200,
+              child: ReinforcePhrasesPageView(),
+            ),
+          )
         ]));
   }
 
@@ -196,60 +249,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 targetscreen3: DirectionsModulePageState(),
           )),
 
-          h30_spacer, // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 15, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-          
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(390, 114),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              backgroundColor: Color.fromARGB(255, 175, 244, 198),
-            ),
-            onPressed: () {
-              // Your onPressed code here
-              if (reinforceQueue.isNotEmpty) {
-                /*
-                reinforceQueue.removeFirst();
-                */
-                //Change text to display on flashcard
-                if(reinforceDisplayText == reinforceQueue.first.english) {
-                  reinforceDisplayText = reinforceQueue.first.spanish;
-                } else {
-                  reinforceQueue.removeFirst();
-                  reinforceDisplayText = reinforceQueue.first.english;
-                }
-                setState(() {});
-              }
-            },
-            child: reinforceQueue.isNotEmpty
-                ? Text(
-                    reinforceDisplayText,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  )
-                : Text(
-                    'No new words yet!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  ),
-          )
 
         ],
       ),
@@ -291,59 +290,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   )),
 
           h30_spacer, // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 8, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(390, 114),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              backgroundColor: Color.fromARGB(255, 252, 209, 156),
-            ),
-            onPressed: () {
-              // Your onPressed code here
-              if (reinforceQueue.isNotEmpty) {
-                /*
-                reinforceQueue.removeFirst();
-                */
-                //Change text to display on flashcard
-                if(reinforceDisplayText == reinforceQueue.first.english) {
-                  reinforceDisplayText = reinforceQueue.first.spanish;
-                } else {
-                  reinforceQueue.removeFirst();
-                  reinforceDisplayText = reinforceQueue.first.english;
-                }
-                setState(() {});
-              }
-            },
-            child: reinforceQueue.isNotEmpty
-                ? Text(
-                    reinforceDisplayText,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  )
-                : Text(
-                    'No new words yet!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  ),
-          ),
          
         ],
       ),
@@ -384,60 +330,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   targetscreen3: SpaModulePageState(),
                   )),
 
-          h30_spacer, // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 8, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(390, 114),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              backgroundColor: Color.fromARGB(255, 210, 244, 248),
-            ),
-            onPressed: () {
-              // Your onPressed code here
-              if (reinforceQueue.isNotEmpty) {
-                /*
-                reinforceQueue.removeFirst();
-                */
-                //Change text to display on flashcard
-                if(reinforceDisplayText == reinforceQueue.first.english) {
-                  reinforceDisplayText = reinforceQueue.first.spanish;
-                } else {
-                  reinforceQueue.removeFirst();
-                  reinforceDisplayText = reinforceQueue.first.english;
-                }
-                setState(() {});
-              }
-            },
-            child: reinforceQueue.isNotEmpty
-                ? Text(
-                    reinforceDisplayText,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  )
-                : Text(
-                    'No new words yet!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  ),
-          ),
         ],
       ),
     );
@@ -477,59 +369,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   targetscreen3: HotelsModulePageState(),
                   )),
 
-          h30_spacer, // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 8, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(390, 114),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-                  backgroundColor: Color.fromARGB(255, 252, 250, 207),             ),
-            onPressed: () {
-              // Your onPressed code here
-              if (reinforceQueue.isNotEmpty) {
-                /*
-                reinforceQueue.removeFirst();
-                */
-                //Change text to display on flashcard
-                if(reinforceDisplayText == reinforceQueue.first.english) {
-                  reinforceDisplayText = reinforceQueue.first.spanish;
-                } else {
-                  reinforceQueue.removeFirst();
-                  reinforceDisplayText = reinforceQueue.first.english;
-                }
-                setState(() {});
-              }
-            },
-            child: reinforceQueue.isNotEmpty
-                ? Text(
-                    reinforceDisplayText,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  )
-                : Text(
-                    'No new words yet!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  ),
-          ),
         ],
       ),
     );
@@ -687,12 +526,174 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 }
 
-class _ModulePageState extends StatelessWidget {
+class ReinforcePhrasesPageView extends StatefulWidget {
+
+  @override
+  _ReinforcePhrasesPageViewState createState() => _ReinforcePhrasesPageViewState();
+}
+
+
+class _ReinforcePhrasesPageViewState extends State<ReinforcePhrasesPageView> {
 
 
   @override
   Widget build(BuildContext context) {
+return Expanded(
+      child: AnimatedSwitcher(
+        duration: Duration(milliseconds: 500),
+        child: reinforceList.isEmpty
+            ? Center(
+          child: Text(
+            "Review your new words and phrases here!",
+            style: TextStyle(
+              fontSize: 20,
+            ),
+              textAlign: TextAlign.center
+          ),
+        )
+            : PageView.builder(
+          key: ValueKey<int>(reinforceList.length),
+          itemCount: reinforceList.length,
+          itemBuilder: (context, index) {
+            return Center(
+              child: FlipCard(
+                direction: FlipDirection.VERTICAL,
+                front: Container(
+                  width: 340,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                      left: BorderSide(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        width: 3,
+                      ),
+                      bottom: BorderSide(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        width: 6,
+                      ),
+                    ),
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      reinforceList[index].spanish,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                back: Container(
+                  width: 340,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                      left: BorderSide(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        width: 3,
+                      ),
+                      bottom: BorderSide(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        width: 6,
+                      ),
+                    ),
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        reinforceList[index].english,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              final audioPlayer = AudioPlayer();
+                              audioPlayer.play(AssetSource('audio/' + reinforceList[index].audio + '.mp3'));
+                              // Dispose the audio player after the audio completes playing
+                              audioPlayer.onPlayerComplete.listen((_) {
+                                audioPlayer.dispose();
+                              });
+                            },
+                            child: Image.asset(
+                              'assets/listening.png.png',
+                              // Replace with your image asset path
+                              width: 75,
+                              height: 75,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              final directory = await getApplicationDocumentsDirectory();
+                              final file = File('${directory.path}/SampleReinforce.txt');
+                              if (await file.exists()) {
+                                String contents = await file.readAsString();
+                                List<String> lines = contents.split('\n');
+                                String matchedLine = '';
+                                int matchIndex = -1;
 
+                                for (int i = 0; i < lines.length; i++) {
+                                  String line = lines[i].trim();
+                                  if (line.isNotEmpty && line.split('.')[0] == reinforceList[index].english) {
+                                    matchedLine = line;
+                                    matchIndex = i;
+                                    break;
+                                  }
+                                }
+
+                                if (matchIndex != -1) {
+                                  lines.removeAt(matchIndex);
+                                  lines.add(matchedLine);
+                                  String updatedText = lines.join('\n').trim();
+                                  await file.writeAsString(updatedText);
+                                }
+                              }
+                              print(await file.readAsString());
+
+                              setState(() {
+                                reinforceList.removeAt(index);
+                              });
+                            },
+                            child: Image.asset(
+                              'assets/greetings_icon.png',
+                              // Replace with your image asset path
+                              width: 50,
+                              height: 50,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+
+class _ModulePageState extends StatelessWidget {
+  //functions for main page would go here
+  void module() {}
+
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white, // setting style for home page (bg color)
       appBar: AppBar(
