@@ -25,22 +25,29 @@ class ReinforceVocab {
 int num_of_reinforce_cards = 0;
 List<ReinforceVocab> reinforceList = [];
 
-Future<List<List<String>>> readFile() async {
-  final directory = await getApplicationDocumentsDirectory();
-  final filePath = '${directory.path}/SampleReinforce.txt';
-  final file = File(filePath);
+Future<List<List<String>>> readFile(int startLine, int endLine) async {
+  // Load the file as a string from the assets
+  String fileContent = await rootBundle.loadString('assets/Words&Phrases');
 
-  // Read the file as lines
-  List<String> lines = await file.readAsLines();
-
+  // Split the content into lines
+  List<String> lines = fileContent.split('\n');
+/*
   // Print the content of the file for debugging
   print('File Content:');
   for (String line in lines) {
     print(line);
   }
+*/
+  // Check if startLine and endLine are within the bounds of the file lines
+  if (startLine < 0 || endLine >= lines.length || startLine > endLine) {
+    throw RangeError('Invalid range of lines specified');
+  }
+
+  // Process only the lines within the specified range
+  List<String> selectedLines = lines.sublist(startLine - 1, endLine);
 
   // Split each line by commas and create a list of lists
-  List<List<String>> listOfLists = lines.map((line) => line.split(',')).toList();
+  List<List<String>> listOfLists = selectedLines.map((line) => line.split(',')).toList();
 
   // Print the processed list of lists for debugging
   print('Processed List of Lists:');
@@ -51,26 +58,90 @@ Future<List<List<String>>> readFile() async {
   return listOfLists;
 }
 
+Future<void> copyAssetToLocalData(String assetName, String fileName) async {
+  final directory = await getApplicationDocumentsDirectory();
+  final filePath = '${directory.path}/$fileName';
+  final file = File(filePath);
+
+  if (!await file.exists()) {
+    // Load the file from assets
+    final byteData = await rootBundle.load('assets/$assetName');
+
+    // Write the byte data to the new file
+    await file.writeAsBytes(byteData.buffer.asUint8List());
+  }
+}
+
+int mapParameterToIndex(String parameter) {
+  switch (parameter) {
+    case "Listening":
+      return 2;
+    case "Speaking":
+      return 3;
+    case "Reading":
+      return 4;
+    default:
+      throw ArgumentError('Invalid parameter. Must be "Listening," "Speaking," or "Reading".');
+  }
+}
+
+Future<void> updateFile(String firstWord, String parameter) async {
+  final index = mapParameterToIndex(parameter);
+
+  final directory = await getApplicationDocumentsDirectory();
+  final filePath = '${directory.path}/Words&Phrases';
+  final file = File(filePath);
+
+  // Read the file as lines
+  List<String> lines = await file.readAsLines();
+
+  // Find the line that starts with the given first word
+  bool lineUpdated = false;
+  for (int i = 0; i < lines.length; i++) {
+    List<String> parts = lines[i].split('.');
+    if (parts.isNotEmpty && parts[0] == firstWord) {
+      lineUpdated = true;
+      if (index < parts.length && parts[index] == 'F') {
+        parts[index] = 'T';
+        lines[i] = parts.join('.');
+
+        // Check if all "F"s are now "T"s
+        if (!parts.sublist(2, 5).contains('F')) {
+          final reinforceFilePath = '${directory.path}/SampleReinforce';
+          final reinforceFile = File(reinforceFilePath);
+
+          // Remove "T"s and append to the SampleReinforce file
+          final newLine = parts.where((part) => part != 'T').join('.');
+          await reinforceFile.writeAsString('\n' + newLine, mode: FileMode.append);
+        }
+
+        break;
+      } else if (parts[index] == 'T') {
+        // Do nothing if the character is already 'T'
+        break;
+      } else {
+        throw ArgumentError('Invalid index; out of bounds');
+      }
+    }
+  }
+
+  if (lineUpdated) {
+    // Write the updated lines back to the file
+    await file.writeAsString(lines.join('\n'));
+  } else {
+    throw ArgumentError('First word not found in file');
+  }
+}
+
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Get the directory
-  final directory = await getApplicationDocumentsDirectory();
-
-  // Define the file path in the app's directory
-  final filePath = '${directory.path}/SampleReinforce.txt';
-  final file = File(filePath);
-
-  // Check if the file already exists to avoid overwriting
-  if (!await file.exists()) {
-    // Read the file from assets
-    final byteData = await rootBundle.load('assets/SampleReinforce');
-
-    // Write the byte data to the new file
-    await file.writeAsBytes(byteData.buffer.asUint8List());
-  }
+  //await copyAssetToLocalData("SampleReinforce", "SampleReinforce");
+  await copyAssetToLocalData("Words&Phrases", "Words&Phrases");
+  await copyAssetToLocalData("SampleReinforce", "SampleReinforce");
+  updateFile('Hello', 'Speaking');
 
   // Run the app
   runApp(const MyApp());
@@ -109,7 +180,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
     _pageViewController = PageController();
 
-    
+
     //List creation - Currently all words in SampleReinforce
       getNextData(reinforceList);
   }
@@ -123,15 +194,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   /*  ^^ DONT MESS WITH THE ABOVE! ^^  */
 
-  //Read SampleReinforce.txt into the list
+  //Read SampleReinforce into the list
   Future<void> getNextData(List<ReinforceVocab> reinforceList) async {
     final directory = await getApplicationDocumentsDirectory();
-    final filePath = '${directory.path}/SampleReinforce.txt';
+    final filePath = '${directory.path}/SampleReinforce';
     final file = File(filePath);
     String response = await file.readAsString();
 
     List<String> lines = response.split('\n');
     for (String line in lines) {
+      if (line.trim().isEmpty) continue; // Skip empty lines
       List<String> parts = line.split('.');
       if (parts.length == 3) {
         reinforceList.add(ReinforceVocab(parts[0].trim(), parts[1].trim(),parts[2].trim()));
@@ -662,7 +734,7 @@ return Expanded(
                           GestureDetector(
                             onTap: () async {
                               final directory = await getApplicationDocumentsDirectory();
-                              final file = File('${directory.path}/SampleReinforce.txt');
+                              final file = File('${directory.path}/SampleReinforce');
                               if (await file.exists()) {
                                 String contents = await file.readAsString();
                                 List<String> lines = contents.split('\n');
@@ -685,8 +757,6 @@ return Expanded(
                                   await file.writeAsString(updatedText);
                                 }
                               }
-                              //print(await file.readAsString());
-                              print("Hello World!");
                               setState(() {
                                 reinforceList.removeAt(index);
                               });
