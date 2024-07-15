@@ -25,6 +25,32 @@ class ReinforceVocab {
 int num_of_reinforce_cards = 0;
 List<ReinforceVocab> reinforceList = [];
 
+Future<List<List<String>>> readFile() async {
+  final directory = await getApplicationDocumentsDirectory();
+  final filePath = '${directory.path}/SampleReinforce.txt';
+  final file = File(filePath);
+
+  // Read the file as lines
+  List<String> lines = await file.readAsLines();
+
+  // Print the content of the file for debugging
+  print('File Content:');
+  for (String line in lines) {
+    print(line);
+  }
+
+  // Split each line by commas and create a list of lists
+  List<List<String>> listOfLists = lines.map((line) => line.split(',')).toList();
+
+  // Print the processed list of lists for debugging
+  print('Processed List of Lists:');
+  for (List<String> list in listOfLists) {
+    print(list);
+  }
+
+  return listOfLists;
+}
+
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
 Future<void> main() async {
@@ -659,8 +685,8 @@ return Expanded(
                                   await file.writeAsString(updatedText);
                                 }
                               }
-                              print(await file.readAsString());
-
+                              //print(await file.readAsString());
+                              print("Hello World!");
                               setState(() {
                                 reinforceList.removeAt(index);
                               });
