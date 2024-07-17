@@ -1147,7 +1147,7 @@ Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController contr
 
 
 class _ReadingState extends StatelessWidget {
-  final List<List<String>> phrases = [
+  final List<List<String>> common = [
     ["Hello", "Hola", "F", "F", "F"],
     ["Good morning", "Buenos días", "F", "F", "F"],
     ["Good afternoon", "Buenas tardes", "F", "F", "F"],
@@ -1163,6 +1163,21 @@ class _ReadingState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
+    final random = Random();
+    final question = random.nextInt(common.length);
+    final correctanswer = common[question][0];
+
+    //get random incorrect answers
+    List<String> incorrectAnswers = [];
+    while (incorrectAnswers.length < 3) {
+      String randomAnswer = common[random.nextInt(common.length)][0];
+      if (randomAnswer != correctanswer && !incorrectAnswers.contains(randomAnswer)) {
+        incorrectAnswers.add(randomAnswer);
+      }
+    }
+    //combine correct & incorrect & then SHUFFLE
+    final answers = [correctanswer, ...incorrectAnswers]..shuffle();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reading! - *submodule*'),
@@ -1198,15 +1213,13 @@ class _ReadingState extends StatelessWidget {
             alignment: Alignment.center,
             width: 380,
             height: 100,
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Statement/Passage display.',
-                hintStyle: TextStyle(fontStyle: FontStyle.italic),
-                contentPadding: EdgeInsets.only(left: 10),
+            child: Text(
+              common[question][1],
+              style: TextStyle(fontSize: 24.0),
+              textAlign: TextAlign.center,
               ),
             ),
-          ),
+    
           spacer,
           Container(
             width: 380,
@@ -1224,81 +1237,37 @@ class _ReadingState extends StatelessWidget {
                   'Question Prompt',
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 3.0), // Space between text and buttons
+                SizedBox(height: 1.0), // Space between text and buttons
                 Column(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+                  children: answers.map((answer) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 0.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          backgroundColor: Color.fromARGB(255, 135, 212, 161), // Button color
+                          minimumSize: Size(300, 35), // Button width and height
+                          padding: EdgeInsets.symmetric(horizontal: 10), // Padding inside the button
                         ),
-                        backgroundColor: Color.fromARGB(255, 135, 212, 161), // Button color
-                        minimumSize: Size(300, 40), // Button width and height
-                        padding: EdgeInsets.symmetric(horizontal: 16), // Padding inside the button
-                      ),
-                      onPressed: () {
-                        // Your onPressed logic here
-                      },
-                      child: Text(
-                        'Answer 1',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    SizedBox(height: 2),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+
+                        //feedback (snack bar)
+                        onPressed: () {
+                          final isCorrect = answer == correctanswer;
+                          final snackBar = SnackBar(
+                            content: Text(isCorrect ? 'Correct!' : 'Incorrect. Try again.'),
+                            duration: Duration(seconds: 2),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        },
+                        child: Text(
+                          answer,
+                          style: TextStyle(color: Colors.black),
                         ),
-                        backgroundColor: Color.fromARGB(255, 135, 212, 161),// Button color
-                        minimumSize: Size(300, 40), // Button width and height
-                        padding: EdgeInsets.symmetric(horizontal: 16), // Padding inside the button
                       ),
-                      onPressed: () {
-                        // Your onPressed logic here
-                      },
-                      child: Text(
-                        'Answer 2',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        backgroundColor: Color.fromARGB(255, 135, 212, 161),// Button color
-                        minimumSize: Size(300, 40), // Button width and height
-                        padding: EdgeInsets.symmetric(horizontal: 16), // Padding inside the button
-                      ),
-                      onPressed: () {
-                        // Your onPressed logic here
-                      },
-                      child: Text(
-                        'Answer 3',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    SizedBox(height: 2),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        backgroundColor: Color.fromARGB(255, 135, 212, 161),// Button color
-                        minimumSize: Size(300, 40), // Button width and height
-                        padding: EdgeInsets.symmetric(horizontal: 16), // Padding inside the button
-                      ),
-                      onPressed: () {
-                        // Your onPressed logic here
-                      },
-                      child: Text(
-                        'Answer 4',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ],
+                    );
+                  }).toList(),
                 ),
               ],
             ),
@@ -1308,6 +1277,8 @@ class _ReadingState extends StatelessWidget {
     );
   }
 }
+
+
 class _SpeakingState extends StatelessWidget {
   @override
   @override
