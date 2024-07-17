@@ -2,7 +2,7 @@
 
 import 'dart:collection';
 import 'dart:async';
-//import 'dart:math';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -1143,79 +1143,171 @@ Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController contr
   );
 }
 
+//Color.fromARGB(255, 135, 212, 161),
+
+
 class _ReadingState extends StatelessWidget {
+  final List<List<String>> phrases = [
+    ["Hello", "Hola", "F", "F", "F"],
+    ["Good morning", "Buenos días", "F", "F", "F"],
+    ["Good afternoon", "Buenas tardes", "F", "F", "F"],
+    ["Good night", "Buenas noches", "F", "F", "F"],
+    ["My name is ___", "Me llamo ___", "F", "F", "F"],
+    ["What is your name?", "¿Qué está tu nombre?", "F", "F", "F"],
+    ["Nice to meet you", "Mucho gusto", "F", "F", "F"],
+    ["How are you?", "¿Cómo estás?", "F", "F", "F"],
+    ["Have a nice day", "Tengas un buen día", "F", "F", "F"],
+    ["I'm good, and you?", "Estoy bien, ¿y tú?", "F", "F", "F"]
+  ];
+
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-            'Reading! - *submodule*'), // remove if no title is to displayed
+        title: const Text('Reading! - *submodule*'),
       ),
       body: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding( 
-                padding: EdgeInsets.only(left: 20, top: 10),
-                child: Text('Reading',
-                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)))),
-            spacer,
-            Align( 
-              alignment: Alignment.center, 
-              child: Image.asset(
-                'assets\\osvaldo.png',
-                height: 250,
-                width: 250,
-              )),
-
-            spacer,
-
-            Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 230, 230, 230),
-                borderRadius: BorderRadius.circular(35.0)),
-                padding: const EdgeInsets.all(16.0),
-                alignment: Alignment.center,
-                width: 380,
-                height: 100,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Statement/Passage display.',
-                    hintStyle: TextStyle(fontStyle: FontStyle.italic),
-                    contentPadding: EdgeInsets.only(left: 10),
-                  ),
-                ),
-              
-            ),
-            spacer,
-
-            Positioned(
-              bottom: 20,
-              child: Container(
-                width: 380,
-                height: 200,
-                padding: const EdgeInsets.all(16.0),
-                alignment: Alignment.topLeft,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 175, 244, 198),
-                  borderRadius: BorderRadius.circular(35.0),
-                ),
-                child: Text(
-                  'Question Prompt',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  //textAlign: TextAlign.left,
-                ),
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, top: 10),
+              child: Text(
+                'Reading',
+                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
               ),
             ),
-            
-          ],
-        )
-      );
+          ),
+          spacer,
+          Align(
+            alignment: Alignment.center,
+            child: Image.asset(
+              'assets\\osvaldo.png',
+              height: 250,
+              width: 250,
+            ),
+          ),
+          spacer,
+          Container(
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 230, 230, 230),
+              borderRadius: BorderRadius.circular(35.0),
+            ),
+            padding: const EdgeInsets.all(16.0),
+            alignment: Alignment.center,
+            width: 380,
+            height: 100,
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Statement/Passage display.',
+                hintStyle: TextStyle(fontStyle: FontStyle.italic),
+                contentPadding: EdgeInsets.only(left: 10),
+              ),
+            ),
+          ),
+          spacer,
+          Container(
+            width: 380,
+            height: 260,
+            padding: const EdgeInsets.all(16.0),
+            alignment: Alignment.topLeft,
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 175, 244, 198),
+              borderRadius: BorderRadius.circular(35.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Question Prompt',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 3.0), // Space between text and buttons
+                Column(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        backgroundColor: Color.fromARGB(255, 135, 212, 161), // Button color
+                        minimumSize: Size(300, 40), // Button width and height
+                        padding: EdgeInsets.symmetric(horizontal: 16), // Padding inside the button
+                      ),
+                      onPressed: () {
+                        // Your onPressed logic here
+                      },
+                      child: Text(
+                        'Answer 1',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        backgroundColor: Color.fromARGB(255, 135, 212, 161),// Button color
+                        minimumSize: Size(300, 40), // Button width and height
+                        padding: EdgeInsets.symmetric(horizontal: 16), // Padding inside the button
+                      ),
+                      onPressed: () {
+                        // Your onPressed logic here
+                      },
+                      child: Text(
+                        'Answer 2',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        backgroundColor: Color.fromARGB(255, 135, 212, 161),// Button color
+                        minimumSize: Size(300, 40), // Button width and height
+                        padding: EdgeInsets.symmetric(horizontal: 16), // Padding inside the button
+                      ),
+                      onPressed: () {
+                        // Your onPressed logic here
+                      },
+                      child: Text(
+                        'Answer 3',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        backgroundColor: Color.fromARGB(255, 135, 212, 161),// Button color
+                        minimumSize: Size(300, 40), // Button width and height
+                        padding: EdgeInsets.symmetric(horizontal: 16), // Padding inside the button
+                      ),
+                      onPressed: () {
+                        // Your onPressed logic here
+                      },
+                      child: Text(
+                        'Answer 4',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
-
 class _SpeakingState extends StatelessWidget {
   @override
   @override
