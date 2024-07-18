@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore, constant_identifier_names, no_leading_underscores_for_local_identifiers, unnecessary_import, use_key_in_widget_constructors
 
-import 'dart:collection';
+//import 'dart:collection';
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter/animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -802,7 +804,7 @@ class _ModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1', // TODO: insert trophy icon
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
@@ -820,12 +822,123 @@ class _ModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 175, 244, 198)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 10,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 2,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 175, 244, 198)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 10,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 2,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 175, 244, 198)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          
+          lsrButtons(context, 1, Color.fromARGB(255, 175, 244, 198)),
 
-          lsrButtons(context, 1, Color.fromARGB(255, 175, 244, 198))
+          
         ],
       )),
     );
   }
+
 
   Widget lsrButtons(BuildContext context, int id, Color buttonColor) {
     /* Style settings (Button/Text) */
@@ -892,25 +1005,7 @@ class _ModulePageState extends StatelessWidget {
                   style: tStyle,
                 ))),
               spacer, 
-        // PROGRESS BUTTON
-        FilledButton.tonal(
-          style : FilledButton.styleFrom(
-          minimumSize: const Size(0, 175),
-          backgroundColor: Color.fromARGB(255, 135, 212, 161),
-          shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(40),),),),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return _ProgressState ();
-              }));
-            },
-            child: Align(
-                alignment: Alignment.centerLeft,
-                widthFactor: 3.4,
-                child: const Text(
-                  'Progress',
-                  style: tStyle,
-                ))),
+        
       ])
     ]);
   }
@@ -1621,6 +1716,113 @@ class GreetingsModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 135, 212, 161)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 135, 212, 161)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 135, 212, 161)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
           lsrButtons(context, 1, Color.fromARGB(255, 135, 212, 161))
         ],
@@ -1664,6 +1866,113 @@ class DirectionsModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 95, 170, 120)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 95, 170, 120)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 95, 170, 120)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
           lsrButtons(context, 1, Color.fromARGB(255, 95, 170, 120))
         ],
@@ -1709,6 +2018,113 @@ class IngredientsModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 252, 209, 156)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 252, 209, 156)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 252, 209, 156)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
           lsrButtons(context, 1, Color.fromARGB(255, 252, 209, 156))
         ],
@@ -1752,6 +2168,113 @@ class CookToolsModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 237, 183, 133)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 237, 183, 133)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 237, 183, 133)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
           lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
         ],
@@ -1795,7 +2318,113 @@ class OrdersModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
-
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 206, 153, 104)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 206, 153, 104)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 206, 153, 104)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         
           lsrButtons(context, 1, Color.fromARGB(255, 206, 153, 104))
         ],
@@ -1839,6 +2468,113 @@ class HairCareModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 210, 244, 248)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 210, 244, 248)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 210, 244, 248)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
           lsrButtons(context, 1, Color.fromARGB(255, 210, 244, 248)),
          
@@ -1883,6 +2619,113 @@ class NailCareModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 186, 231, 236)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 186, 231, 236)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 186, 231, 236)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
           lsrButtons(context, 1, Color.fromARGB(255, 186, 231, 236)),
           
@@ -1927,6 +2770,113 @@ class SpaModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 167, 214, 220)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 167, 214, 220)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 167, 214, 220)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
           lsrButtons(context, 1, Color.fromARGB(255, 167, 214, 220)),
           //lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
@@ -1971,6 +2921,113 @@ class RentalsModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 252, 250, 207)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 252, 250, 207)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 252, 250, 207)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
           lsrButtons(context, 1, Color.fromARGB(255, 252, 250, 207)),
           
@@ -2016,6 +3073,113 @@ class AirportModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 245, 242, 170)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 245, 242, 170)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 245, 242, 170)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
           lsrButtons(context, 1, Color.fromARGB(255, 245, 242, 170)),
           
@@ -2061,6 +3225,115 @@ class HotelsModulePageState extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 35.0, fontWeight: FontWeight.bold)))),
           // const SizedBox(width: 400, height: 100, child: Text('module')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 236, 232, 144)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 236, 232, 144)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 4,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 236, 232, 144)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(height: 10),
 
           lsrButtons(context, 1, Color.fromARGB(255, 236, 232, 144)),
           
