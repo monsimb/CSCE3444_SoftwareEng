@@ -1731,7 +1731,7 @@ class GreetingsModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230, 230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
           // const Row(
@@ -1880,7 +1880,7 @@ class DirectionsModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
@@ -2032,7 +2032,7 @@ class IngredientsModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
@@ -2182,7 +2182,7 @@ class CookToolsModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
@@ -2332,7 +2332,7 @@ class OrdersModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
@@ -2482,7 +2482,7 @@ class HairCareModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
@@ -2633,7 +2633,7 @@ class NailCareModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
@@ -2784,7 +2784,7 @@ class SpaModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
@@ -2935,7 +2935,7 @@ class RentalsModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
@@ -3087,7 +3087,7 @@ class AirportModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
@@ -3239,7 +3239,7 @@ class HotelsModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1',
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
           // const SizedBox(height: 5), // spacer
