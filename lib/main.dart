@@ -866,12 +866,12 @@ class _ModulePageState extends StatelessWidget {
                   children: [
                     Container(
                       height: 140,
-                      width: 10,
+                      width: 30,
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(
-                          width: 2,
+                          width: 4,
                         ),
                       ),
                       child: RotatedBox(
@@ -900,12 +900,12 @@ class _ModulePageState extends StatelessWidget {
                   children: [
                     Container(
                       height: 140,
-                      width: 10,
+                      width: 30,
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(
-                          width: 2,
+                          width: 4,
                         ), 
                       ),
                       child: RotatedBox(
