@@ -174,7 +174,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
+class ReadingState extends StatefulWidget {
+  @override
+  _ReadingState createState() => _ReadingState();
+}
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PageController _pageViewController;
   @override
@@ -195,6 +198,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
 
   /*  ^^ DONT MESS WITH THE ABOVE! ^^  */
+  
 
   //Read SampleReinforce into the list
   Future<void> getNextData(List<ReinforceVocab> reinforceList) async {
@@ -994,7 +998,7 @@ class _ModulePageState extends StatelessWidget {
             style: btnStyle,
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return _ReadingState();
+                return ReadingState();
               }));
             },
             child: Align(
@@ -1241,7 +1245,8 @@ Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController contr
 //Color.fromARGB(255, 135, 212, 161),
 
 
-class _ReadingState extends StatelessWidget {
+class _ReadingState extends State<ReadingState> {
+  
   final List<List<String>> common = [
     ["Hello", "Hola", "F", "F", "F"],
     ["Good morning", "Buenos días", "F", "F", "F"],
@@ -1254,6 +1259,9 @@ class _ReadingState extends StatelessWidget {
     ["Have a nice day", "Tengas un buen día", "F", "F", "F"],
     ["I'm good, and you?", "Estoy bien, ¿y tú?", "F", "F", "F"]
   ];
+
+  int questionIndex = 0;
+  String selectedAnswer = "";
 
   @override
   Widget build(BuildContext context) {
@@ -1294,7 +1302,7 @@ class _ReadingState extends StatelessWidget {
             alignment: Alignment.center,
             child: Image.asset(
               'assets\\osvaldo.png',
-              height: 250,
+              height: 150,
               width: 250,
             ),
           ),
@@ -1318,7 +1326,7 @@ class _ReadingState extends StatelessWidget {
           spacer,
           Container(
             width: 380,
-            height: 260,
+            height: 275,
             padding: const EdgeInsets.all(16.0),
             alignment: Alignment.topLeft,
             decoration: BoxDecoration(
@@ -1326,26 +1334,27 @@ class _ReadingState extends StatelessWidget {
               borderRadius: BorderRadius.circular(35.0),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Question Prompt',
+                  'Choose one:',
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 1.0), // Space between text and buttons
+                SizedBox(height: 4.0), // Space between text and buttons
                 Column(
                   children: answers.map((answer) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 0.0),
+                      padding: const EdgeInsets.symmetric(vertical: 2.0),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),
-                          backgroundColor: Color.fromARGB(255, 135, 212, 161), // Button color
-                          minimumSize: Size(300, 35), // Button width and height
-                          padding: EdgeInsets.symmetric(horizontal: 10), // Padding inside the button
-                        ),
+                          backgroundColor: Color.fromARGB(255, 135, 212, 161),// Button color
+                          minimumSize: Size(300, 40), // Button width and height
+                          padding: EdgeInsets.symmetric(horizontal: 20), // Padding inside the button
+                          alignment: Alignment.center,                        
+                          ),
 
                         //feedback (snack bar)
                         onPressed: () {
@@ -1365,6 +1374,29 @@ class _ReadingState extends StatelessWidget {
                   }).toList(),
                 ),
               ],
+            ),
+          ),
+          SizedBox(height: 20), // Space between questions and next button
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    questionIndex = (questionIndex + 1) % common.length;
+                    selectedAnswer = "";
+                  });
+                },
+                child: Text('Next'),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  minimumSize: Size(100, 50), // Button width and height
+                  backgroundColor: Color.fromARGB(255, 135, 212, 161),
+                ),
+              ),
             ),
           ),
         ],
