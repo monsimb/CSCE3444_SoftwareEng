@@ -65,13 +65,14 @@ Future<void> copyAssetToLocalData(String assetName, String fileName) async {
   final filePath = '${directory.path}/$fileName';
   final file = File(filePath);
 
-  if (!await file.exists()) {
+  //Disregarding if statement for demo cards
+  // if (!await file.exists()) {
     // Load the file from assets
     final byteData = await rootBundle.load('assets/$assetName');
 
     // Write the byte data to the new file
     await file.writeAsBytes(byteData.buffer.asUint8List());
-  }
+  // }
 }
 
 int mapParameterToIndex(String parameter) {
