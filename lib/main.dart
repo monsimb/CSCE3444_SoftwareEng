@@ -50,13 +50,13 @@ Future<List<List<String>>> readFile(int startLine, int endLine) async {
 
   // Split each line by commas and create a list of lists
   List<List<String>> listOfLists = selectedLines.map((line) => line.split(',')).toList();
-/*
+
   // Print the processed list of lists for debugging
   print('Processed List of Lists:');
   for (List<String> list in listOfLists) {
     print(list);
   }
-*/
+
   return listOfLists;
 }
 
@@ -65,14 +65,13 @@ Future<void> copyAssetToLocalData(String assetName, String fileName) async {
   final filePath = '${directory.path}/$fileName';
   final file = File(filePath);
 
-  //Commenting out if statement to overwrite local file on purpose for displaying demo
-  // if (!await file.exists()) {
+  if (!await file.exists()) {
     // Load the file from assets
     final byteData = await rootBundle.load('assets/$assetName');
 
     // Write the byte data to the new file
     await file.writeAsBytes(byteData.buffer.asUint8List());
-  //}
+  }
 }
 
 int mapParameterToIndex(String parameter) {
@@ -144,6 +143,7 @@ Future<void> main() async {
   //await copyAssetToLocalData("SampleReinforce", "SampleReinforce");
   await copyAssetToLocalData("Words&Phrases", "Words&Phrases");
   await copyAssetToLocalData("SampleReinforce", "SampleReinforce");
+  updateFile('Hello', 'Speaking');
 
   // Run the app
   runApp(const MyApp());
@@ -1048,12 +1048,7 @@ Widget banner(String text, {required Color backgroundColor, String subtext = '',
   );
 }
 
-<<<<<<< HEAD
 class _ListeningState extends State<ListeningState> {
-=======
-
-class _ListeningState extends StatelessWidget {
->>>>>>> refs/remotes/origin/dev-istg
   final player = AudioPlayer();
   final List<List<String>> common = [["I","Yo","F","F","F"], 
     ["You","Tú/Usted","F","F","F"], 
