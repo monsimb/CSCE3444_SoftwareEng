@@ -312,7 +312,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Happy Learning!',
                   backgroundColor: Color.fromARGB(255, 230, 230, 230))),
           const Padding(
               padding: EdgeInsets.only(left: 15, right: 290, top: 30),
@@ -1018,7 +1018,8 @@ class _ModulePageState extends StatelessWidget {
     ]);
   }
 }
-Widget banner(String text, {required Color backgroundColor, String subtext = '', Color textColor = Colors.black}) {
+
+Widget banner(String text, {required Color backgroundColor, String subtext = '', Color textColor = Colors.black, Widget? icon}) {
   return Container(
     decoration: BoxDecoration(
       color: backgroundColor,
@@ -1047,7 +1048,12 @@ Widget banner(String text, {required Color backgroundColor, String subtext = '',
   );
 }
 
+<<<<<<< HEAD
 class _ListeningState extends State<ListeningState> {
+=======
+
+class _ListeningState extends StatelessWidget {
+>>>>>>> refs/remotes/origin/dev-istg
   final player = AudioPlayer();
   final List<List<String>> common = [["I","Yo","F","F","F"], 
     ["You","Tú/Usted","F","F","F"], 
