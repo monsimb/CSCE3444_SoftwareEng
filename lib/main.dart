@@ -178,6 +178,10 @@ class ReadingState extends StatefulWidget {
   @override
   _ReadingState createState() => _ReadingState();
 }
+class ListeningState extends StatefulWidget {
+  @override
+  _ListeningState createState() => _ListeningState();
+}
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PageController _pageViewController;
   @override
@@ -966,7 +970,7 @@ class _ModulePageState extends StatelessWidget {
             style: btnStyle,
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return _ListeningState();
+                return ListeningState();
               }));
             },
             child: Align(
@@ -1043,7 +1047,7 @@ Widget banner(String text, {required Color backgroundColor, String subtext = '',
   );
 }
 
-class _ListeningState extends StatelessWidget {
+class _ListeningState extends State<ListeningState> {
   final player = AudioPlayer();
   final List<List<String>> common = [["I","Yo","F","F","F"], 
     ["You","Tú/Usted","F","F","F"], 
@@ -1058,11 +1062,13 @@ class _ListeningState extends StatelessWidget {
   
   final _formKey = GlobalKey<FormState>();
   final TextEditingController control = TextEditingController();
-  _ListeningState({Key? key}) : super(key: key);
+  //_ListeningState({Key? key}) : super(key:key);
+  int quesNum = 0;
  
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
+    final correct = common[quesNum][0];
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -1128,62 +1134,39 @@ class _ListeningState extends StatelessWidget {
             ]),
           spacer,
           
-          listeningCheck(_formKey, control, common, context)
+          listeningCheck(_formKey, control, common, quesNum, context),
+
+          SizedBox(height: 150), // Space between questions and next button
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    quesNum = (quesNum + 1) % common.length;
+                  });
+                },
+                child: Text('Next',
+                  style: TextStyle(color: Colors.black)),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  minimumSize: Size(100, 50), // Button width and height
+                  backgroundColor: Color.fromARGB(255, 135, 212, 161),
+                ),
+              ),
+            ),
+          ),
         ],
       )
     );
   }
 }
 
-Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController control, List<List<String>> words, BuildContext context) {
-  // Widget feedback(bool incorrect) {
-  //   if(incorrect) {
-  //     return Container(
-  //       decoration: BoxDecoration(
-  //         color: Color.fromARGB(255, 175, 244, 198),
-  //         borderRadius: BorderRadius.circular(35.0),
-  //       ),
-  //       width: 370,
-  //       height: 150,
-  //       alignment: Alignment.centerLeft,
-  //       padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-  //       child: const Text(
-  //         'Feedback!',
-  //         textAlign: TextAlign.left,
-  //         style: TextStyle(
-  //           color: Colors.black,
-  //           fontSize: 16,
-  //           fontWeight: FontWeight.w500
-  //         ),
-  //       ),
-  //     );
-  //   }
-  //   else {
-  //     return Container(
-  //       decoration: BoxDecoration(
-  //         color: Color.fromARGB(255, 175, 244, 198),
-  //         borderRadius: BorderRadius.circular(35.0),
-  //       ),
-  //       width: 370,
-  //       height: 150,
-  //       alignment: Alignment.centerLeft,
-  //       padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-  //       child: const Text(
-  //         "You're correct!",
-  //         textAlign: TextAlign.left,
-  //         style: TextStyle(
-  //           color: Colors.black,
-  //           fontSize: 16,
-  //           fontWeight: FontWeight.w500
-  //         ),
-  //       ),
-  //     );
-  //   }
-  // }
-
-  // bool incorrect = false;
-
-  return Form(
+Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController control, List<List<String>> words, int index, BuildContext context) {
+ return Form(
     key: _formKey,
     child: Column ( 
       children: [
@@ -1204,9 +1187,8 @@ Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController contr
               contentPadding: EdgeInsets.only(left: 10)),
             controller: control,
             validator: (value) {
-              if (value != words[0][0]) {    // TODO: figure out how to not need the 'incorrect'
-                //bool incorrect=true;
-                return 'incorrect';
+              if (value != words[index][0]) {    // TODO: figure out how to not need the 'incorrect'
+                return '';
               }
               return null;
             },
@@ -1218,13 +1200,13 @@ Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController contr
           child: ElevatedButton(
             onPressed: () {     // TODO: see if we can get a feedback container to display text based on validation
               if(_formKey.currentState!.validate()) {
-                words[0][2] = "T";      // set listening check to true
+                words[index][2] = "T";      // set listening check to true
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("You're correct!")),
                 );
               }
               else {
-                String word = words[0][0];
+                String word = words[index][0];
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Sorry, the right answer is $word.")),
                 );
