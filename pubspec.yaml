@@ -84,6 +84,17 @@ flutter:
     - assets\audio\urname.mp3
     - assets\audio\igualmente.mp3
     - assets\audio\imgood,u.mp3
+    - assets\audio\I.mp3
+    - assets\audio\u.mp3
+    - assets\audio\he.mp3
+    - assets\audio\she.mp3
+    - assets\audio\we.mp3
+    - assets\audio\they.mp3
+    - assets\audio\pls.mp3
+    - assets\audio\ty.mp3
+    - assets\audio\yw.mp3
+    - assets\audio\excuse me.mp3
+    - assets\audio\sry.mp3
 
     - assets\SampleReinforce
     - assets\Words&Phrases

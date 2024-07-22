@@ -596,7 +596,6 @@ class ReinforcePhrasesPageView extends StatefulWidget {
   _ReinforcePhrasesPageViewState createState() => _ReinforcePhrasesPageViewState();
 }
 
-
 class _ReinforcePhrasesPageViewState extends State<ReinforcePhrasesPageView> {
 
 
@@ -748,11 +747,6 @@ return Expanded(
   }
 }
 
-// class ModulePage extends StatefulWidget {
-//   @override
-//   _ModulePageState createState() => _ModulePageState();
-// }
-
 Widget banner(String text, {required Color backgroundColor, String subtext = '', Color textColor = Colors.black, Widget? icon}) {
   return Container(
     decoration: BoxDecoration(
@@ -782,28 +776,31 @@ Widget banner(String text, {required Color backgroundColor, String subtext = '',
   );
 }
 
+
 class _ListeningState extends State<ListeningState> {
   final player = AudioPlayer();
-  final List<List<String>> common = [["I","Yo","F","F","F"], 
-    ["You","Tú/Usted","F","F","F"], 
-    ["He/She","Él/Ella","F","F","F"], 
-    ["We","Nosotros","F","F","F"], 
-    ["They","Ustedes","F","F","F"], 
-    ["Please","Por favor","F","F","F"], 
-    ["Thank you","Gracias","F","F","F"], 
-    ["You’re welcome","De nada","F","F","F"], 
-    ["Excuse me","Perdon","F","F","F"], 
-    ["Sorry","Disculpa","F","F","F"]];
+  final List<List<String>> common = [["I","Yo","F","F","F","audio/I.mp3"], 
+    ["You","Tú/Usted","F","F","F","audio/u.mp3"], 
+    ["He","Él","F","F","F","audio/he.mp3"],
+    ["She","Ella","F","F","F","audio/she.mp3"],
+    ["We","Nosotros","F","F","F","audio/we.mp3"], 
+    ["They","Ustedes","F","F","F","audio/they.mp3"], 
+    ["Please","Por favor","F","F","F","audio/pls.mp3"], 
+    ["Thank you","Gracias","F","F","F","audio/ty.mp3"], 
+    ["You’re welcome","De nada","F","F","F","audio/yw.mp3"], 
+    ["Excuse me","Perdon","F","F","F","audio/excuse me.mp3"], 
+    ["Sorry","Disculpa","F","F","F","audio/sry.mp3"]];
   
   final _formKey = GlobalKey<FormState>();
   final TextEditingController control = TextEditingController();
-  //_ListeningState({Key? key}) : super(key:key);
+  
   int quesNum = 0;
  
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
     final correct = common[quesNum][0];
+    final audio = common[quesNum][5];
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -842,7 +839,7 @@ class _ListeningState extends State<ListeningState> {
                   style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
                   onPressed: () {
                     player.setPlaybackRate(1);
-                    player.play(AssetSource('audio/haveaniceday.mp3'));
+                    player.play(AssetSource(audio));
                   },
                   child: const Text(
                     'Listen',
@@ -857,7 +854,7 @@ class _ListeningState extends State<ListeningState> {
                   style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
                   onPressed: () {
                     player.setPlaybackRate(0.5);
-                    player.play(AssetSource('audio/haveaniceday.mp3'));
+                    player.play(AssetSource(audio));
                   },
                   child: const Text(
                     '0.5x Listen',
@@ -882,8 +879,6 @@ class _ListeningState extends State<ListeningState> {
                     quesNum = (quesNum + 1) % common.length;
                   });
                 },
-                child: Text('Next',
-                  style: TextStyle(color: Colors.black)),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
@@ -891,6 +886,8 @@ class _ListeningState extends State<ListeningState> {
                   minimumSize: Size(100, 50), // Button width and height
                   backgroundColor: Color.fromARGB(255, 135, 212, 161),
                 ),
+                child: Text('Next',
+                  style: TextStyle(color: Colors.black)),
               ),
             ),
           ),
@@ -946,6 +943,7 @@ Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController contr
                   SnackBar(content: Text("Sorry, the right answer is $word.")),
                 );
               }
+              control.clear();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor:Color.fromARGB(255, 135, 212, 161)),
@@ -958,7 +956,6 @@ Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController contr
     ),
   );
 }
-
 
 class _ReadingState extends State<ReadingState> {
   
@@ -1120,7 +1117,6 @@ class _ReadingState extends State<ReadingState> {
   }
 }
 
-
 class _SpeakingState extends StatelessWidget {
   @override
   @override
@@ -1233,9 +1229,6 @@ class _SpeakingState extends StatelessWidget {
         ));
   }
 }
-// TODO: Add Speaking State
-// TODO: Add Progress State
-// TODO: Add Quiz State
 
 class _ProgressState extends StatelessWidget {
   @override
@@ -1428,6 +1421,7 @@ class _ProgressState extends StatelessWidget {
 
 // TODO: Add Quiz State
 
+/* SUBMODULE STATES */
 class CommonModulePageState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
