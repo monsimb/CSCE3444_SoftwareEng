@@ -72,6 +72,9 @@ flutter:
     - assets\listening.png.png
     - assets\microphone.png
     - assets\trophy.png
+    - assets\fish.png
+    - assets\cookingbear.png
+    - assets\reading.png
 
     - assets\audio\hru.mp3
     - assets\audio\Page16-Ask-for-Help.mp3

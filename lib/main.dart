@@ -347,7 +347,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 'Common',
                 'Greetings',
                 'Directions',
-                'assets\\osvaldo_icon.png',
+                'assets\\reading.png',
                 'assets\\greetings_icon.png',
                 'assets\\directions_icon.png',
                 color1: Color.fromARGB(255, 175, 244, 198),
@@ -387,9 +387,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   'Ingredients',
                   'Cooking Tools',
                   'Taking Orders',
-                  'assets\\directions_icon.png',
-                  'assets\\greetings_icon.png',
-                  'assets\\osvaldo_icon.png',
+                  'assets\\fish.png',
+                  'assets\\cookingbear.png',
+                  'assets\\reading.png',
                   color1: Color.fromARGB(255, 252, 209, 156),
                   color2: Color.fromARGB(255, 237, 183, 133),
                   color3: Color.fromARGB(255, 206, 153, 104),
@@ -430,7 +430,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   'Spa',
                   'assets\\directions_icon.png',
                   'assets\\greetings_icon.png',
-                  'assets\\osvaldo_icon.png',
+                  'assets\\reading.png',
                   color1: Color.fromARGB(255, 210, 244, 248),
                   color2: Color.fromARGB(255, 186, 231, 236),
                   color3: Color.fromARGB(255, 167, 214, 220),
@@ -469,7 +469,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   'Hotels',
                   'assets\\directions_icon.png',
                   'assets\\greetings_icon.png',
-                  'assets\\osvaldo_icon.png',
+                  'assets\\reading.png',
                   color1: Color.fromARGB(255, 252, 250, 207),
                   color2: Color.fromARGB(255, 245, 242, 170),
                   color3: Color.fromARGB(255, 236, 232, 144),
@@ -799,7 +799,6 @@ class _ListeningState extends State<ListeningState> {
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
-    final correct = common[quesNum][0];
     final audio = common[quesNum][5];
 
     return Scaffold(
@@ -1140,13 +1139,11 @@ class _SpeakingState extends StatelessWidget {
               ),
             ),
 
-            spacer,
-
             Align(
               alignment: Alignment.center,
               child: Image.asset(
                 'assets\\speaking.png',
-                height: 250,
+                height: 300,
                 width: 250,
               ),
             ),
@@ -1193,8 +1190,11 @@ class _SpeakingState extends StatelessWidget {
                   ),
                 ),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
+                      padding: EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 175, 244, 198),
                         borderRadius: BorderRadius.circular(35.0),),
@@ -1210,6 +1210,7 @@ class _SpeakingState extends StatelessWidget {
                     ),
                     SizedBox(height: 15), 
                     Container(
+                      padding: EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 175, 244, 198),
                         borderRadius: BorderRadius.circular(35.0),),
@@ -1668,7 +1669,7 @@ Widget modulePage(BuildContext context, submod, {required Color color}) {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Image.asset(
-                        'assets/osvaldo.png',
+                        'assets/reading.png',
                         height: 100,
                         width: 100,
                       ),
