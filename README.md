@@ -1,4 +1,4 @@
-# Os-valdo
+# Osovalda
 Repository for language app group project for UNT's summer 2024 Software Engineering Course.
 
 ## Getting Started
