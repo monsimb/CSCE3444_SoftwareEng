@@ -1,28 +1,157 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, duplicate_ignore, constant_identifier_names, no_leading_underscores_for_local_identifiers, unnecessary_import, use_key_in_widget_constructors
 
-import 'dart:collection';
+//import 'dart:collection';
 import 'dart:async';
-//import 'dart:math';
+import 'dart:math';
+import 'package:flutter/animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/widgets.dart';
 import 'widget.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:flip_card/flip_card.dart';
 
-//Node structure containing reiforce vocabulary
+//Node structure containing reinforce vocabulary
 class ReinforceVocab {
   String english;
   String spanish;
+  String audio;
 
-  ReinforceVocab(this.english, this.spanish);
+  ReinforceVocab(this.english, this.spanish, this.audio);
+}
+
+//Used to generated reinforce cards
+int num_of_reinforce_cards = 0;
+List<ReinforceVocab> reinforceList = [];
+
+Future<List<List<String>>> readFile(int startLine, int endLine) async {
+  // Load the file as a string from the assets
+  String fileContent = await rootBundle.loadString('assets/Words&Phrases');
+
+  // Split the content into lines
+  List<String> lines = fileContent.split('\n');
+/*
+  // Print the content of the file for debugging
+  print('File Content:');
+  for (String line in lines) {
+    print(line);
+  }
+*/
+  // Check if startLine and endLine are within the bounds of the file lines
+  if (startLine < 0 || endLine >= lines.length || startLine > endLine) {
+    throw RangeError('Invalid range of lines specified');
+  }
+
+  // Process only the lines within the specified range
+  List<String> selectedLines = lines.sublist(startLine - 1, endLine);
+
+  // Split each line by commas and create a list of lists
+  List<List<String>> listOfLists = selectedLines.map((line) => line.split(',')).toList();
+
+  // Print the processed list of lists for debugging
+  print('Processed List of Lists:');
+  for (List<String> list in listOfLists) {
+    print(list);
+  }
+
+  return listOfLists;
+}
+
+Future<void> copyAssetToLocalData(String assetName, String fileName) async {
+  final directory = await getApplicationDocumentsDirectory();
+  final filePath = '${directory.path}/$fileName';
+  final file = File(filePath);
+
+  //Disregarding if statement for demo cards
+  // if (!await file.exists()) {
+    // Load the file from assets
+    final byteData = await rootBundle.load('assets/$assetName');
+
+    // Write the byte data to the new file
+    await file.writeAsBytes(byteData.buffer.asUint8List());
+  // }
+}
+
+int mapParameterToIndex(String parameter) {
+  switch (parameter) {
+    case "Listening":
+      return 2;
+    case "Speaking":
+      return 3;
+    case "Reading":
+      return 4;
+    default:
+      throw ArgumentError('Invalid parameter. Must be "Listening," "Speaking," or "Reading".');
+  }
+}
+
+Future<void> updateFile(String firstWord, String parameter) async {
+  final index = mapParameterToIndex(parameter);
+
+  final directory = await getApplicationDocumentsDirectory();
+  final filePath = '${directory.path}/Words&Phrases';
+  final file = File(filePath);
+
+  // Read the file as lines
+  List<String> lines = await file.readAsLines();
+
+  // Find the line that starts with the given first word
+  bool lineUpdated = false;
+  for (int i = 0; i < lines.length; i++) {
+    List<String> parts = lines[i].split('.');
+    if (parts.isNotEmpty && parts[0] == firstWord) {
+      lineUpdated = true;
+      if (index < parts.length && parts[index] == 'F') {
+        parts[index] = 'T';
+        lines[i] = parts.join('.');
+
+        // Check if all "F"s are now "T"s
+        if (!parts.sublist(2, 5).contains('F')) {
+          final reinforceFilePath = '${directory.path}/SampleReinforce';
+          final reinforceFile = File(reinforceFilePath);
+
+          // Remove "T"s and append to the SampleReinforce file
+          final newLine = parts.where((part) => part != 'T').join('.');
+          await reinforceFile.writeAsString('\n' + newLine, mode: FileMode.append);
+        }
+
+        break;
+      } else if (parts[index] == 'T') {
+        // Do nothing if the character is already 'T'
+        break;
+      } else {
+        throw ArgumentError('Invalid index; out of bounds');
+      }
+    }
+  }
+
+  if (lineUpdated) {
+    // Write the updated lines back to the file
+    await file.writeAsString(lines.join('\n'));
+  } else {
+    throw ArgumentError('First word not found in file');
+  }
 }
 
 // should add constants for sizes ( figure out how to use phone ratios for sizing? (scale factor))
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //await copyAssetToLocalData("SampleReinforce", "SampleReinforce");
+  await copyAssetToLocalData("Words&Phrases", "Words&Phrases");
+  await copyAssetToLocalData("SampleReinforce", "SampleReinforce");
+  updateFile('Hello', 'Speaking');
+
+  // Run the app
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  // root of application
+  // Root of application
   const MyApp({super.key});
 
   @override
@@ -46,18 +175,24 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
+class ReadingState extends StatefulWidget {
+  @override
+  _ReadingState createState() => _ReadingState();
+}
+class ListeningState extends StatefulWidget {
+  @override
+  _ListeningState createState() => _ListeningState();
+}
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PageController _pageViewController;
-  Queue<ReinforceVocab> reinforceQueue = Queue<ReinforceVocab>();
   @override
   void initState() {
     super.initState();
     _pageViewController = PageController();
 
-    
-    //Queue creation - Currently all words in SampleReinforce
-      getNextData(reinforceQueue);
+
+    //List creation - Currently all words in SampleReinforce
+      getNextData(reinforceList);
   }
 
   @override
@@ -68,20 +203,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
 
   /*  ^^ DONT MESS WITH THE ABOVE! ^^  */
+  
 
-  String reinforceDisplayText = 'Empty';
+  //Read SampleReinforce into the list
+  Future<void> getNextData(List<ReinforceVocab> reinforceList) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/SampleReinforce';
+    final file = File(filePath);
+    String response = await file.readAsString();
 
-  //Read SampleReinforce.txt into the queue
-  Future<void> getNextData(Queue<ReinforceVocab> reinforceQueue) async {
-    String response = await rootBundle.loadString('assets/SampleReinforce');
     List<String> lines = response.split('\n');
     for (String line in lines) {
+      if (line.trim().isEmpty) continue; // Skip empty lines
       List<String> parts = line.split('.');
-      if (parts.length == 2) {
-        reinforceQueue.add(ReinforceVocab(parts[0].trim(), parts[1].trim()));
+      if (parts.length == 3) {
+        reinforceList.add(ReinforceVocab(parts[0].trim(), parts[1].trim(),parts[2].trim()));
       }
     }
-    reinforceDisplayText = reinforceQueue.first.english;
+    //Bounds checking, no more than five cards
+    while(num_of_reinforce_cards < reinforceList.length && num_of_reinforce_cards < 5) {
+      num_of_reinforce_cards++;
+    }
     setState(() {});
   }
 
@@ -106,7 +248,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 Container(
                     margin: const EdgeInsets.only(top: 150.0),
-                    height: 400,
+                    height: 500,
                     child: homePage1()),
                 Container(
                     margin: const EdgeInsets.only(top: 150.0),
@@ -139,7 +281,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInOut);
             }
-          })
+          }),
+        Container(
+            margin: const EdgeInsets.only(top: 145.0),
+          child: const Padding(
+            padding: EdgeInsets.only(left: 8, top: 40),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Reinforce Phrases',
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                )),
+          ),
+    ),
+    Container(
+    margin: const EdgeInsets.only(top: 460.0),
+            child: SizedBox(
+              width: 390,
+              height: 200,
+              child: ReinforcePhrasesPageView(),
+            ),
+          )
         ]));
   }
 
@@ -151,7 +313,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Happy Learning!',
                   backgroundColor: Color.fromARGB(255, 230, 230, 230))),
           const Padding(
               padding: EdgeInsets.only(left: 15, right: 290, top: 30),
@@ -191,65 +353,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 color1: Color.fromARGB(255, 175, 244, 198),
                 color2: Color.fromARGB(255, 135, 212, 161),
                 color3: Color.fromARGB(255, 95, 170, 120),
-                targetscreen1: _ModulePageState(),
+                targetscreen1: CommonModulePageState(),
                 targetscreen2: GreetingsModulePageState(),
                 targetscreen3: DirectionsModulePageState(),
           )),
 
-          h30_spacer, // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 15, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-          
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(390, 114),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              backgroundColor: Color.fromARGB(255, 175, 244, 198),
-            ),
-            onPressed: () {
-              // Your onPressed code here
-              if (reinforceQueue.isNotEmpty) {
-                /*
-                reinforceQueue.removeFirst();
-                */
-                //Change text to display on flashcard
-                if(reinforceDisplayText == reinforceQueue.first.english) {
-                  reinforceDisplayText = reinforceQueue.first.spanish;
-                } else {
-                  reinforceQueue.removeFirst();
-                  reinforceDisplayText = reinforceQueue.first.english;
-                }
-                setState(() {});
-              }
-            },
-            child: reinforceQueue.isNotEmpty
-                ? Text(
-                    reinforceDisplayText,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  )
-                : Text(
-                    'No new words yet!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  ),
-          )
 
         ],
       ),
@@ -291,59 +399,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   )),
 
           h30_spacer, // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 8, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(390, 114),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              backgroundColor: Color.fromARGB(255, 252, 209, 156),
-            ),
-            onPressed: () {
-              // Your onPressed code here
-              if (reinforceQueue.isNotEmpty) {
-                /*
-                reinforceQueue.removeFirst();
-                */
-                //Change text to display on flashcard
-                if(reinforceDisplayText == reinforceQueue.first.english) {
-                  reinforceDisplayText = reinforceQueue.first.spanish;
-                } else {
-                  reinforceQueue.removeFirst();
-                  reinforceDisplayText = reinforceQueue.first.english;
-                }
-                setState(() {});
-              }
-            },
-            child: reinforceQueue.isNotEmpty
-                ? Text(
-                    reinforceDisplayText,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  )
-                : Text(
-                    'No new words yet!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  ),
-          ),
          
         ],
       ),
@@ -384,60 +439,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   targetscreen3: SpaModulePageState(),
                   )),
 
-          h30_spacer, // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 8, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(390, 114),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              backgroundColor: Color.fromARGB(255, 210, 244, 248),
-            ),
-            onPressed: () {
-              // Your onPressed code here
-              if (reinforceQueue.isNotEmpty) {
-                /*
-                reinforceQueue.removeFirst();
-                */
-                //Change text to display on flashcard
-                if(reinforceDisplayText == reinforceQueue.first.english) {
-                  reinforceDisplayText = reinforceQueue.first.spanish;
-                } else {
-                  reinforceQueue.removeFirst();
-                  reinforceDisplayText = reinforceQueue.first.english;
-                }
-                setState(() {});
-              }
-            },
-            child: reinforceQueue.isNotEmpty
-                ? Text(
-                    reinforceDisplayText,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  )
-                : Text(
-                    'No new words yet!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  ),
-          ),
         ],
       ),
     );
@@ -477,109 +478,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   targetscreen3: HotelsModulePageState(),
                   )),
 
-          h30_spacer, // spacer
-
-          const Padding(
-            padding: EdgeInsets.only(left: 8, top: 40),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Reinforce Phrases',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-                )),
-          ),
-
-          SizedBox(height: 10), //smaller spacer
-
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(390, 114),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-                  backgroundColor: Color.fromARGB(255, 252, 250, 207),             ),
-            onPressed: () {
-              // Your onPressed code here
-              if (reinforceQueue.isNotEmpty) {
-                /*
-                reinforceQueue.removeFirst();
-                */
-                //Change text to display on flashcard
-                if(reinforceDisplayText == reinforceQueue.first.english) {
-                  reinforceDisplayText = reinforceQueue.first.spanish;
-                } else {
-                  reinforceQueue.removeFirst();
-                  reinforceDisplayText = reinforceQueue.first.english;
-                }
-                setState(() {});
-              }
-            },
-            child: reinforceQueue.isNotEmpty
-                ? Text(
-                    reinforceDisplayText,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  )
-                : Text(
-                    'No new words yet!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  ),
-          ),
         ],
       ),
     );
   }
 
-/*
-  Widget banner(text, {subtext = ''}){
-    const colors = Color(0xFFB0F9D4);
-
-    return Container(
-      decoration: BoxDecoration(
-        color: colors,
-        borderRadius: BorderRadius.circular(15.0), // Set the radius here
-      ),
-      padding: const EdgeInsets.only(left: 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-   /*       Flexible(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-          )),
-  */        Text(
-            text,
-            style: const TextStyle(
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          if (subtext.trim().isNotEmpty)
-            Text(
-              subtext,
-              style: const TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-*/
   Widget moduleButtonWidget(
       BuildContext context, submod1, submod2, submod3, image1, image2, image3,
       {required Color color1, required Color color2, required Color color3, required Widget targetscreen1, required Widget targetscreen2, required Widget targetscreen3}) {
@@ -687,138 +590,164 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 }
 
-class _ModulePageState extends StatelessWidget {
+class ReinforcePhrasesPageView extends StatefulWidget {
+
+  @override
+  _ReinforcePhrasesPageViewState createState() => _ReinforcePhrasesPageViewState();
+}
+
+class _ReinforcePhrasesPageViewState extends State<ReinforcePhrasesPageView> {
 
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Common Phrases'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Common Phrases',
+return Expanded(
+      child: AnimatedSwitcher(
+        duration: Duration(milliseconds: 500),
+        child: reinforceList.isEmpty
+            ? Center(
+          child: Text(
+            "Review your new words and phrases here!",
+            style: TextStyle(
+              fontSize: 20,
+            ),
+              textAlign: TextAlign.center
+          ),
+        )
+            : PageView.builder(
+          key: ValueKey<int>(reinforceList.length),
+          itemCount: reinforceList.length,
+          itemBuilder: (context, index) {
+            return Center(
+              child: FlipCard(
+                direction: FlipDirection.VERTICAL,
+                front: Container(
+                  width: 340,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                      left: BorderSide(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        width: 3,
+                      ),
+                      bottom: BorderSide(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        width: 6,
+                      ),
+                    ),
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      reinforceList[index].spanish,
                       style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                back: Container(
+                  width: 340,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                      left: BorderSide(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        width: 3,
+                      ),
+                      bottom: BorderSide(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        width: 6,
+                      ),
+                    ),
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        reinforceList[index].english,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              final audioPlayer = AudioPlayer();
+                              audioPlayer.play(AssetSource('audio/' + reinforceList[index].audio + '.mp3'));
+                              // Dispose the audio player after the audio completes playing
+                              audioPlayer.onPlayerComplete.listen((_) {
+                                audioPlayer.dispose();
+                              });
+                            },
+                            child: Image.asset(
+                              'assets/listening.png.png',
+                              // Replace with your image asset path
+                              width: 75,
+                              height: 75,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              final directory = await getApplicationDocumentsDirectory();
+                              final file = File('${directory.path}/SampleReinforce');
+                              if (await file.exists()) {
+                                String contents = await file.readAsString();
+                                List<String> lines = contents.split('\n');
+                                String matchedLine = '';
+                                int matchIndex = -1;
 
-          lsrButtons(context, 1, Color.fromARGB(255, 175, 244, 198))
-        ],
-      )),
-    );
-  }
+                                for (int i = 0; i < lines.length; i++) {
+                                  String line = lines[i].trim();
+                                  if (line.isNotEmpty && line.split('.')[0] == reinforceList[index].english) {
+                                    matchedLine = line;
+                                    matchIndex = i;
+                                    break;
+                                  }
+                                }
 
-  Widget lsrButtons(BuildContext context, int id, Color buttonColor) {
-    /* Style settings (Button/Text) */
-    const spacer = SizedBox(height: 25);
-    final ButtonStyle btnStyle = FilledButton.styleFrom(
-      minimumSize: const Size(0, 80),
-      backgroundColor: buttonColor,
-      //backgroundColor: Color.fromARGB(255, 175, 244, 198),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(40)),
+                                if (matchIndex != -1) {
+                                  lines.removeAt(matchIndex);
+                                  lines.add(matchedLine);
+                                  String updatedText = lines.join('\n').trim();
+                                  await file.writeAsString(updatedText);
+                                }
+                              }
+                              setState(() {
+                                reinforceList.removeAt(index);
+                              });
+                            },
+                            child: Image.asset(
+                              'assets/greetings_icon.png',
+                              // Replace with your image asset path
+                              width: 50,
+                              height: 50,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
-    const TextStyle tStyle =
-        TextStyle(fontWeight: FontWeight.w700, fontSize: 25);
-
-    /* Actual Button Implementation */
-    return Stack(children: <Widget>[
-      Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-        // LISTENING BUTTON
-        FilledButton.tonal(
-            style: btnStyle,
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return _ListeningState();
-              }));
-            },
-            child: Align(
-                alignment: Alignment.centerLeft,
-                widthFactor: 3.25,
-                child: const Text(
-                  'Listening',
-                  style: tStyle,
-                ))),
-        spacer,
-        // SPEAKING BUTTON
-        FilledButton.tonal(
-            style: btnStyle,
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return _SpeakingState();
-              }));
-            },
-            child: Align(
-                alignment: Alignment.centerLeft,
-                widthFactor: 3.25,
-                child: const Text(
-                  'Speaking',
-                  style: tStyle,
-                ))),
-        spacer,
-        // READING BUTTON
-        FilledButton.tonal(
-            style: btnStyle,
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return _ReadingState();
-              }));
-            },
-            child: Align(
-                alignment: Alignment.centerLeft,
-                widthFactor: 3.7,
-                child: const Text(
-                  'Reading',
-                  style: tStyle,
-                ))),
-              spacer, 
-        // PROGRESS BUTTON
-        FilledButton.tonal(
-          style : FilledButton.styleFrom(
-          minimumSize: const Size(0, 175),
-          backgroundColor: Color.fromARGB(255, 135, 212, 161),
-          shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(40),),),),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return _ProgressState ();
-              }));
-            },
-            child: Align(
-                alignment: Alignment.centerLeft,
-                widthFactor: 3.4,
-                child: const Text(
-                  'Progress',
-                  style: tStyle,
-                ))),
-      ])
-    ]);
   }
 }
-Widget banner(String text, {required Color backgroundColor, String subtext = '', Color textColor = Colors.black}) {
+
+Widget banner(String text, {required Color backgroundColor, String subtext = '', Color textColor = Colors.black, Widget? icon}) {
   return Container(
     decoration: BoxDecoration(
       color: backgroundColor,
@@ -847,26 +776,31 @@ Widget banner(String text, {required Color backgroundColor, String subtext = '',
   );
 }
 
-class _ListeningState extends StatelessWidget {
+
+class _ListeningState extends State<ListeningState> {
   final player = AudioPlayer();
-  final List<List<String>> common = [["I","Yo","F","F","F"], 
-    ["You","Tú/Usted","F","F","F"], 
-    ["He/She","Él/Ella","F","F","F"], 
-    ["We","Nosotros","F","F","F"], 
-    ["They","Ustedes","F","F","F"], 
-    ["Please","Por favor","F","F","F"], 
-    ["Thank you","Gracias","F","F","F"], 
-    ["You’re welcome","De nada","F","F","F"], 
-    ["Excuse me","Perdon","F","F","F"], 
-    ["Sorry","Disculpa","F","F","F"]];
+  final List<List<String>> common = [["I","Yo","F","F","F","audio/I.mp3"], 
+    ["You","Tú/Usted","F","F","F","audio/u.mp3"], 
+    ["He","Él","F","F","F","audio/he.mp3"],
+    ["She","Ella","F","F","F","audio/she.mp3"],
+    ["We","Nosotros","F","F","F","audio/we.mp3"], 
+    ["They","Ustedes","F","F","F","audio/they.mp3"], 
+    ["Please","Por favor","F","F","F","audio/pls.mp3"], 
+    ["Thank you","Gracias","F","F","F","audio/ty.mp3"], 
+    ["You’re welcome","De nada","F","F","F","audio/yw.mp3"], 
+    ["Excuse me","Perdon","F","F","F","audio/excuse me.mp3"], 
+    ["Sorry","Disculpa","F","F","F","audio/sry.mp3"]];
   
   final _formKey = GlobalKey<FormState>();
   final TextEditingController control = TextEditingController();
-  _ListeningState({Key? key}) : super(key: key);
+  
+  int quesNum = 0;
  
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
+    final correct = common[quesNum][0];
+    final audio = common[quesNum][5];
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -905,7 +839,7 @@ class _ListeningState extends StatelessWidget {
                   style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
                   onPressed: () {
                     player.setPlaybackRate(1);
-                    player.play(AssetSource('audio/haveaniceday.mp3'));
+                    player.play(AssetSource(audio));
                   },
                   child: const Text(
                     'Listen',
@@ -920,7 +854,7 @@ class _ListeningState extends StatelessWidget {
                   style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(255, 175, 244, 198)),
                   onPressed: () {
                     player.setPlaybackRate(0.5);
-                    player.play(AssetSource('audio/haveaniceday.mp3'));
+                    player.play(AssetSource(audio));
                   },
                   child: const Text(
                     '0.5x Listen',
@@ -932,62 +866,39 @@ class _ListeningState extends StatelessWidget {
             ]),
           spacer,
           
-          listeningCheck(_formKey, control, common, context)
+          listeningCheck(_formKey, control, common, quesNum, context),
+
+          SizedBox(height: 150), // Space between questions and next button
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    quesNum = (quesNum + 1) % common.length;
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  minimumSize: Size(100, 50), // Button width and height
+                  backgroundColor: Color.fromARGB(255, 135, 212, 161),
+                ),
+                child: Text('Next',
+                  style: TextStyle(color: Colors.black)),
+              ),
+            ),
+          ),
         ],
       )
     );
   }
 }
 
-Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController control, List<List<String>> words, BuildContext context) {
-  // Widget feedback(bool incorrect) {
-  //   if(incorrect) {
-  //     return Container(
-  //       decoration: BoxDecoration(
-  //         color: Color.fromARGB(255, 175, 244, 198),
-  //         borderRadius: BorderRadius.circular(35.0),
-  //       ),
-  //       width: 370,
-  //       height: 150,
-  //       alignment: Alignment.centerLeft,
-  //       padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-  //       child: const Text(
-  //         'Feedback!',
-  //         textAlign: TextAlign.left,
-  //         style: TextStyle(
-  //           color: Colors.black,
-  //           fontSize: 16,
-  //           fontWeight: FontWeight.w500
-  //         ),
-  //       ),
-  //     );
-  //   }
-  //   else {
-  //     return Container(
-  //       decoration: BoxDecoration(
-  //         color: Color.fromARGB(255, 175, 244, 198),
-  //         borderRadius: BorderRadius.circular(35.0),
-  //       ),
-  //       width: 370,
-  //       height: 150,
-  //       alignment: Alignment.centerLeft,
-  //       padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-  //       child: const Text(
-  //         "You're correct!",
-  //         textAlign: TextAlign.left,
-  //         style: TextStyle(
-  //           color: Colors.black,
-  //           fontSize: 16,
-  //           fontWeight: FontWeight.w500
-  //         ),
-  //       ),
-  //     );
-  //   }
-  // }
-
-  // bool incorrect = false;
-
-  return Form(
+Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController control, List<List<String>> words, int index, BuildContext context) {
+ return Form(
     key: _formKey,
     child: Column ( 
       children: [
@@ -1008,9 +919,8 @@ Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController contr
               contentPadding: EdgeInsets.only(left: 10)),
             controller: control,
             validator: (value) {
-              if (value != words[0][0]) {    // TODO: figure out how to not need the 'incorrect'
-                //bool incorrect=true;
-                return 'incorrect';
+              if (value != words[index][0]) {    // TODO: figure out how to not need the 'incorrect'
+                return '';
               }
               return null;
             },
@@ -1022,17 +932,18 @@ Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController contr
           child: ElevatedButton(
             onPressed: () {     // TODO: see if we can get a feedback container to display text based on validation
               if(_formKey.currentState!.validate()) {
-                words[0][2] = "T";      // set listening check to true
+                words[index][2] = "T";      // set listening check to true
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("You're correct!")),
                 );
               }
               else {
-                String word = words[0][0];
+                String word = words[index][0];
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Sorry, the right answer is $word.")),
                 );
               }
+              control.clear();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor:Color.fromARGB(255, 135, 212, 161)),
@@ -1046,76 +957,163 @@ Widget listeningCheck(GlobalKey<FormState> _formKey, TextEditingController contr
   );
 }
 
-class _ReadingState extends StatelessWidget {
+class _ReadingState extends State<ReadingState> {
+  
+  final List<List<String>> common = [
+    ["Hello", "Hola", "F", "F", "F"],
+    ["Good morning", "Buenos días", "F", "F", "F"],
+    ["Good afternoon", "Buenas tardes", "F", "F", "F"],
+    ["Good night", "Buenas noches", "F", "F", "F"],
+    ["My name is ___", "Me llamo ___", "F", "F", "F"],
+    ["What is your name?", "¿Qué está tu nombre?", "F", "F", "F"],
+    ["Nice to meet you", "Mucho gusto", "F", "F", "F"],
+    ["How are you?", "¿Cómo estás?", "F", "F", "F"],
+    ["Have a nice day", "Tengas un buen día", "F", "F", "F"],
+    ["I'm good, and you?", "Estoy bien, ¿y tú?", "F", "F", "F"]
+  ];
+
+  int questionIndex = 0;
+  String selectedAnswer = "";
+
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
+    final random = Random();
+    final question = random.nextInt(common.length);
+    final correctanswer = common[question][0];
+
+    //get random incorrect answers
+    List<String> incorrectAnswers = [];
+    while (incorrectAnswers.length < 3) {
+      String randomAnswer = common[random.nextInt(common.length)][0];
+      if (randomAnswer != correctanswer && !incorrectAnswers.contains(randomAnswer)) {
+        incorrectAnswers.add(randomAnswer);
+      }
+    }
+    //combine correct & incorrect & then SHUFFLE
+    final answers = [correctanswer, ...incorrectAnswers]..shuffle();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-            'Reading! - *submodule*'), // remove if no title is to displayed
+        title: const Text('Reading! - *submodule*'),
       ),
       body: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding( 
-                padding: EdgeInsets.only(left: 20, top: 10),
-                child: Text('Reading',
-                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)))),
-            spacer,
-            Align( 
-              alignment: Alignment.center, 
-              child: Image.asset(
-                'assets\\osvaldo.png',
-                height: 250,
-                width: 250,
-              )),
-
-            spacer,
-
-            Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 230, 230, 230),
-                borderRadius: BorderRadius.circular(35.0)),
-                padding: const EdgeInsets.all(16.0),
-                alignment: Alignment.center,
-                width: 380,
-                height: 100,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Statement/Passage display.',
-                    hintStyle: TextStyle(fontStyle: FontStyle.italic),
-                    contentPadding: EdgeInsets.only(left: 10),
-                  ),
-                ),
-              
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, top: 10),
+              child: Text(
+                'Reading',
+                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+              ),
             ),
-            spacer,
-
-            Positioned(
-              bottom: 20,
-              child: Container(
-                width: 380,
-                height: 200,
-                padding: const EdgeInsets.all(16.0),
-                alignment: Alignment.topLeft,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 175, 244, 198),
-                  borderRadius: BorderRadius.circular(35.0),
-                ),
-                child: Text(
-                  'Question Prompt',
+          ),
+          spacer,
+          Align(
+            alignment: Alignment.center,
+            child: Image.asset(
+              'assets\\osvaldo.png',
+              height: 150,
+              width: 250,
+            ),
+          ),
+          spacer,
+          Container(
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 230, 230, 230),
+              borderRadius: BorderRadius.circular(35.0),
+            ),
+            padding: const EdgeInsets.all(16.0),
+            alignment: Alignment.center,
+            width: 380,
+            height: 100,
+            child: Text(
+              common[question][1],
+              style: TextStyle(fontSize: 24.0),
+              textAlign: TextAlign.center,
+              ),
+            ),
+    
+          spacer,
+          Container(
+            width: 380,
+            height: 275,
+            padding: const EdgeInsets.all(16.0),
+            alignment: Alignment.topLeft,
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 175, 244, 198),
+              borderRadius: BorderRadius.circular(35.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Choose one:',
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  //textAlign: TextAlign.left,
+                ),
+                SizedBox(height: 4.0), // Space between text and buttons
+                Column(
+                  children: answers.map((answer) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          backgroundColor: Color.fromARGB(255, 135, 212, 161),// Button color
+                          minimumSize: Size(300, 40), // Button width and height
+                          padding: EdgeInsets.symmetric(horizontal: 20), // Padding inside the button
+                          alignment: Alignment.center,                        
+                          ),
+
+                        //feedback (snack bar)
+                        onPressed: () {
+                          final isCorrect = answer == correctanswer;
+                          final snackBar = SnackBar(
+                            content: Text(isCorrect ? 'Correct!' : 'Incorrect. Try again.'),
+                            duration: Duration(seconds: 2),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        },
+                        child: Text(
+                          answer,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20), // Space between questions and next button
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    questionIndex = (questionIndex + 1) % common.length;
+                    selectedAnswer = "";
+                  });
+                },
+                child: Text('Next'),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  minimumSize: Size(100, 50), // Button width and height
+                  backgroundColor: Color.fromARGB(255, 135, 212, 161),
                 ),
               ),
             ),
-            
-          ],
-        )
-      );
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -1231,9 +1229,6 @@ class _SpeakingState extends StatelessWidget {
         ));
   }
 }
-// TODO: Add Speaking State
-// TODO: Add Progress State
-// TODO: Add Quiz State
 
 class _ProgressState extends StatelessWidget {
   @override
@@ -1426,88 +1421,33 @@ class _ProgressState extends StatelessWidget {
 
 // TODO: Add Quiz State
 
-//Greeting Submodule
-class GreetingsModulePageState extends StatelessWidget {
-
-
+/* SUBMODULE STATES */
+class CommonModulePageState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Greetings'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230, 230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Greetings',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
+      body: 
+        modulePage(context, 'Common Phrases', color: Color.fromARGB(255, 175, 244, 198))
+    );
+  }
+}
 
-          lsrButtons(context, 1, Color.fromARGB(255, 135, 212, 161))
-        ],
-      )),
+class GreetingsModulePageState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: 
+        modulePage(context, 'Greetings', color: Color.fromARGB(255, 135, 212, 161))
     );
   }
 }
 
 class DirectionsModulePageState extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Directions'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Directions',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
-
-          lsrButtons(context, 1, Color.fromARGB(255, 95, 170, 120))
-        ],
-      )),
+      body: 
+        modulePage(context, 'Directions', color: Color.fromARGB(255, 95, 170, 120))
     );
   }
 }
@@ -1515,366 +1455,102 @@ class DirectionsModulePageState extends StatelessWidget {
 //TODO: add different screens
 
 class IngredientsModulePageState extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Ingredients'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Ingredients',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
-
-          lsrButtons(context, 1, Color.fromARGB(255, 252, 209, 156))
-        ],
-      )),
+      body: 
+        modulePage(context, 'Ingredients', color: Color.fromARGB(255, 252, 209, 156))
     );
   }
 }
 
 class CookToolsModulePageState extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Cooking Tools'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Cooking Tools',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
-
-          lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
-        ],
-      )),
+      body: 
+        modulePage(context, 'Cooking Tools', color: Color.fromARGB(255, 237, 183, 133))
     );
   }
 }
 
 class OrdersModulePageState extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Taking Orders'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Taking Orders',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
-
-        
-          lsrButtons(context, 1, Color.fromARGB(255, 206, 153, 104))
-        ],
-      )),
+      body: 
+        modulePage(context, 'Taking Orders', color: Color.fromARGB(255, 206, 153, 104))
     );
   }
 }
 
 class HairCareModulePageState extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Hair Care'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Hair Care',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
-
-          lsrButtons(context, 1, Color.fromARGB(255, 210, 244, 248)),
-         
-        ],
-      )),
+      body: 
+        modulePage(context, 'Hair Care', color: Color.fromARGB(255, 210, 244, 248))
     );
   }
 }
 
 class NailCareModulePageState extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Nail Care'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Nail Care',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
-
-          lsrButtons(context, 1, Color.fromARGB(255, 186, 231, 236)),
-          
-        ],
-      )),
+      body: 
+        modulePage(context, 'Nail Care', color: Color.fromARGB(255, 186, 231, 236))
     );
   }
 }
 
 class SpaModulePageState extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Spa'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Spa',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
-
-          lsrButtons(context, 1, Color.fromARGB(255, 167, 214, 220)),
-          //lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
-        ],
-      )),
+      body: 
+        modulePage(context, 'Spa', color: Color.fromARGB(255, 167, 214, 220))
     );
   }
 }
 
 class RentalsModulePageState extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Rentals'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Rentals',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
-
-          lsrButtons(context, 1, Color.fromARGB(255, 252, 250, 207)),
-          
-          //lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
-        ],
-      )),
+      body: 
+        modulePage(context, 'Rentals', color: Color.fromARGB(255, 252, 250, 207))
     );
   }
 }
 
 class AirportModulePageState extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // setting style for home page (bg color)
-      appBar: AppBar(
-        title: const Text('Airport'), // remove if no title is to displayed
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          // all widgets on home page
-          SizedBox(
-              width: 395,
-              height: 70,
-              child: banner('Search',
-                  backgroundColor: Color.fromARGB(255, 230, 230,
-                      230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                  padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Airport',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
-
-          lsrButtons(context, 1, Color.fromARGB(255, 245, 242, 170)),
-          
-          //lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
-        ],
-      )),
+      body: 
+        modulePage(context, 'Airport', color: Color.fromARGB(255, 245, 242, 170))
     );
   }
 }
 
 class HotelsModulePageState extends StatelessWidget {
-
-
-  @override
+@override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: 
+        modulePage(context, 'Hotels', color: Color.fromARGB(255, 236, 232, 144))
+    );
+  }
+}
+
+Widget modulePage(BuildContext context, submod, {required Color color}) {
+  const tstyle = TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold);
+
+  return Scaffold(
       backgroundColor: Colors.white, // setting style for home page (bg color)
       appBar: AppBar(
-        title: const Text('Hotels'), // remove if no title is to displayed
+        title: Text(submod), // remove if no title is to displayed
       ),
       body: Center(
           child: Column(
@@ -1883,30 +1559,198 @@ class HotelsModulePageState extends StatelessWidget {
           SizedBox(
               width: 395,
               height: 70,
-              child: banner('Search',
+              child: banner('Level 1', // TODO: insert trophy icon
                   backgroundColor: Color.fromARGB(255, 230, 230,
                       230))), // TODO: change the dimensions to be phone dim dependent (ratio)
-          // const SizedBox(height: 5), // spacer
-          // const Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: <Widget>[
-          //       SizedBox(width: 340, height: 50, child: Text('module')),
-          //       SizedBox(width: 60, height: 50, child: Text('module'))
-          //     ]),
-          const Align(
+          Align(
               alignment: Alignment.centerLeft,
               child: Padding(
                   padding: EdgeInsets.only(left: 18, top: 50, bottom: 15),
-                  child: Text('Hotels',
-                      style: TextStyle(
-                          fontSize: 35.0, fontWeight: FontWeight.bold)))),
-          // const SizedBox(width: 400, height: 100, child: Text('module')),
-
-          lsrButtons(context, 1, Color.fromARGB(255, 236, 232, 144)),
+                  child: Text(submod,
+                      style: tstyle
+                  )
+              )
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 0.5,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 3,
+                        child: LinearProgressIndicator(
+                          value: 0.7,
+                          backgroundColor: Colors.transparent,
+                          valueColor:AlwaysStoppedAnimation<Color>(color),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/listening.png.png',
+                        height: 100,
+                        width: 100,
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 0.5,
+                        ),
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 3,
+                        child: LinearProgressIndicator(
+                          value: 0.4,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(color),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/speaking.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 140,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 0.5,
+                        ), 
+                      ),
+                      child: RotatedBox(
+                        quarterTurns: 3,
+                        child: LinearProgressIndicator(
+                          value: 0.6,
+                          backgroundColor: Colors.transparent,
+                          valueColor: AlwaysStoppedAnimation<Color>(color),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Image.asset(
+                        'assets/osvaldo.png',
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
           
-          //lsrButtons(context, 1, Color.fromARGB(255, 237, 183, 133))
+          lsrButtons(context, 1, color),
         ],
       )),
     );
-  }
 }
+
+Widget lsrButtons(BuildContext context, int id, Color buttonColor) {
+    /* Style settings (Button/Text) */
+    const spacer = SizedBox(height: 25);
+    final ButtonStyle btnStyle = FilledButton.styleFrom(
+      minimumSize: const Size(0, 80),
+      backgroundColor: buttonColor,
+      //backgroundColor: Color.fromARGB(255, 175, 244, 198),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(40)),
+      ),
+    );
+    const TextStyle tStyle =
+        TextStyle(fontWeight: FontWeight.w700, fontSize: 25);
+
+    /* Actual Button Implementation */
+    return Stack(children: <Widget>[
+      Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        // LISTENING BUTTON
+        FilledButton.tonal(
+            style: btnStyle,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ListeningState();
+              }));
+            },
+            child: Align(
+                alignment: Alignment.centerLeft,
+                widthFactor: 3.25,
+                child: const Text(
+                  'Listening',
+                  style: tStyle,
+                ))),
+        spacer,
+        // SPEAKING BUTTON
+        FilledButton.tonal(
+            style: btnStyle,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return _SpeakingState();
+              }));
+            },
+            child: Align(
+                alignment: Alignment.centerLeft,
+                widthFactor: 3.25,
+                child: const Text(
+                  'Speaking',
+                  style: tStyle,
+                ))),
+        spacer,
+        // READING BUTTON
+        FilledButton.tonal(
+            style: btnStyle,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ReadingState();
+              }));
+            },
+            child: Align(
+                alignment: Alignment.centerLeft,
+                widthFactor: 3.7,
+                child: const Text(
+                  'Reading',
+                  style: tStyle,
+                ))),
+              spacer, 
+        
+      ])
+    ]);
+  }

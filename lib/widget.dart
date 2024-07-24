@@ -68,6 +68,7 @@ Widget lsrButtons(BuildContext context, int id, Color buttonColor) {
                   style: tStyle,
                 ))),
               spacer, 
+        /*
         // PROGRESS BUTTON
         FilledButton.tonal(
           style : FilledButton.styleFrom(
@@ -87,6 +88,7 @@ Widget lsrButtons(BuildContext context, int id, Color buttonColor) {
                   'Progress',
                   style: tStyle,
                 ))),
+      */
       ])
     ]);
   }
