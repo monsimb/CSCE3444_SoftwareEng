@@ -1585,11 +1585,11 @@ Widget modulePage(BuildContext context, submod, {required Color color}) {
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(
-                          width: 4,
+                          width: 0.5,
                         ),
                       ),
                       child: RotatedBox(
-                        quarterTurns: 1,
+                        quarterTurns: 3,
                         child: LinearProgressIndicator(
                           value: 0.7,
                           backgroundColor: Colors.transparent,
@@ -1619,13 +1619,13 @@ Widget modulePage(BuildContext context, submod, {required Color color}) {
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(
-                          width: 4,
+                          width: 0.5,
                         ),
                       ),
                       child: RotatedBox(
-                        quarterTurns: 1,
+                        quarterTurns: 3,
                         child: LinearProgressIndicator(
-                          value: 0.7,
+                          value: 0.4,
                           backgroundColor: Colors.transparent,
                           valueColor: AlwaysStoppedAnimation<Color>(color),
                         ),
@@ -1653,13 +1653,13 @@ Widget modulePage(BuildContext context, submod, {required Color color}) {
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(
-                          width: 4,
+                          width: 0.5,
                         ), 
                       ),
                       child: RotatedBox(
-                        quarterTurns: 1,
+                        quarterTurns: 3,
                         child: LinearProgressIndicator(
-                          value: 0.7,
+                          value: 0.6,
                           backgroundColor: Colors.transparent,
                           valueColor: AlwaysStoppedAnimation<Color>(color),
                         ),
