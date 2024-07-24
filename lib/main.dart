@@ -347,9 +347,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 'Common',
                 'Greetings',
                 'Directions',
-                'assets\\osvaldo_icon.png',
-                'assets\\greetings_icon.png',
-                'assets\\directions_icon.png',
+                'assets\\reading.png',
+                'assets\\paw.png',
+                'assets\\directionbear.png',
                 color1: Color.fromARGB(255, 175, 244, 198),
                 color2: Color.fromARGB(255, 135, 212, 161),
                 color3: Color.fromARGB(255, 95, 170, 120),
@@ -387,9 +387,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   'Ingredients',
                   'Cooking Tools',
                   'Taking Orders',
-                  'assets\\directions_icon.png',
-                  'assets\\greetings_icon.png',
-                  'assets\\osvaldo_icon.png',
+                  'assets\\fish.png',
+                  'assets\\cookingbear.png',
+                  'assets\\reading.png',
                   color1: Color.fromARGB(255, 252, 209, 156),
                   color2: Color.fromARGB(255, 237, 183, 133),
                   color3: Color.fromARGB(255, 206, 153, 104),
@@ -428,9 +428,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   'Hair Care',
                   'Nail Care',
                   'Spa',
-                  'assets\\directions_icon.png',
-                  'assets\\greetings_icon.png',
-                  'assets\\osvaldo_icon.png',
+                  'assets\\directionbear.png',
+                  'assets\\paw.png',
+                  'assets\\reading.png',
                   color1: Color.fromARGB(255, 210, 244, 248),
                   color2: Color.fromARGB(255, 186, 231, 236),
                   color3: Color.fromARGB(255, 167, 214, 220),
@@ -467,9 +467,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   'Rentals',
                   'Airport',
                   'Hotels',
-                  'assets\\directions_icon.png',
-                  'assets\\greetings_icon.png',
-                  'assets\\osvaldo_icon.png',
+                  'assets\\directionbear.png',
+                  'assets\\paw.png',
+                  'assets\\reading.png',
                   color1: Color.fromARGB(255, 252, 250, 207),
                   color2: Color.fromARGB(255, 245, 242, 170),
                   color3: Color.fromARGB(255, 236, 232, 144),
@@ -690,7 +690,7 @@ return Expanded(
                               });
                             },
                             child: Image.asset(
-                              'assets/listening.png.png',
+                              'assets/listeningbear.png',
                               // Replace with your image asset path
                               width: 75,
                               height: 75,
@@ -727,7 +727,7 @@ return Expanded(
                               });
                             },
                             child: Image.asset(
-                              'assets/greetings_icon.png',
+                              'assets/paw.png',
                               // Replace with your image asset path
                               width: 50,
                               height: 50,
@@ -799,7 +799,6 @@ class _ListeningState extends State<ListeningState> {
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(height: 35);
-    final correct = common[quesNum][0];
     final audio = common[quesNum][5];
 
     return Scaffold(
@@ -820,15 +819,16 @@ class _ListeningState extends State<ListeningState> {
               ),
             ),
           ),
+          
           Align(
             alignment: Alignment.center,
             child: Image.asset(
-              'assets\\listening.png.png',
+              'assets\\listeningbear.png',
               height: 250,
               width: 250,
             ),
           ),
-
+          spacer,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -868,7 +868,7 @@ class _ListeningState extends State<ListeningState> {
           
           listeningCheck(_formKey, control, common, quesNum, context),
 
-          SizedBox(height: 150), // Space between questions and next button
+          SizedBox(height: 135), // Space between questions and next button
           Align(
             alignment: Alignment.centerRight,
             child: Padding(
@@ -1063,7 +1063,7 @@ class _ReadingState extends State<ReadingState> {
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           backgroundColor: Color.fromARGB(255, 135, 212, 161),// Button color
-                          minimumSize: Size(300, 40), // Button width and height
+                          minimumSize: Size(400, 40), // Button width and height
                           padding: EdgeInsets.symmetric(horizontal: 20), // Padding inside the button
                           alignment: Alignment.center,                        
                           ),
@@ -1140,13 +1140,11 @@ class _SpeakingState extends StatelessWidget {
               ),
             ),
 
-            spacer,
-
             Align(
               alignment: Alignment.center,
               child: Image.asset(
                 'assets\\speaking.png',
-                height: 250,
+                height: 300,
                 width: 250,
               ),
             ),
@@ -1193,8 +1191,11 @@ class _SpeakingState extends StatelessWidget {
                   ),
                 ),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
+                      padding: EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 175, 244, 198),
                         borderRadius: BorderRadius.circular(35.0),),
@@ -1210,6 +1211,7 @@ class _SpeakingState extends StatelessWidget {
                     ),
                     SizedBox(height: 15), 
                     Container(
+                      padding: EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 175, 244, 198),
                         borderRadius: BorderRadius.circular(35.0),),
@@ -1600,7 +1602,7 @@ Widget modulePage(BuildContext context, submod, {required Color color}) {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Image.asset(
-                        'assets/listening.png.png',
+                        'assets/listeningbear.png',
                         height: 100,
                         width: 100,
                       )
@@ -1668,7 +1670,7 @@ Widget modulePage(BuildContext context, submod, {required Color color}) {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Image.asset(
-                        'assets/osvaldo.png',
+                        'assets/reading.png',
                         height: 100,
                         width: 100,
                       ),
